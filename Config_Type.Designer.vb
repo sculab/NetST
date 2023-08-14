@@ -54,9 +54,9 @@ Partial Class Config_Type
         RadioButton2.AutoSize = True
         RadioButton2.Location = New Point(12, 68)
         RadioButton2.Name = "RadioButton2"
-        RadioButton2.Size = New Size(122, 21)
+        RadioButton2.Size = New Size(141, 21)
         RadioButton2.TabIndex = 1
-        RadioButton2.Text = "使用自定义数据库"
+        RadioButton2.Text = "使用自定义Kmer字典"
         RadioButton2.UseVisualStyleBackColor = True
         ' 
         ' TextBox1
@@ -127,9 +127,9 @@ Partial Class Config_Type
         RadioButton3.Enabled = False
         RadioButton3.Location = New Point(12, 124)
         RadioButton3.Name = "RadioButton3"
-        RadioButton3.Size = New Size(110, 21)
+        RadioButton3.Size = New Size(129, 21)
         RadioButton3.TabIndex = 16
-        RadioButton3.Text = "使用内置数据库"
+        RadioButton3.Text = "使用内置Kmer字典"
         RadioButton3.UseVisualStyleBackColor = True
         ' 
         ' Label1
@@ -153,7 +153,7 @@ Partial Class Config_Type
         ' 
         ' Config_Type
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 17.0F)
+        AutoScaleDimensions = New SizeF(7F, 17F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(374, 229)
         ControlBox = False

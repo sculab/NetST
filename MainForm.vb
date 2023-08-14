@@ -32,7 +32,7 @@ Public Class Mainform
         Dim Column_ID As New System.Data.DataColumn("ID", System.Type.GetType("System.Int32"))
         Dim Column_Taxon As New System.Data.DataColumn("Name")
         Dim Column_Seq As New System.Data.DataColumn("Sequence")
-        Dim Column_Time As New System.Data.DataColumn("Continuous Trait")
+        Dim Column_Time As New System.Data.DataColumn("Continuous Traits")
         Dim Column_State As New System.Data.DataColumn("Discrete Traits")
         Dim Column_Count As New System.Data.DataColumn("Quantity")
         Dim Column_Organism As New System.Data.DataColumn("Organism")
@@ -136,11 +136,17 @@ Public Class Mainform
                 DataGridView1.Columns(2).SortMode = DataGridViewColumnSortMode.NotSortable
                 DataGridView1.Columns(3).SortMode = DataGridViewColumnSortMode.NotSortable
                 DataGridView1.Columns(4).SortMode = DataGridViewColumnSortMode.NotSortable
-                DataGridView1.Columns(4).Width = 100
-                DataGridView1.Columns(3).Width = 400
-                DataGridView1.Columns(2).Width = 100
-                DataGridView1.Columns(1).Width = 50
+                DataGridView1.Columns(5).SortMode = DataGridViewColumnSortMode.NotSortable
+                DataGridView1.Columns(6).SortMode = DataGridViewColumnSortMode.NotSortable
+                DataGridView1.Columns(7).SortMode = DataGridViewColumnSortMode.NotSortable
                 DataGridView1.Columns(0).Width = 50
+                DataGridView1.Columns(1).Width = 50
+                DataGridView1.Columns(2).Width = 120
+                DataGridView1.Columns(3).Width = 400
+                DataGridView1.Columns(4).Width = 120
+                DataGridView1.Columns(5).Width = 120
+                DataGridView1.Columns(6).Width = 60
+                DataGridView1.Columns(7).Width = 120
 
                 PB_value = 0
                 info_text = ""
@@ -879,7 +885,13 @@ Public Class Mainform
                 End If
             Next
             If selected_count >= 1 Then
-                form_config_type.Show()
+                If form_config_type.Visible Then
+                    form_config_type.Activate()
+                Else
+
+                    form_config_type.Show()
+                End If
+
             Else
                 MsgBox("Please select at least one sequence!")
             End If
@@ -994,13 +1006,13 @@ Public Class Mainform
         Dim splitstr As String = InputBox("", "Enter the delimiter:", "-")
 
         For i As Integer = 1 To dtView.Count
-            If IsNumeric(DataGridView1.Rows(i - 1).Cells(6).Value) = False Then
-                Dim tmp_date() As String = DataGridView1.Rows(i - 1).Cells(6).Value.ToString.Split(splitstr)
+            If IsNumeric(DataGridView1.Rows(i - 1).Cells(5).Value) = False Then
+                Dim tmp_date() As String = DataGridView1.Rows(i - 1).Cells(5).Value.ToString.Split(splitstr)
                 If UBound(tmp_date) = 1 Then
-                    DataGridView1.Rows(i - 1).Cells(6).Value = (CInt(tmp_date(0)) + CInt(tmp_date(1)) / 12).ToString("F4")
+                    DataGridView1.Rows(i - 1).Cells(5).Value = (CInt(tmp_date(0)) + CInt(tmp_date(1)) / 12).ToString("F4")
                 End If
                 If UBound(tmp_date) = 2 Then
-                    DataGridView1.Rows(i - 1).Cells(6).Value = (CInt(tmp_date(0)) + CInt(tmp_date(1)) / 12 + CInt(tmp_date(2)) / 30 / 12).ToString("F4")
+                    DataGridView1.Rows(i - 1).Cells(5).Value = (CInt(tmp_date(0)) + CInt(tmp_date(1)) / 12 + CInt(tmp_date(2)) / 30 / 12).ToString("F4")
                 End If
             End If
         Next

@@ -124,7 +124,7 @@ Public Class Config_Type
         If line <> "" Then
             Do
                 Dim line_list As String() = line.Split(",")
-                If Int(line_list(4).Replace("%", "")) > 10 Then
+                If CInt(line_list(4).Replace("%", "")) > 10 Then
                     sw0.WriteLine("<tr><td>" + line_list(0) + "</td><td>" + line_list(1) + "</td><td>" + line_list(2) + "</td><td>" + line_list(3) + "</td><td>" + line_list(4) + "</td><td>" + line_list(5) + "</td><td>" + line_list(6) + "</td></tr>")
                 End If
                 line = sr2.ReadLine

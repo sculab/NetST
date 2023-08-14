@@ -54,7 +54,7 @@ Partial Class Config_Mix
         ' RadioButton1
         ' 
         RadioButton1.AutoSize = True
-        RadioButton1.Location = New Point(14, 22)
+        RadioButton1.Location = New Point(16, 38)
         RadioButton1.Name = "RadioButton1"
         RadioButton1.Size = New Size(98, 21)
         RadioButton1.TabIndex = 0
@@ -65,7 +65,7 @@ Partial Class Config_Mix
         ' 
         RadioButton2.AutoSize = True
         RadioButton2.Checked = True
-        RadioButton2.Location = New Point(14, 78)
+        RadioButton2.Location = New Point(16, 15)
         RadioButton2.Name = "RadioButton2"
         RadioButton2.Size = New Size(98, 21)
         RadioButton2.TabIndex = 1
@@ -75,7 +75,7 @@ Partial Class Config_Mix
         ' 
         ' TextBox1
         ' 
-        TextBox1.Location = New Point(96, 49)
+        TextBox1.Location = New Point(98, 62)
         TextBox1.Name = "TextBox1"
         TextBox1.ReadOnly = True
         TextBox1.Size = New Size(208, 23)
@@ -84,7 +84,7 @@ Partial Class Config_Mix
         ' Label1
         ' 
         Label1.AutoSize = True
-        Label1.Location = New Point(31, 52)
+        Label1.Location = New Point(33, 65)
         Label1.Name = "Label1"
         Label1.Size = New Size(59, 17)
         Label1.TabIndex = 3
@@ -93,7 +93,7 @@ Partial Class Config_Mix
         ' Label2
         ' 
         Label2.AutoSize = True
-        Label2.Location = New Point(12, 205)
+        Label2.Location = New Point(13, 178)
         Label2.Name = "Label2"
         Label2.Size = New Size(71, 17)
         Label2.TabIndex = 4
@@ -101,7 +101,7 @@ Partial Class Config_Mix
         ' 
         ' NumericUpDown1
         ' 
-        NumericUpDown1.Location = New Point(323, 138)
+        NumericUpDown1.Location = New Point(323, 115)
         NumericUpDown1.Maximum = New Decimal(New Integer() {512, 0, 0, 0})
         NumericUpDown1.Minimum = New Decimal(New Integer() {11, 0, 0, 0})
         NumericUpDown1.Name = "NumericUpDown1"
@@ -112,7 +112,7 @@ Partial Class Config_Mix
         ' Label3
         ' 
         Label3.AutoSize = True
-        Label3.Location = New Point(269, 140)
+        Label3.Location = New Point(269, 117)
         Label3.Name = "Label3"
         Label3.Size = New Size(31, 17)
         Label3.TabIndex = 21
@@ -120,7 +120,7 @@ Partial Class Config_Mix
         ' 
         ' TextBox2
         ' 
-        TextBox2.Location = New Point(12, 225)
+        TextBox2.Location = New Point(13, 198)
         TextBox2.Name = "TextBox2"
         TextBox2.ReadOnly = True
         TextBox2.Size = New Size(305, 23)
@@ -128,7 +128,7 @@ Partial Class Config_Mix
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(310, 45)
+        Button1.Location = New Point(312, 58)
         Button1.Name = "Button1"
         Button1.Size = New Size(75, 30)
         Button1.TabIndex = 24
@@ -137,7 +137,7 @@ Partial Class Config_Mix
         ' 
         ' Button2
         ' 
-        Button2.Location = New Point(322, 221)
+        Button2.Location = New Point(323, 194)
         Button2.Name = "Button2"
         Button2.Size = New Size(75, 30)
         Button2.TabIndex = 25
@@ -146,7 +146,7 @@ Partial Class Config_Mix
         ' 
         ' Button3
         ' 
-        Button3.Location = New Point(323, 273)
+        Button3.Location = New Point(324, 246)
         Button3.Name = "Button3"
         Button3.Size = New Size(75, 30)
         Button3.TabIndex = 28
@@ -155,7 +155,7 @@ Partial Class Config_Mix
         ' 
         ' TextBox3
         ' 
-        TextBox3.Location = New Point(12, 277)
+        TextBox3.Location = New Point(13, 250)
         TextBox3.Name = "TextBox3"
         TextBox3.ReadOnly = True
         TextBox3.Size = New Size(305, 23)
@@ -164,7 +164,7 @@ Partial Class Config_Mix
         ' Label4
         ' 
         Label4.AutoSize = True
-        Label4.Location = New Point(12, 257)
+        Label4.Location = New Point(13, 230)
         Label4.Name = "Label4"
         Label4.Size = New Size(71, 17)
         Label4.TabIndex = 26
@@ -173,7 +173,7 @@ Partial Class Config_Mix
         ' Label5
         ' 
         Label5.AutoSize = True
-        Label5.Location = New Point(12, 140)
+        Label5.Location = New Point(12, 117)
         Label5.Name = "Label5"
         Label5.Size = New Size(107, 17)
         Label5.TabIndex = 29
@@ -181,7 +181,7 @@ Partial Class Config_Mix
         ' 
         ' NumericUpDown2
         ' 
-        NumericUpDown2.Location = New Point(149, 138)
+        NumericUpDown2.Location = New Point(149, 115)
         NumericUpDown2.Name = "NumericUpDown2"
         NumericUpDown2.Size = New Size(74, 23)
         NumericUpDown2.TabIndex = 30
@@ -194,15 +194,15 @@ Partial Class Config_Mix
         GroupBox1.Controls.Add(TextBox1)
         GroupBox1.Controls.Add(Label1)
         GroupBox1.Controls.Add(Button1)
-        GroupBox1.Location = New Point(12, 12)
+        GroupBox1.Location = New Point(12, 8)
         GroupBox1.Name = "GroupBox1"
-        GroupBox1.Size = New Size(393, 113)
+        GroupBox1.Size = New Size(393, 99)
         GroupBox1.TabIndex = 31
         GroupBox1.TabStop = False
         ' 
         ' Button4
         ' 
-        Button4.Location = New Point(234, 314)
+        Button4.Location = New Point(225, 285)
         Button4.Name = "Button4"
         Button4.Size = New Size(75, 30)
         Button4.TabIndex = 33
@@ -211,7 +211,7 @@ Partial Class Config_Mix
         ' 
         ' Button5
         ' 
-        Button5.Location = New Point(115, 314)
+        Button5.Location = New Point(106, 285)
         Button5.Name = "Button5"
         Button5.Size = New Size(75, 30)
         Button5.TabIndex = 32
@@ -221,7 +221,7 @@ Partial Class Config_Mix
         ' Label6
         ' 
         Label6.AutoSize = True
-        Label6.Location = New Point(12, 173)
+        Label6.Location = New Point(12, 147)
         Label6.Name = "Label6"
         Label6.Size = New Size(131, 17)
         Label6.TabIndex = 34
@@ -229,7 +229,7 @@ Partial Class Config_Mix
         ' 
         ' NumericUpDown3
         ' 
-        NumericUpDown3.Location = New Point(149, 171)
+        NumericUpDown3.Location = New Point(149, 145)
         NumericUpDown3.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         NumericUpDown3.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         NumericUpDown3.Name = "NumericUpDown3"
@@ -240,7 +240,7 @@ Partial Class Config_Mix
         ' Label7
         ' 
         Label7.AutoSize = True
-        Label7.Location = New Point(269, 173)
+        Label7.Location = New Point(269, 147)
         Label7.Name = "Label7"
         Label7.Size = New Size(47, 17)
         Label7.TabIndex = 36
@@ -248,7 +248,7 @@ Partial Class Config_Mix
         ' 
         ' NumericUpDown4
         ' 
-        NumericUpDown4.Location = New Point(323, 171)
+        NumericUpDown4.Location = New Point(323, 145)
         NumericUpDown4.Maximum = New Decimal(New Integer() {512, 0, 0, 0})
         NumericUpDown4.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         NumericUpDown4.Name = "NumericUpDown4"
@@ -260,7 +260,7 @@ Partial Class Config_Mix
         ' 
         AutoScaleDimensions = New SizeF(7F, 17F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(417, 353)
+        ClientSize = New Size(417, 324)
         ControlBox = False
         Controls.Add(Label7)
         Controls.Add(NumericUpDown4)

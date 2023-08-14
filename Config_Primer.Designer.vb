@@ -72,7 +72,7 @@ Partial Class Config_Primer
         NumericUpDown1.Name = "NumericUpDown1"
         NumericUpDown1.Size = New Size(87, 23)
         NumericUpDown1.TabIndex = 2
-        NumericUpDown1.Value = New Decimal(New Integer() {16, 0, 0, 0})
+        NumericUpDown1.Value = New Decimal(New Integer() {64, 0, 0, 0})
         ' 
         ' NumericUpDown2
         ' 

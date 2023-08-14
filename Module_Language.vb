@@ -7,7 +7,8 @@ Module Module_Language
         form_main.文件FToolStripMenuItem.Text = "File"
         form_main.载入序列ToolStripMenuItem.Text = "Load Sequences"
         form_main.载入数据ToolStripMenuItem.Text = "Load Table"
-        form_main.增加数据ToolStripMenuItem.Text = form_main.保存数据ToolStripMenuItem.Text = "Save Table"
+        form_main.增加数据ToolStripMenuItem.Text = "Add Sequences"
+        form_main.保存数据ToolStripMenuItem.Text = "Save Table"
         form_main.导出序列ToolStripMenuItem.Text = "Save Sequences"
         form_main.导出分型数据集ToolStripMenuItem.Text = "Export Genotyping Dataset"
         form_main.编辑ToolStripMenuItem.Text = "Edit"
@@ -118,6 +119,7 @@ Module Module_Language
         form_config_data.RadioButton1.Text = "From csv File:"
         form_config_data.RadioButton2.Text = "From fasta File:"
 
+        form_config_mix.Text = "Mixture Genotyping Detection"
         form_config_mix.RadioButton1.Text = "Based on Existing Results"
         form_config_mix.RadioButton2.Text = "Analyze use References"
         form_config_mix.Label1.Text = "File:"
@@ -132,26 +134,29 @@ Module Module_Language
         form_config_mix.Button5.Text = "OK"
         form_config_mix.Label6.Text = "Maximum Sequences:"
         form_config_mix.Label7.Text = "Threads:"
-        form_config_mix.Text = "Mixture Genotyping Detection"
 
+        form_config_type.Text = "Quick Genotyping"
         form_config_type.RadioButton1.Text = "Use Custom Reference Sequence"
-        form_config_type.RadioButton2.Text = "Use Custom Database"
+        form_config_type.RadioButton2.Text = "Use Custom K-mer dictionary"
         form_config_type.Button2.Text = "Cancel"
         form_config_type.Button1.Text = "OK"
-        form_config_type.RadioButton3.Text = "Use Built-in Database"
+        form_config_type.RadioButton3.Text = "Use Built-in K-mer dictionary"
         form_config_type.Label1.Text = "K:"
         form_config_type.Button3.Text = "Browse"
         form_config_type.Button4.Text = "Browse"
-        form_config_type.Text = "Quick Genotyping"
 
+        form_config_combine.Text = "Merge Sequence Files"
         form_config_combine.Button5.Text = "Browse"
         form_config_combine.Button3.Text = "Cancel"
         form_config_combine.Button4.Text = "OK"
         form_config_combine.Button1.Text = "Browse"
         form_config_combine.Label1.Text = "Location of Files to be Merged:"
-        form_config_combine.Label2.Text = "Extension of Files to be Merged:"
+        form_config_combine.Label2.Text = "Extension to be Merged:"
         form_config_combine.Label3.Text = "Save Merged File to:"
-        form_config_combine.Text = "Merge Sequence Files"
+        form_config_combine.Label4.Text = "Fill missing sequences:"
+        form_config_combine.RadioButton1.Text = "Merge by file"
+        form_config_combine.RadioButton2.Text = "Merge by species"
+
 
         form_config_clean.CheckBox1.Text = "Use Unix Line Endings"
         form_config_clean.CheckBox2.Text = "Remove Seqs Containing Ambiguous Bases"
@@ -170,20 +175,16 @@ Module Module_Language
 
 
         If data_type = "gb" Then
-            If language = "CH" Then
-                form_config_primer.Label2.Text = "Minimum Gene Length"
-                form_config_primer.Label3.Text = "Maximum Gene Length"
-                form_config_split.Label2.Text = "Minimum Gene Length"
-                form_config_split.Label3.Text = "Maximum Gene Length"
-            End If
+            form_config_primer.Label2.Text = "Minimum Gene Length"
+            form_config_primer.Label3.Text = "Maximum Gene Length"
+            form_config_split.Label2.Text = "Minimum Gene Length"
+            form_config_split.Label3.Text = "Maximum Gene Length"
         End If
         If data_type = "fas" Then
-            If language = "CH" Then
-                form_config_primer.Label2.Text = "Fragment Overlap Length"
-                form_config_primer.Label3.Text = "Fragment Separation Length"
-                form_config_split.Label2.Text = "Fragment Overlap Length"
-                form_config_split.Label3.Text = "Fragment Separation Length"
-            End If
+            form_config_primer.Label2.Text = "Fragment Overlap Length"
+            form_config_primer.Label3.Text = "Fragment Separation Length"
+            form_config_split.Label2.Text = "Fragment Overlap Length"
+            form_config_split.Label3.Text = "Fragment Separation Length"
         End If
 
         language = "EN"
@@ -197,7 +198,7 @@ Module Module_Language
         form_main.载入数据ToolStripMenuItem.Text = "载入表格"
         form_main.增加数据ToolStripMenuItem.Text = "增加序列"
         form_main.保存数据ToolStripMenuItem.Text = "保存表格"
-        form_main.导出序列ToolStripMenuItem.Text = "导出序列"
+        form_main.导出序列ToolStripMenuItem.Text = "保存序列"
         form_main.导出分型数据集ToolStripMenuItem.Text = "导出分型"
         form_main.编辑ToolStripMenuItem.Text = "编辑"
         form_main.全选ToolStripMenuItem.Text = "全选"
@@ -245,6 +246,7 @@ Module Module_Language
         form_config_primer.Button3.Text = "保存位置"
         form_config_primer.Text = "引物设计"
 
+        form_config_split.Text = "分割序列"
         form_config_split.RadioButton2.Text = "使用Organism+State区分样本"
         form_config_split.RadioButton1.Text = "使用Organism+ID区分样本"
         form_config_split.Button2.Text = "取消"
@@ -253,7 +255,6 @@ Module Module_Language
         form_config_split.Label4.Text = "扩展边界长度"
         form_config_split.Label3.Text = "基因最大长度"
         form_config_split.Label2.Text = "基因最小长度"
-        form_config_split.Text = "分割序列"
 
         form_config_stand.Text = "序列标准化"
         form_config_stand.CheckBox1.Text = "使用Unix换行符"
@@ -305,6 +306,7 @@ Module Module_Language
         form_config_data.RadioButton1.Text = "从csv文件构建:"
         form_config_data.RadioButton2.Text = "从fasta文件构建:"
 
+        form_config_mix.Text = "混合分型检测"
         form_config_mix.RadioButton1.Text = "基于已有结果"
         form_config_mix.RadioButton2.Text = "从头开始分析"
         form_config_mix.Label1.Text = "结果文件:"
@@ -319,18 +321,18 @@ Module Module_Language
         form_config_mix.Button5.Text = "确定"
         form_config_mix.Label6.Text = "最大单个分型序列数量:"
         form_config_mix.Label7.Text = "线程数:"
-        form_config_mix.Text = "混合分型检测"
 
+        form_config_type.Text = "快速分型"
         form_config_type.RadioButton1.Text = "使用自定义参考序列"
-        form_config_type.RadioButton2.Text = "使用自定义数据库"
+        form_config_type.RadioButton2.Text = "使用自定义K-mer字典"
         form_config_type.Button2.Text = "取消"
         form_config_type.Button1.Text = "确定"
-        form_config_type.RadioButton3.Text = "使用内置数据库"
+        form_config_type.RadioButton3.Text = "使用内置K-mer字典"
         form_config_type.Label1.Text = "K:"
         form_config_type.Button3.Text = "浏览"
         form_config_type.Button4.Text = "浏览"
-        form_config_type.Text = "快速分型"
 
+        form_config_combine.Text = "合并序列文件"
         form_config_combine.Button5.Text = "浏览"
         form_config_combine.Button3.Text = "取消"
         form_config_combine.Button4.Text = "确定"
@@ -338,7 +340,9 @@ Module Module_Language
         form_config_combine.Label1.Text = "存放待合并文件的位置:"
         form_config_combine.Label2.Text = "待合并文件的扩展名:"
         form_config_combine.Label3.Text = "合并后文件保存在:"
-        form_config_combine.Text = "合并序列文件"
+        form_config_combine.Label4.Text = "缺失序列填充字符:"
+        form_config_combine.RadioButton1.Text = "按文件合并"
+        form_config_combine.RadioButton2.Text = "按物种合并"
 
         form_config_clean.CheckBox1.Text = "使用Unix换行符"
         form_config_clean.CheckBox2.Text = "移除所有包含简并碱基的序列"
@@ -356,20 +360,17 @@ Module Module_Language
         form_config_clean.Text = "序列清理"
 
         If data_type = "gb" Then
-            If language = "CH" Then
-                form_config_primer.Label2.Text = "基因最小长度"
-                form_config_primer.Label3.Text = "基因最大长度"
-                form_config_split.Label2.Text = "基因最小长度"
-                form_config_split.Label3.Text = "基因最大长度"
-            End If
+            form_config_primer.Label2.Text = "基因最小长度"
+            form_config_primer.Label3.Text = "基因最大长度"
+            form_config_split.Label2.Text = "基因最小长度"
+            form_config_split.Label3.Text = "基因最大长度"
         End If
         If data_type = "fas" Then
-            If language = "CH" Then
-                form_config_primer.Label2.Text = "片段重叠长度"
-                form_config_primer.Label3.Text = "片段分隔长度"
-                form_config_split.Label2.Text = "片段重叠长度"
-                form_config_split.Label3.Text = "片段分隔长度"
-            End If
+            form_config_primer.Label2.Text = "片段重叠长度"
+            form_config_primer.Label3.Text = "片段分隔长度"
+            form_config_split.Label2.Text = "片段重叠长度"
+            form_config_split.Label3.Text = "片段分隔长度"
+
         End If
 
         language = "CH"

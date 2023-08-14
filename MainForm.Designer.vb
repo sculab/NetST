@@ -23,8 +23,8 @@ Partial Class Mainform
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
-        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
         WebView_main = New Microsoft.Web.WebView2.WinForms.WebView2()
         MenuStrip1 = New MenuStrip()
         文件FToolStripMenuItem = New ToolStripMenuItem()
@@ -34,6 +34,7 @@ Partial Class Mainform
         ToolStripSeparator4 = New ToolStripSeparator()
         保存数据ToolStripMenuItem = New ToolStripMenuItem()
         导出序列ToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripSeparator10 = New ToolStripSeparator()
         导出分型数据集ToolStripMenuItem = New ToolStripMenuItem()
         编辑ToolStripMenuItem = New ToolStripMenuItem()
         全选ToolStripMenuItem = New ToolStripMenuItem()
@@ -59,9 +60,10 @@ Partial Class Mainform
         清理序列ToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator6 = New ToolStripSeparator()
         获取序列信息ToolStripMenuItem = New ToolStripMenuItem()
-        CSV生成序列ToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator7 = New ToolStripSeparator()
         日期转换数字ToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripSeparator11 = New ToolStripSeparator()
+        CSV生成序列ToolStripMenuItem = New ToolStripMenuItem()
         浏览ToolStripMenuItem = New ToolStripMenuItem()
         前进ToolStripMenuItem = New ToolStripMenuItem()
         后退ToolStripMenuItem = New ToolStripMenuItem()
@@ -79,8 +81,6 @@ Partial Class Mainform
         TextBox1 = New TextBox()
         ProgressBar1 = New ProgressBar()
         Timer1 = New Timer(components)
-        ToolStripSeparator10 = New ToolStripSeparator()
-        ToolStripSeparator11 = New ToolStripSeparator()
         CType(WebView_main, ComponentModel.ISupportInitialize).BeginInit()
         MenuStrip1.SuspendLayout()
         TabControl1.SuspendLayout()
@@ -121,42 +121,47 @@ Partial Class Mainform
         ' 载入序列ToolStripMenuItem
         ' 
         载入序列ToolStripMenuItem.Name = "载入序列ToolStripMenuItem"
-        载入序列ToolStripMenuItem.Size = New Size(180, 22)
+        载入序列ToolStripMenuItem.Size = New Size(124, 22)
         载入序列ToolStripMenuItem.Text = "载入序列"
         ' 
         ' 载入数据ToolStripMenuItem
         ' 
         载入数据ToolStripMenuItem.Name = "载入数据ToolStripMenuItem"
-        载入数据ToolStripMenuItem.Size = New Size(180, 22)
+        载入数据ToolStripMenuItem.Size = New Size(124, 22)
         载入数据ToolStripMenuItem.Text = "载入表格"
         ' 
         ' 增加数据ToolStripMenuItem
         ' 
         增加数据ToolStripMenuItem.Name = "增加数据ToolStripMenuItem"
-        增加数据ToolStripMenuItem.Size = New Size(180, 22)
+        增加数据ToolStripMenuItem.Size = New Size(124, 22)
         增加数据ToolStripMenuItem.Text = "增加序列"
         ' 
         ' ToolStripSeparator4
         ' 
         ToolStripSeparator4.Name = "ToolStripSeparator4"
-        ToolStripSeparator4.Size = New Size(177, 6)
+        ToolStripSeparator4.Size = New Size(121, 6)
         ' 
         ' 保存数据ToolStripMenuItem
         ' 
         保存数据ToolStripMenuItem.Name = "保存数据ToolStripMenuItem"
-        保存数据ToolStripMenuItem.Size = New Size(180, 22)
+        保存数据ToolStripMenuItem.Size = New Size(124, 22)
         保存数据ToolStripMenuItem.Text = "导出表格"
         ' 
         ' 导出序列ToolStripMenuItem
         ' 
         导出序列ToolStripMenuItem.Name = "导出序列ToolStripMenuItem"
-        导出序列ToolStripMenuItem.Size = New Size(180, 22)
+        导出序列ToolStripMenuItem.Size = New Size(124, 22)
         导出序列ToolStripMenuItem.Text = "导出序列"
+        ' 
+        ' ToolStripSeparator10
+        ' 
+        ToolStripSeparator10.Name = "ToolStripSeparator10"
+        ToolStripSeparator10.Size = New Size(121, 6)
         ' 
         ' 导出分型数据集ToolStripMenuItem
         ' 
         导出分型数据集ToolStripMenuItem.Name = "导出分型数据集ToolStripMenuItem"
-        导出分型数据集ToolStripMenuItem.Size = New Size(180, 22)
+        导出分型数据集ToolStripMenuItem.Size = New Size(124, 22)
         导出分型数据集ToolStripMenuItem.Text = "导出分型"
         ' 
         ' 编辑ToolStripMenuItem
@@ -169,13 +174,13 @@ Partial Class Mainform
         ' 全选ToolStripMenuItem
         ' 
         全选ToolStripMenuItem.Name = "全选ToolStripMenuItem"
-        全选ToolStripMenuItem.Size = New Size(100, 22)
+        全选ToolStripMenuItem.Size = New Size(180, 22)
         全选ToolStripMenuItem.Text = "全选"
         ' 
         ' 清除ToolStripMenuItem
         ' 
         清除ToolStripMenuItem.Name = "清除ToolStripMenuItem"
-        清除ToolStripMenuItem.Size = New Size(100, 22)
+        清除ToolStripMenuItem.Size = New Size(180, 22)
         清除ToolStripMenuItem.Text = "清除"
         ' 
         ' 分析ToolStripMenuItem
@@ -275,48 +280,55 @@ Partial Class Mainform
         ' 分割序列文件ToolStripMenuItem
         ' 
         分割序列文件ToolStripMenuItem.Name = "分割序列文件ToolStripMenuItem"
-        分割序列文件ToolStripMenuItem.Size = New Size(172, 22)
+        分割序列文件ToolStripMenuItem.Size = New Size(180, 22)
         分割序列文件ToolStripMenuItem.Text = "分割序列文件"
         ' 
         ' 合并序列文件ToolStripMenuItem
         ' 
         合并序列文件ToolStripMenuItem.Name = "合并序列文件ToolStripMenuItem"
-        合并序列文件ToolStripMenuItem.Size = New Size(172, 22)
+        合并序列文件ToolStripMenuItem.Size = New Size(180, 22)
         合并序列文件ToolStripMenuItem.Text = "合并序列文件"
         ' 
         ' 清理序列ToolStripMenuItem
         ' 
         清理序列ToolStripMenuItem.Name = "清理序列ToolStripMenuItem"
-        清理序列ToolStripMenuItem.Size = New Size(172, 22)
+        清理序列ToolStripMenuItem.Size = New Size(180, 22)
         清理序列ToolStripMenuItem.Text = "清理序列数据"
         ' 
         ' ToolStripSeparator6
         ' 
         ToolStripSeparator6.Name = "ToolStripSeparator6"
-        ToolStripSeparator6.Size = New Size(169, 6)
+        ToolStripSeparator6.Size = New Size(177, 6)
         ' 
         ' 获取序列信息ToolStripMenuItem
         ' 
         获取序列信息ToolStripMenuItem.Name = "获取序列信息ToolStripMenuItem"
-        获取序列信息ToolStripMenuItem.Size = New Size(172, 22)
+        获取序列信息ToolStripMenuItem.Size = New Size(180, 22)
         获取序列信息ToolStripMenuItem.Text = "序列生成表格"
+        获取序列信息ToolStripMenuItem.Visible = False
+        ' 
+        ' ToolStripSeparator7
+        ' 
+        ToolStripSeparator7.Name = "ToolStripSeparator7"
+        ToolStripSeparator7.Size = New Size(177, 6)
+        ToolStripSeparator7.Visible = False
+        ' 
+        ' 日期转换数字ToolStripMenuItem
+        ' 
+        日期转换数字ToolStripMenuItem.Name = "日期转换数字ToolStripMenuItem"
+        日期转换数字ToolStripMenuItem.Size = New Size(180, 22)
+        日期转换数字ToolStripMenuItem.Text = "日期转换数字"
+        ' 
+        ' ToolStripSeparator11
+        ' 
+        ToolStripSeparator11.Name = "ToolStripSeparator11"
+        ToolStripSeparator11.Size = New Size(177, 6)
         ' 
         ' CSV生成序列ToolStripMenuItem
         ' 
         CSV生成序列ToolStripMenuItem.Name = "CSV生成序列ToolStripMenuItem"
         CSV生成序列ToolStripMenuItem.Size = New Size(180, 22)
         CSV生成序列ToolStripMenuItem.Text = "构建分型数据集"
-        ' 
-        ' ToolStripSeparator7
-        ' 
-        ToolStripSeparator7.Name = "ToolStripSeparator7"
-        ToolStripSeparator7.Size = New Size(169, 6)
-        ' 
-        ' 日期转换数字ToolStripMenuItem
-        ' 
-        日期转换数字ToolStripMenuItem.Name = "日期转换数字ToolStripMenuItem"
-        日期转换数字ToolStripMenuItem.Size = New Size(172, 22)
-        日期转换数字ToolStripMenuItem.Text = "日期转换数字"
         ' 
         ' 浏览ToolStripMenuItem
         ' 
@@ -395,23 +407,23 @@ Partial Class Mainform
         ' 
         ' DataGridView1
         ' 
-        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = SystemColors.Control
-        DataGridViewCellStyle3.Font = New Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point)
-        DataGridViewCellStyle3.ForeColor = SystemColors.WindowText
-        DataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = DataGridViewTriState.True
-        DataGridView1.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = SystemColors.Control
+        DataGridViewCellStyle1.Font = New Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point)
+        DataGridViewCellStyle1.ForeColor = SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = DataGridViewTriState.True
+        DataGridView1.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         DataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = SystemColors.Window
-        DataGridViewCellStyle4.Font = New Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point)
-        DataGridViewCellStyle4.ForeColor = SystemColors.ControlText
-        DataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = DataGridViewTriState.False
-        DataGridView1.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = SystemColors.Window
+        DataGridViewCellStyle2.Font = New Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point)
+        DataGridViewCellStyle2.ForeColor = SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = DataGridViewTriState.False
+        DataGridView1.DefaultCellStyle = DataGridViewCellStyle2
         DataGridView1.Dock = DockStyle.Fill
         DataGridView1.Location = New Point(3, 3)
         DataGridView1.Name = "DataGridView1"
@@ -471,16 +483,6 @@ Partial Class Mainform
         ' 
         Timer1.Enabled = True
         Timer1.Interval = 1000
-        ' 
-        ' ToolStripSeparator10
-        ' 
-        ToolStripSeparator10.Name = "ToolStripSeparator10"
-        ToolStripSeparator10.Size = New Size(177, 6)
-        ' 
-        ' ToolStripSeparator11
-        ' 
-        ToolStripSeparator11.Name = "ToolStripSeparator11"
-        ToolStripSeparator11.Size = New Size(177, 6)
         ' 
         ' Mainform
         ' 

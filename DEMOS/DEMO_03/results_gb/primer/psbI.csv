@@ -1,0 +1,21 @@
+ID,SEQUENCE_ID,PRIMER_LEFT_SEQUENCE,PRIMER_RIGHT_SEQUENCE,PRIMER_LEFT_TM,PRIMER_RIGHT_TM,LENGTH_INTERMEDIATE_SEQUENCE,REV_RIGHT_SEQUENCE
+1,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,CTTCCAGTGAACAAGGACCCTAT,GAGAGATGGCTGAGTGGACTAAA,59.736,59.551,576,TTTAGTCCACTCAGCCATCTCTC
+2,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,TGCCAGTCATACCTCTGTTCTTT,TCCCTCTCTTTCCGTTTCATCTG,59.672,60.056,726,CAGATGAAACGGAAAGAGAGGGA
+3,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,CCCATTTCCTCATTCTGACCTTCT,TCGAATCCCTCTCTTTCCGTTTC,60.325,60.368,533,GAAACGGAAAGAGAGGGATTCGA
+4,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,CTGACCTTCTACTTCCAGTGAACA,TTCAATTGGGAGAGATGGCTGAG,59.961,60.371,596,CTCAGCCATCTCTCCCAATTGAA
+5,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,TCCAATCATAGATGTTATGCCAGTCA,CAGACGCGCTATCCAAGAATTTC,60.183,60.303,209,GAAATTCTTGGATAGCGCGTCTG
+6,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,TCCAGTGAACAAGGACCCTATATA,CCTTTGTTCAATTGGGAGAGATGG,58.216,59.841,589,CCATCTCTCCCAATTGAACAAAGG
+7,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,CCTTCTACTTCCAGTGAACAAGGA,TCCGAAGATGAAGAGAGAAACAAAGA,59.960,60.239,308,TCTTTGTTTCTCTCTTCATCTTCGGA
+8,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,GAAATTCTTGGATAGCGCGTCTG,GTTCGAATCCCTCTCTTTCCGT,60.303,60.094,564,ACGGAAAGAGAGGGATTCGAAC
+9,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,CTACTTCCAGTGAACAAGGACCC,ATTGGGAGAGATGGCTGAGTGG,60.557,61.819,584,CCACTCAGCCATCTCTCCCAAT
+10,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,CCTCATTCTGACCTTCTACTTCCA,ACGAAGAGTTTGAGAGTAAGCATTA,59.532,58.311,276,TAATGCTTACTCTCAAACTCTTCGT
+11,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,CATTCTGACCTTCTACTTCCAGTGA,GGAGAGATGGCTGAGTGGACT,60.047,60.964,592,AGTCCACTCAGCCATCTCTCC
+12,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,CCATTTCCTCATTCTGACCTTCTACT,CCTCTCTTTCCGTTTCATCTGATG,60.353,59.430,525,CATCAGATGAAACGGAAAGAGAGG
+13,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,TTCTTGGATAGCGCGTCTGGAT,CCGAAGATGAAGAGAGAAACAAAGAATAT,61.855,59.985,350,ATATTCTTTGTTTCTCTCTTCATCTTCGG
+14,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,TCAATCCAATCATAGATGTTATGCCAG,ACGCGCTATCCAAGAATTTCCTT,59.608,60.931,210,AAGGAAATTCTTGGATAGCGCGT
+15,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,AATGCTTACTCTCAAACTCTTCGT,TTATCCTTTGTTCAATTGGGAGAGA,58.457,58.211,361,TCTCTCCCAATTGAACAAAGGATAA
+16,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,GGATAGCGCGTCTGGATCAC,GAGAGAAACAAAGAATATCACCACTGT,60.665,59.611,334,ACAGTGGTGATATTCTTTGTTTCTCTC
+17,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,AAGGAAATTCTTGGATAGCGCGT,TGAAGAGAGAAACAAAGAATATCACCAC,60.931,59.856,350,GTGGTGATATTCTTTGTTTCTCTCTTCA
+18,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,TCTTTGTTTCTCTCTTCATCTTCGG,GCTGAGTGGACTAAAGCGTC,59.071,58.649,293,GACGCTTTAGTCCACTCAGC
+19,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,ACAGTGGTGATATTCTTTGTTTCTCTC,AGTAATTATCCTTTGTTCAATTGGGAG,59.611,58.029,338,CTCCCAATTGAACAAAGGATAATTACT
+20,coptis chinensis var. brevisepala unclassified.|coptis chinensis var. chinensis unclassified.,TCGATGAGATCTTTAATACTGTCTTACA,GAAGATGAAGAGAGAAACAAAGAATATCAC,58.186,59.193,460,GTGATATTCTTTGTTTCTCTCTTCATCTTC
