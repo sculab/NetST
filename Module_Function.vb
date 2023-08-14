@@ -506,8 +506,8 @@ go_to1:             End If
 				End If
 
 				newrow(3) = current_state
-				newrow(4) = current_count
-				newrow(5) = current_time
+				newrow(4) = current_time
+				newrow(5) = current_count
 				newrow(6) = current_org
 				dtView.Item(pre_fasta_seq + i - 1).Row.ItemArray = newrow
 			Next

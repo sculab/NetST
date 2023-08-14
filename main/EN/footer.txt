@@ -1,0 +1,12 @@
+<script type="text/javascript" src="../main/js/jquery-1.10.1.min.js"></script> 
+<script src="../main/js/highlight.min.js"></script> 
+<script type="text/javascript" src="../main/js/tablesort.js"></script> 
+<script type="text/javascript">
+            // For Demo Purposes
+            $(function () {
+                $('table.table-sort').tablesort();
+                hljs.initHighlightingOnLoad(); // Syntax Hilighting
+            });
+        </script>
+</body>
+</html>

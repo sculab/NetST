@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="../main/css/tablesort.css">
+<link rel="stylesheet" type="text/css" href="../main/css/styles.css">
+<meta charset="utf-8">
+<title>jQuery Tablesort Plugin Demo</title>
+</head>
+<body>
+
+<table class="table-sort table-sort-search table-sort-show-search-count">
+<thead>
+    <tr>
+<th style="width: 40px;">ID</th>
+<th style="width: 120px;">序列名</th>
+        <th style="width: 60px;">长度</th>
+        <th style="width: 60px;">分型</th>
+        <th style="width: 60px;">支持率</th>      
+	<th style="width: 60px;">特征kmer</th>
+        <th style="width: 60px;">总kmer</th>
+</tr>
+</thead>
+<tbody>

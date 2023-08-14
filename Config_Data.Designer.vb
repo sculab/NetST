@@ -210,7 +210,7 @@ Partial Class Config_Data
         ' 
         ' Config_Data
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 17.0F)
+        AutoScaleDimensions = New SizeF(7F, 17F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(337, 356)
         ControlBox = False

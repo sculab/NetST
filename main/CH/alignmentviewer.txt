@@ -1,0 +1,279 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta name="description"
+        content="AlignmentViewer is multiple sequence alignment viewer for protein families with flexible  visualization, analysis tools and links to protein family databases. It is directly accessible in web browsers without the need for software installation, as it is implemented in JavaScript, and does not require an internet connection to function.  It can handle protein families with tens of thousand of sequences and is particularly suitable for evolutionary coupling analysis, preparing the computation of protein 3D structures and detection of functionally constrained interactions." />
+    <meta name="keywords"
+        content="alignment viewer, proteins, MSA, multiple sequence alignment, sanderlab, evolutionary couplings, families, analysis" />
+    <title>AlignmentViewer</title>
+    <link type="text/css" href="../main/css/index.css" rel="stylesheet" />
+    <link type="text/css" href="../main/js/vendor/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
+    <script type="text/javascript" src="../main/js/vendor/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../main/js/vendor/jquery-ui-1.8.21.custom.min.js"></script>
+    <script type="text/javascript" src="../main/js/vendor/d3.v2.min.js"></script>
+    <script type="text/javascript" src="../main/js/speclist.2012_09.js"></script>
+    <!-- before seqlib.js -->
+    <link type="text/css" href="../main/css/seqlib.css" rel="stylesheet" />
+    <script type="text/javascript" src="../main/js/seqlib.js"></script>
+    <script type="text/javascript" src="../main/js/SequenceLogoDiagramD3.js"></script>
+    <script type="text/javascript" src="../main/js/CouplingsLogoDiagramD3.js"></script>
+    <script type="text/javascript" src="../main/js/KMinsClustering.js"></script>
+    <script type="text/javascript" src="../main/js/MultipleSequenceAlignment.js"></script>
+
+    <script type="text/javascript" src="../main/js/index.js"></script>
+	<script type="text/javascript" src="$data$"></script>
+	
+</head>
+
+<body>
+
+    <!-- ______________________________________________________ MSA view ______________________________________________________ -->
+    <table id="MSAview" border="0" cellpadding="1" cellspacing="1" style="display:none;">
+        <tr>
+            <td></td>
+            <td class="text" colspan="11" nowrap>
+                <table border="0" cellpadding="1" cellspacing="1">
+                    <tr>
+                        <td class="text" nowrap>
+                            <span class="tc2">
+                                &nbsp;ident1% = fraction of reference sequence identical to second sequence (gaps not
+                                counted)<br />
+                                &nbsp;ident2% = fraction of second sequence identical to reference sequence (gaps not
+                                counted)<br /> </span><span style="font-size:5px;"><br /></span>
+
+                            &nbsp;Sequence order:
+                            <select id="order">
+                                <option value="orderOrig">original</option>
+                                <option value="orderIdent1">identity1</option>
+                                <option value="orderIdent2">identity2</option>
+                            </select><br />
+
+                            &nbsp;Coloring Scheme:
+                            <select id="colorScheme">
+                                <option value="original" style="background-color: blue">mview (default)</option>
+                                <option value="clustal" style="background-color: green">clustal</option>
+                            </select>
+                            <br />
+
+                            <span style="font-size:5px;"><br /></span>
+
+                            <input type="checkbox" id="CHKconservation" /> gap &amp; conservation bar chart<br />
+                            <input type="checkbox" id="CHKseqlogo" /> sequence logo<br />
+                            <span style="font-size:5px"><br /></span>
+                            &nbsp;Color columns with conservation higher than: <span id="colorSliderVal"></span><br />
+                            <table class="text">
+                                <tr>
+                                    <td nowrap>
+                                        <div id="colorSlider" style="width: 300px; height:6px;"></div>
+                                    </td>
+                                    <td>
+                                        &nbsp;&nbsp;&nbsp;<button id="colorApply"
+                                            style="height:24px; font-size:10px; vertical-align:text-top;">
+                                            apply
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <span style="font-size:5px"><br /></span>
+                            <div id="pagingCtrl">
+                                <span class="ctrlval">Currently showing sequences: <span
+                                        id="sliderPageVal"></span></span><br />
+                                <span style="font-size:5px"><br /></span>
+                                <div style="width: 300px; height:6px;" id="sliderPage"
+                                    class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                    <a class="ui-slider-handle ui-state-default ui-corner-all ui-state-focus" href="#"
+                                        style="left: 0%;"></a>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text hpadding" valign="top" nowrap>
+                            <table class="text" border="0" cellspacing="1" cellpadding="10" width="340">
+                                <tr>
+                                    <td class="hpadding textB" bgcolor="#d0d0e0" style="color:white">Filtering</td>
+                                </tr>
+                                <tr>
+                                    <td class="hpadding" nowrap bgcolor="#f0f0f0">
+                                        <span style="font-size:5px"><br /></span>
+
+                                        Hide sequences with gaps higher than <span
+                                            id="sliderFilterGapsVal"></span><br />
+                                        <span style="font-size:4px"><br /></span>
+                                        <div id="sliderFilterGaps" style="width: 250px; height:6px;"></div>
+                                        <span style="font-size:10px"><br /></span>
+                                        Hide sequences with identity1 lower than <span
+                                            id="sliderFilterIdentVal"></span><br />
+                                        <span style="font-size:4px"><br /></span>
+                                        <div id="sliderFilterIdent" style="width: 250px; height:6px;"></div>
+                                        <br />
+
+                                        <!--
+                        <input type="checkbox" id="CHKrfgaps">
+                        Hide columns with gaps in reference sequence<br>
+                        -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="hpadding" align="middle" nowrap bgcolor="#f0f0f0">
+                                        <span id="filterStatus"></span>
+                                        <span style="font-size:4px"><br /></span>
+                                        <button id="filterExport"
+                                            style="height:24px; font-size:10px; vertical-align:text-top;">
+                                            &nbsp;&nbsp;&nbsp;export&nbsp;&nbsp;&nbsp;
+                                        </button>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button id="filterApply"
+                                            style="height:24px; font-size:10px; vertical-align:text-top;">
+                                            &nbsp;&nbsp;&nbsp;apply&nbsp;&nbsp;&nbsp;
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="12"></td>
+            <td align="left" nowrap>
+                <div id="labeled_plot_canvas">
+                    <span class="textB"><span class="tc3">gaps</span>/<span class="tc1">conservation</span></span>
+                    <div id="plot_canvas" class=""></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <!-- ___ MSA logo  __________ -->
+            <td colspan="12"></td>
+            <td align="left" nowrap>
+                <div id="seqlogo"></div>
+            </td>
+        </tr>
+        <tr>
+            <!-- ___ MSA logo  __________ -->
+            <td colspan="12"></td>
+            <td align="left" nowrap>
+                <div id="couplingslogo"></div>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" nowrap><!-- ___ MSA header/plots ___ --></td>
+            <td align="right" nowrap></td>
+            <td></td>
+            <td></td>
+            <td class="hpadding_new" align="right" style="vertical-align:bottom;" nowrap>
+
+            </td>
+            <td class="hpadding_new" align="right" style="vertical-align:bottom;" nowrap>
+
+            </td>
+            <td class="hpadding_new" style="vertical-align:bottom;">
+
+            </td>
+            <td class="hpadding_new" align="center" style="vertical-align:bottom;">
+
+            </td>
+            <td align="right" style="vertical-align:bottom;" nowrap>
+                <div class="tc2 tblheader">gaps%</div>
+            </td>
+            <td align="right" style="vertical-align:bottom;" nowrap>
+                <div class="tc2 tblheader">ident1%</div>
+            </td>
+            <td align="right" style="vertical-align:bottom;" nowrap>
+                <div class="tc2 tblheader">ident2%</div>
+            </td>
+            <td width="20px"></td>
+            <td align="left" nowrap>
+                <div id="MSAruler" class="ali tc2"></div>
+            </td>
+        </tr>
+        <tr>
+            <!-- ___ MSA body ___________ -->
+            <td align="right" nowrap>
+                <div class="ali dim" id="MSArows"></div>
+            </td>
+
+            <td align="right" nowrap>
+                <div class="ali dim" id="MSArows2"></div>
+            </td>
+            <td class="hpadding" align="left" nowrap>
+                <div class="ali" id="MSAnames"></div>
+            </td>
+            <td align="left" nowrap>
+                <div class="ali" id="MSAinfo"></div>
+            </td>
+            <td class="hpadding_new" align="right" nowrap>
+            </td>
+            <td class="hpadding_new" align="right" nowrap>
+            </td>
+            <td class="hpadding_new" align="left" nowrap>
+            </td>
+            <td class="hpadding_new" align="left" nowrap>
+            </td>
+            <td class="hpadding" align="left" nowrap>
+                <div class="ali tc1" id="MSAgaps" align="right"></div>
+            </td>
+            <td class="hpadding" align="left" nowrap>
+                <div class="ali tc1" id="MSAident1" align="right"></div>
+            </td>
+            <td class="hpadding" align="left" nowrap>
+                <div class="ali tc1" id="MSAident2" align="right"></div>
+            </td>
+            <td width="20px">
+                &nbsp;
+            </td>
+            <td align="left" nowrap>
+                <div class="ali" id="MSAseqs" style="color:grey"></div>
+            </td>
+        </tr>
+    </table>
+
+
+
+    <div id="progress"></div>
+    <script>
+
+        $(document).ready(function () {
+            $('body').on('change', '#colorScheme', function () {
+                document.getElementById("seqlogo").className = this.value;
+                document.getElementById("MSAseqs").className = 'ali ' + this.value;
+
+                //##ROC# > This code it is because for safari and Firefox the logo did not change colors uless the tab was manually changed
+                //btn2: '#MSAview',
+                //btn3: '#STAview',
+                var view = '#STAview'; // button id --> view id
+                if ($(view).is(':visible')) {
+                    return;
+                } // already active, do nothing
+                $('[id$=view]')
+                    .not(view)
+                    .hide(); // select all views except current, hide
+                $(view).show(); // show current
+
+                var view = '#MSAview'; // button id --> view id
+                if ($(view).is(':visible')) {
+                    return;
+                } // already active, do nothing
+                $('[id$=view]')
+                    .not(view)
+                    .hide(); // select all views except current, hide
+                $(view).show(); // show current
+
+                //console.log('done logo color');
+
+
+
+            });
+        });
+
+// original
+// clustal
+
+
+    </script>
+</body>
+
+</html>

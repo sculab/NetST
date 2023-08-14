@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="../main/css/tablesort.css">
+<link rel="stylesheet" type="text/css" href="../main/css/styles.css">
+<meta charset="utf-8">
+<title>jQuery Tablesort Plugin Demo</title>
+</head>
+<body>
+
+<table class="table-sort table-sort-search table-sort-show-search-count">
+<thead>
+    <tr>
+<th style="width: 40px;">ID</th>
+<th style="width: 120px;">Name</th>
+<th style="width: 60px;">Length</th>
+<th style="width: 60px;">Genotype</th>
+<th style="width: 60px;">Support Rate</th>      
+<th style="width: 60px;">Feature Kmer</th>
+<th style="width: 60px;">Total Kmer</th>
+</tr>
+
+</thead>
+<tbody>

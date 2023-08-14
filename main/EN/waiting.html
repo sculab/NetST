@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery Waiting</title>
+  <style type="text/css">
+         html,body{
+              height: 100%;
+			  margin:0;
+			  padding:0;
+			  background-color: #8f8f8f;
+			  overflow-x:hidden;
+			  overflow-y:hidden;
+          }
+    </style>
+  <meta name="description" content="jQuery Waiting widget example page">
+  <meta name="author" content="Quentin Schmick">
+  <style type="text/css">
+    div.container{
+      height: 100%;
+      width: 100%;
+    }
+    div.many{
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <link href="css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="many">
+    </div>
+    
+  </div>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery.waiting.js"></script>
+  <script type="text/javascript">
+    $(function(){
+      $('.many').waiting({quantity:50, circleCount:15});
+    });
+  </script>
+</body>
+</html>

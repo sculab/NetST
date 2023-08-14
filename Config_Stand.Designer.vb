@@ -194,9 +194,9 @@ Partial Class Config_Stand
         Label3.AutoSize = True
         Label3.Location = New Point(27, 155)
         Label3.Name = "Label3"
-        Label3.Size = New Size(104, 17)
+        Label3.Size = New Size(128, 17)
         Label3.TabIndex = 14
-        Label3.Text = "将该位置作为性状"
+        Label3.Text = "将该位置作为间断性状"
         ' 
         ' TextBox4
         ' 
@@ -240,7 +240,7 @@ Partial Class Config_Stand
         ' 
         ' TextBox5
         ' 
-        TextBox5.Location = New Point(188, 182)
+        TextBox5.Location = New Point(189, 240)
         TextBox5.Name = "TextBox5"
         TextBox5.ReadOnly = True
         TextBox5.Size = New Size(57, 23)
@@ -250,7 +250,7 @@ Partial Class Config_Stand
         ' CheckBox7
         ' 
         CheckBox7.AutoSize = True
-        CheckBox7.Location = New Point(12, 184)
+        CheckBox7.Location = New Point(13, 242)
         CheckBox7.Name = "CheckBox7"
         CheckBox7.Size = New Size(159, 21)
         CheckBox7.TabIndex = 38
@@ -259,17 +259,17 @@ Partial Class Config_Stand
         ' 
         ' NumericUpDown3
         ' 
-        NumericUpDown3.Location = New Point(188, 211)
+        NumericUpDown3.Location = New Point(189, 269)
         NumericUpDown3.Name = "NumericUpDown3"
         NumericUpDown3.ReadOnly = True
         NumericUpDown3.Size = New Size(57, 23)
         NumericUpDown3.TabIndex = 37
-        NumericUpDown3.Value = New Decimal(New Integer() {2, 0, 0, 0})
+        NumericUpDown3.Value = New Decimal(New Integer() {3, 0, 0, 0})
         ' 
         ' Label4
         ' 
         Label4.AutoSize = True
-        Label4.Location = New Point(27, 213)
+        Label4.Location = New Point(28, 271)
         Label4.Name = "Label4"
         Label4.Size = New Size(104, 17)
         Label4.TabIndex = 36
@@ -277,7 +277,7 @@ Partial Class Config_Stand
         ' 
         ' TextBox6
         ' 
-        TextBox6.Location = New Point(188, 240)
+        TextBox6.Location = New Point(188, 182)
         TextBox6.Name = "TextBox6"
         TextBox6.ReadOnly = True
         TextBox6.Size = New Size(57, 23)
@@ -287,7 +287,7 @@ Partial Class Config_Stand
         ' CheckBox8
         ' 
         CheckBox8.AutoSize = True
-        CheckBox8.Location = New Point(12, 242)
+        CheckBox8.Location = New Point(12, 184)
         CheckBox8.Name = "CheckBox8"
         CheckBox8.Size = New Size(159, 21)
         CheckBox8.TabIndex = 42
@@ -296,21 +296,21 @@ Partial Class Config_Stand
         ' 
         ' NumericUpDown4
         ' 
-        NumericUpDown4.Location = New Point(188, 269)
+        NumericUpDown4.Location = New Point(188, 211)
         NumericUpDown4.Name = "NumericUpDown4"
         NumericUpDown4.ReadOnly = True
         NumericUpDown4.Size = New Size(57, 23)
         NumericUpDown4.TabIndex = 41
-        NumericUpDown4.Value = New Decimal(New Integer() {3, 0, 0, 0})
+        NumericUpDown4.Value = New Decimal(New Integer() {2, 0, 0, 0})
         ' 
         ' Label6
         ' 
         Label6.AutoSize = True
-        Label6.Location = New Point(27, 271)
+        Label6.Location = New Point(27, 213)
         Label6.Name = "Label6"
-        Label6.Size = New Size(116, 17)
+        Label6.Size = New Size(140, 17)
         Label6.TabIndex = 40
-        Label6.Text = "将如该位置作为时间"
+        Label6.Text = "将如该位置作为连续性状"
         ' 
         ' Label7
         ' 
@@ -359,6 +359,7 @@ Partial Class Config_Stand
         NumericUpDown5.ReadOnly = True
         NumericUpDown5.Size = New Size(57, 23)
         NumericUpDown5.TabIndex = 47
+        NumericUpDown5.Value = New Decimal(New Integer() {4, 0, 0, 0})
         ' 
         ' Label8
         ' 
@@ -373,7 +374,7 @@ Partial Class Config_Stand
         ' 
         AutoScaleDimensions = New SizeF(7F, 17F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(583, 394)
+        ClientSize = New Size(583, 399)
         ControlBox = False
         Controls.Add(TextBox8)
         Controls.Add(CheckBox9)

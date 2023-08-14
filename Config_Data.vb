@@ -92,4 +92,8 @@ Public Class Config_Data
 
         End If
     End Sub
+
+    Private Sub Config_Data_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class

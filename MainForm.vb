@@ -32,16 +32,16 @@ Public Class Mainform
         Dim Column_ID As New System.Data.DataColumn("ID", System.Type.GetType("System.Int32"))
         Dim Column_Taxon As New System.Data.DataColumn("Name")
         Dim Column_Seq As New System.Data.DataColumn("Sequence")
-        Dim Column_State As New System.Data.DataColumn("State")
+        Dim Column_Time As New System.Data.DataColumn("Continuous Trait")
+        Dim Column_State As New System.Data.DataColumn("Discrete Traits")
         Dim Column_Count As New System.Data.DataColumn("Quantity")
-        Dim Column_Time As New System.Data.DataColumn("Date")
         Dim Column_Organism As New System.Data.DataColumn("Organism")
         taxon_table.Columns.Add(Column_ID)
         taxon_table.Columns.Add(Column_Taxon)
         taxon_table.Columns.Add(Column_Seq)
         taxon_table.Columns.Add(Column_State)
-        taxon_table.Columns.Add(Column_Count)
         taxon_table.Columns.Add(Column_Time)
+        taxon_table.Columns.Add(Column_Count)
         taxon_table.Columns.Add(Column_Organism)
         Taxon_Dataset.Tables.Add(taxon_table)
 
@@ -523,7 +523,7 @@ Public Class Mainform
         Dim isaligened As Boolean = True
         For i As Integer = 1 To dtView.Count
             If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
-                sw.WriteLine(">" + dtView.Item(i - 1).Item(1) + "=" + dtView.Item(i - 1).Item(4) + "=" + dtView.Item(i - 1).Item(5) + "$SPLIT$" + dtView.Item(i - 1).Item(3))
+                sw.WriteLine(">" + dtView.Item(i - 1).Item(1) + "=" + dtView.Item(i - 1).Item(5) + "=" + dtView.Item(i - 1).Item(4) + "$SPLIT$" + dtView.Item(i - 1).Item(3))
                 sw.WriteLine(fasta_seq(i))
                 If Len(fasta_seq(i)) <> Len(fasta_seq(1)) Then
                     isaligened = False

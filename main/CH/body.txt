@@ -1,0 +1,59 @@
+<h1 style="margin-top:10px" align="center">$header$</h1>
+<section>
+ <div class="container">
+ 
+<div class="collapse-card">
+            <div class="title">
+                <i class="fa fa-male fa-2x fa-fw"></i>
+                <span>$subtitle$</span>
+                <strong>$title$</strong>
+            </div>
+            <div class="body">
+                $body$
+            </div>
+</div>
+
+<div class="collapse-card">
+            <div class="title">
+                <i class="fa fa-database fa-2x fa-fw"></i>
+                <span>$subtitle1$</span>
+                <strong>$title1$</strong>
+            </div>
+            <div class="body">
+                $body1$
+            </div>
+</div>  
+
+
+<div class="collapse-card">
+            <div class="title">
+                <i class="fa fa-paper-plane fa-2x fa-fw"></i>
+                <span>PI, NRTI, NNRTI</span>
+                <strong>缩写词表</strong>
+            </div>
+            <div class="body">
+PI: 蛋白酶抑制剂 (Protease Inhibitors, PI)<br>
+NRTI: 核苷类逆转录酶抑制剂 (Nucleoside Reverse Transcriptase Inhibitors, NRTI)<br>
+NNRTI: 非核苷类反转录酶抑制剂 (non-nucleoside reverse transcriptase inhibitor, NNRTI)
+				</div>
+</div> 
+
+
+</div>
+</section>
+<table class="table-sort table-sort-search table-sort-show-search-count">
+<thead>
+    <tr><th style="width: 80px;">区域</th>
+        <th style="width: 80px;">药物名</th>
+        <th style="width: 80px;">属性名</th>
+        <th style="width: 80px;">分数</th>
+        <th class="width: 80px;">药物抵抗</th>
+        <th style="width: 80px;">级别</th>
+        <th style="width: 80px;">备注</th>
+	</tr>
+</thead>
+<tbody>
+$table$
+
+</tbody>
+</table>

@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="../main/css/tablesort.css">
+<link rel="stylesheet" type="text/css" href="../main/css/styles.css">
+<meta charset="utf-8">
+<title>jQuery Tablesort Plugin Demo</title>
+</head>
+<body>
+
+<table class="table-sort table-sort-search table-sort-show-search-count">
+<thead>
+    <tr><th style="width: 140px;">Detection Time</th>
+        <th style="width: 120px;">Detection Number</th>
+        <th style="width: 120px;">Detection Form</th>
+        <th style="width: 80%;">Detailed Information</th></tr>
+</thead>
+<tbody>
