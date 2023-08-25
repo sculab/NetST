@@ -85,9 +85,9 @@ Partial Class Config_Stand
         ' 
         ' TextBox3
         ' 
+        TextBox3.Enabled = False
         TextBox3.Location = New Point(188, 65)
         TextBox3.Name = "TextBox3"
-        TextBox3.ReadOnly = True
         TextBox3.Size = New Size(57, 23)
         TextBox3.TabIndex = 3
         TextBox3.Text = "|"
@@ -103,9 +103,9 @@ Partial Class Config_Stand
         ' 
         ' NumericUpDown1
         ' 
+        NumericUpDown1.Enabled = False
         NumericUpDown1.Location = New Point(188, 95)
         NumericUpDown1.Name = "NumericUpDown1"
-        NumericUpDown1.ReadOnly = True
         NumericUpDown1.Size = New Size(58, 23)
         NumericUpDown1.TabIndex = 5
         ' 
@@ -182,9 +182,9 @@ Partial Class Config_Stand
         ' 
         ' NumericUpDown2
         ' 
+        NumericUpDown2.Enabled = False
         NumericUpDown2.Location = New Point(188, 153)
         NumericUpDown2.Name = "NumericUpDown2"
-        NumericUpDown2.ReadOnly = True
         NumericUpDown2.Size = New Size(57, 23)
         NumericUpDown2.TabIndex = 15
         NumericUpDown2.Value = New Decimal(New Integer() {1, 0, 0, 0})
@@ -200,9 +200,9 @@ Partial Class Config_Stand
         ' 
         ' TextBox4
         ' 
+        TextBox4.Enabled = False
         TextBox4.Location = New Point(188, 124)
         TextBox4.Name = "TextBox4"
-        TextBox4.ReadOnly = True
         TextBox4.Size = New Size(57, 23)
         TextBox4.TabIndex = 17
         TextBox4.Text = "|"
@@ -240,9 +240,9 @@ Partial Class Config_Stand
         ' 
         ' TextBox5
         ' 
+        TextBox5.Enabled = False
         TextBox5.Location = New Point(189, 240)
         TextBox5.Name = "TextBox5"
-        TextBox5.ReadOnly = True
         TextBox5.Size = New Size(57, 23)
         TextBox5.TabIndex = 39
         TextBox5.Text = "|"
@@ -259,9 +259,9 @@ Partial Class Config_Stand
         ' 
         ' NumericUpDown3
         ' 
+        NumericUpDown3.Enabled = False
         NumericUpDown3.Location = New Point(189, 269)
         NumericUpDown3.Name = "NumericUpDown3"
-        NumericUpDown3.ReadOnly = True
         NumericUpDown3.Size = New Size(57, 23)
         NumericUpDown3.TabIndex = 37
         NumericUpDown3.Value = New Decimal(New Integer() {3, 0, 0, 0})
@@ -277,9 +277,9 @@ Partial Class Config_Stand
         ' 
         ' TextBox6
         ' 
+        TextBox6.Enabled = False
         TextBox6.Location = New Point(188, 182)
         TextBox6.Name = "TextBox6"
-        TextBox6.ReadOnly = True
         TextBox6.Size = New Size(57, 23)
         TextBox6.TabIndex = 43
         TextBox6.Text = "|"
@@ -296,9 +296,9 @@ Partial Class Config_Stand
         ' 
         ' NumericUpDown4
         ' 
+        NumericUpDown4.Enabled = False
         NumericUpDown4.Location = New Point(188, 211)
         NumericUpDown4.Name = "NumericUpDown4"
-        NumericUpDown4.ReadOnly = True
         NumericUpDown4.Size = New Size(57, 23)
         NumericUpDown4.TabIndex = 41
         NumericUpDown4.Value = New Decimal(New Integer() {2, 0, 0, 0})
@@ -335,9 +335,9 @@ Partial Class Config_Stand
         ' 
         ' TextBox8
         ' 
+        TextBox8.Enabled = False
         TextBox8.Location = New Point(188, 299)
         TextBox8.Name = "TextBox8"
-        TextBox8.ReadOnly = True
         TextBox8.Size = New Size(57, 23)
         TextBox8.TabIndex = 49
         TextBox8.Text = "|"
@@ -354,9 +354,9 @@ Partial Class Config_Stand
         ' 
         ' NumericUpDown5
         ' 
+        NumericUpDown5.Enabled = False
         NumericUpDown5.Location = New Point(188, 328)
         NumericUpDown5.Name = "NumericUpDown5"
-        NumericUpDown5.ReadOnly = True
         NumericUpDown5.Size = New Size(57, 23)
         NumericUpDown5.TabIndex = 47
         NumericUpDown5.Value = New Decimal(New Integer() {4, 0, 0, 0})

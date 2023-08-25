@@ -188,6 +188,7 @@ Partial Class Config_Combine
         Name = "Config_Combine"
         StartPosition = FormStartPosition.CenterScreen
         Text = "合并序列文件"
+        TopMost = True
         ResumeLayout(False)
         PerformLayout()
     End Sub

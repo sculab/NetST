@@ -152,9 +152,9 @@ Partial Class Config_Info
         ' 
         ' TextBox1
         ' 
+        TextBox1.Enabled = False
         TextBox1.Location = New Point(27, 366)
         TextBox1.Name = "TextBox1"
-        TextBox1.ReadOnly = True
         TextBox1.Size = New Size(120, 23)
         TextBox1.TabIndex = 31
         TextBox1.Text = "|"
@@ -171,9 +171,9 @@ Partial Class Config_Info
         ' 
         ' NumericUpDown2
         ' 
+        NumericUpDown2.Enabled = False
         NumericUpDown2.Location = New Point(27, 412)
         NumericUpDown2.Name = "NumericUpDown2"
-        NumericUpDown2.ReadOnly = True
         NumericUpDown2.Size = New Size(120, 23)
         NumericUpDown2.TabIndex = 29
         NumericUpDown2.Value = New Decimal(New Integer() {1, 0, 0, 0})
@@ -222,9 +222,9 @@ Partial Class Config_Info
         ' 
         ' NumericUpDown1
         ' 
+        NumericUpDown1.Enabled = False
         NumericUpDown1.Location = New Point(27, 310)
         NumericUpDown1.Name = "NumericUpDown1"
-        NumericUpDown1.ReadOnly = True
         NumericUpDown1.Size = New Size(120, 23)
         NumericUpDown1.TabIndex = 23
         ' 
@@ -239,9 +239,9 @@ Partial Class Config_Info
         ' 
         ' TextBox5
         ' 
+        TextBox5.Enabled = False
         TextBox5.Location = New Point(27, 264)
         TextBox5.Name = "TextBox5"
-        TextBox5.ReadOnly = True
         TextBox5.Size = New Size(105, 23)
         TextBox5.TabIndex = 21
         TextBox5.Text = "|"

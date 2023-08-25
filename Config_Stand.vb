@@ -23,8 +23,8 @@ Public Class Config_Stand
 
 
     Private Sub CheckBox2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox2.CheckedChanged
-        TextBox3.ReadOnly = CheckBox2.Checked Xor True
-        NumericUpDown1.ReadOnly = CheckBox2.Checked Xor True
+        TextBox3.Enabled = CheckBox2.Checked Xor False
+        NumericUpDown1.Enabled = CheckBox2.Checked Xor False
         If TextBox3.Text <> "" And CheckBox2.Checked Then
             TextBox7.Text = ""
             For Each i As String In TextPreview.Lines
@@ -38,8 +38,8 @@ Public Class Config_Stand
     End Sub
 
     Private Sub CheckBox6_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox6.CheckedChanged
-        TextBox4.ReadOnly = CheckBox6.Checked Xor True
-        NumericUpDown2.ReadOnly = CheckBox6.Checked Xor True
+        TextBox4.Enabled = CheckBox6.Checked Xor False
+        NumericUpDown2.Enabled = CheckBox6.Checked Xor False
         If TextBox4.Text <> "" And CheckBox6.Checked Then
             TextBox7.Text = ""
             For Each i As String In TextPreview.Lines
@@ -70,8 +70,8 @@ Public Class Config_Stand
     End Sub
 
     Private Sub CheckBox7_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox7.CheckedChanged
-        TextBox5.ReadOnly = CheckBox7.Checked Xor True
-        NumericUpDown3.ReadOnly = CheckBox7.Checked Xor True
+        TextBox5.Enabled = CheckBox7.Checked Xor False
+        NumericUpDown3.Enabled = CheckBox7.Checked Xor False
         If TextBox5.Text <> "" And CheckBox7.Checked Then
             TextBox7.Text = ""
             For Each i As String In TextPreview.Lines
@@ -190,8 +190,8 @@ Public Class Config_Stand
     End Sub
 
     Private Sub CheckBox8_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox8.CheckedChanged
-        TextBox6.ReadOnly = CheckBox8.Checked Xor True
-        NumericUpDown4.ReadOnly = CheckBox8.Checked Xor True
+        TextBox6.Enabled = CheckBox8.Checked Xor False
+        NumericUpDown4.Enabled = CheckBox8.Checked Xor False
         If TextBox6.Text <> "" And CheckBox8.Checked Then
             TextBox7.Text = ""
             For Each i As String In TextPreview.Lines
@@ -225,8 +225,8 @@ Public Class Config_Stand
     End Sub
 
     Private Sub CheckBox9_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox9.CheckedChanged
-        TextBox8.ReadOnly = CheckBox9.Checked Xor True
-        NumericUpDown5.ReadOnly = CheckBox9.Checked Xor True
+        TextBox8.Enabled = CheckBox9.Checked Xor False
+        NumericUpDown5.Enabled = CheckBox9.Checked Xor False
         If TextBox8.Text <> "" And CheckBox9.Checked Then
             TextBox7.Text = ""
             For Each i As String In TextPreview.Lines

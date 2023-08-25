@@ -182,9 +182,10 @@ Module Module_Language
         End If
         If data_type = "fas" Then
             form_config_primer.Label2.Text = "Fragment Overlap Length"
-            form_config_primer.Label3.Text = "Fragment Separation Length"
+            form_config_primer.Label3.Text = "Length"
             form_config_split.Label2.Text = "Fragment Overlap Length"
             form_config_split.Label3.Text = "Fragment Separation Length"
+            form_config_split.CheckBox1.Text = "Align sequences"
         End If
 
         language = "EN"

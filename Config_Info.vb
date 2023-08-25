@@ -48,12 +48,12 @@ Public Class Config_Info
     End Sub
 
     Private Sub CheckBox8_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox8.CheckedChanged
-        TextBox5.ReadOnly = CheckBox8.Checked Xor True
-        NumericUpDown1.ReadOnly = CheckBox8.Checked Xor True
+        TextBox5.Enabled = CheckBox8.Checked Xor False
+        NumericUpDown1.Enabled = CheckBox8.Checked Xor False
     End Sub
 
     Private Sub CheckBox6_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox6.CheckedChanged
-        TextBox1.ReadOnly = CheckBox6.Checked Xor True
-        NumericUpDown2.ReadOnly = CheckBox6.Checked Xor True
+        TextBox1.Enabled = CheckBox6.Checked Xor False
+        NumericUpDown2.Enabled = CheckBox6.Checked Xor False
     End Sub
 End Class

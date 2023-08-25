@@ -75,6 +75,7 @@ Public Class Config_Split
         startInfo.Arguments += " -min_seq_length " + NumericUpDown2.Value.ToString + " -max_seq_length " + NumericUpDown3.Value.ToString
         startInfo.Arguments += " -soft_boundary " + NumericUpDown4.Value.ToString
         startInfo.Arguments += " -split_only True"
+        startInfo.Arguments += " -do_aln " + CheckBox1.Checked.ToString
         startInfo.Arguments += " -out_dir " + """" + TextBox4.Text + """"
         Dim process As Process = Process.Start(startInfo)
         process.WaitForExit()
@@ -102,12 +103,16 @@ Public Class Config_Split
         If data_type = "fas" Then
             Label4.Visible = False
             NumericUpDown4.Visible = False
+            CheckBox1.Visible = False
             If language = "CH" Then
                 Label2.Text = "片段重叠长度"
                 Label3.Text = "片段分隔长度"
+                CheckBox1.Text = "比对获取的序列"
+
             Else
                 Label2.Text = "Fragment Overlap Length"
                 Label3.Text = "Fragment Separation Length"
+                CheckBox1.Text = "Align sequences"
             End If
         End If
     End Sub

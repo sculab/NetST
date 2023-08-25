@@ -308,6 +308,7 @@ Partial Class Config_Primer
         Name = "Config_Primer"
         StartPosition = FormStartPosition.CenterScreen
         Text = "引物设计"
+        TopMost = True
         CType(NumericUpDown1, ComponentModel.ISupportInitialize).EndInit()
         CType(NumericUpDown2, ComponentModel.ISupportInitialize).EndInit()
         CType(NumericUpDown3, ComponentModel.ISupportInitialize).EndInit()

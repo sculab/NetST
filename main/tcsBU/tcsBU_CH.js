@@ -413,7 +413,7 @@ $(function () {
     link.exit().remove();
     node = svg.selectAll('.node').remove();
     node = svg.selectAll('.node').data(nodeList);
-    node.enter().append('g')
+	node.enter().append('g')
       .attr('class', 'node')
       .attr('id', function (d) { return d.name; })
       .on('click', clickNode)
@@ -423,7 +423,7 @@ $(function () {
         if (d.nodestyle === 1) {
           if (styleid === 1) return d.radius;
           else if (styleid === 2) return d.radius;
-          else return d.radius * 2
+          else return d.radius * 1.4
         } else {
           return d.radius;
         }

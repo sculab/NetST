@@ -49,7 +49,7 @@ Partial Class Config_Clean
         ' CheckBox1
         ' 
         CheckBox1.AutoSize = True
-        CheckBox1.Location = New Point(12, 412)
+        CheckBox1.Location = New Point(12, 369)
         CheckBox1.Name = "CheckBox1"
         CheckBox1.Size = New Size(112, 21)
         CheckBox1.TabIndex = 0
@@ -59,7 +59,7 @@ Partial Class Config_Clean
         ' CheckBox2
         ' 
         CheckBox2.AutoSize = True
-        CheckBox2.Location = New Point(12, 65)
+        CheckBox2.Location = New Point(12, 62)
         CheckBox2.Name = "CheckBox2"
         CheckBox2.Size = New Size(183, 21)
         CheckBox2.TabIndex = 1
@@ -69,7 +69,7 @@ Partial Class Config_Clean
         ' CheckBox3
         ' 
         CheckBox3.AutoSize = True
-        CheckBox3.Location = New Point(12, 92)
+        CheckBox3.Location = New Point(12, 87)
         CheckBox3.Name = "CheckBox3"
         CheckBox3.Size = New Size(159, 21)
         CheckBox3.TabIndex = 2
@@ -78,7 +78,7 @@ Partial Class Config_Clean
         ' 
         ' TextBox1
         ' 
-        TextBox1.Location = New Point(28, 175)
+        TextBox1.Location = New Point(28, 163)
         TextBox1.Name = "TextBox1"
         TextBox1.Size = New Size(105, 23)
         TextBox1.TabIndex = 3
@@ -86,7 +86,7 @@ Partial Class Config_Clean
         ' CheckBox4
         ' 
         CheckBox4.AutoSize = True
-        CheckBox4.Location = New Point(12, 148)
+        CheckBox4.Location = New Point(12, 139)
         CheckBox4.Name = "CheckBox4"
         CheckBox4.Size = New Size(193, 21)
         CheckBox4.TabIndex = 4
@@ -95,7 +95,7 @@ Partial Class Config_Clean
         ' 
         ' TextBox9
         ' 
-        TextBox9.Location = New Point(28, 119)
+        TextBox9.Location = New Point(28, 111)
         TextBox9.Name = "TextBox9"
         TextBox9.Size = New Size(105, 23)
         TextBox9.TabIndex = 5
@@ -103,7 +103,7 @@ Partial Class Config_Clean
         ' CheckBox5
         ' 
         CheckBox5.AutoSize = True
-        CheckBox5.Location = New Point(12, 385)
+        CheckBox5.Location = New Point(12, 343)
         CheckBox5.Name = "CheckBox5"
         CheckBox5.Size = New Size(159, 21)
         CheckBox5.TabIndex = 6
@@ -112,7 +112,7 @@ Partial Class Config_Clean
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(439, 439)
+        Button1.Location = New Point(426, 369)
         Button1.Name = "Button1"
         Button1.Size = New Size(75, 30)
         Button1.TabIndex = 8
@@ -121,7 +121,7 @@ Partial Class Config_Clean
         ' 
         ' Button2
         ' 
-        Button2.Location = New Point(520, 439)
+        Button2.Location = New Point(507, 369)
         Button2.Name = "Button2"
         Button2.Size = New Size(75, 30)
         Button2.TabIndex = 9
@@ -131,7 +131,7 @@ Partial Class Config_Clean
         ' CheckBox7
         ' 
         CheckBox7.AutoSize = True
-        CheckBox7.Location = New Point(12, 273)
+        CheckBox7.Location = New Point(12, 241)
         CheckBox7.Name = "CheckBox7"
         CheckBox7.Size = New Size(195, 21)
         CheckBox7.TabIndex = 10
@@ -140,14 +140,14 @@ Partial Class Config_Clean
         ' 
         ' TextBox2
         ' 
-        TextBox2.Location = New Point(28, 300)
+        TextBox2.Location = New Point(28, 265)
         TextBox2.Name = "TextBox2"
         TextBox2.Size = New Size(105, 23)
         TextBox2.TabIndex = 11
         ' 
         ' TextBox3
         ' 
-        TextBox3.Location = New Point(28, 356)
+        TextBox3.Location = New Point(28, 316)
         TextBox3.Name = "TextBox3"
         TextBox3.Size = New Size(105, 23)
         TextBox3.TabIndex = 13
@@ -155,7 +155,7 @@ Partial Class Config_Clean
         ' CheckBox8
         ' 
         CheckBox8.AutoSize = True
-        CheckBox8.Location = New Point(12, 329)
+        CheckBox8.Location = New Point(12, 292)
         CheckBox8.Name = "CheckBox8"
         CheckBox8.Size = New Size(207, 21)
         CheckBox8.TabIndex = 12
@@ -164,7 +164,7 @@ Partial Class Config_Clean
         ' 
         ' TextBox4
         ' 
-        TextBox4.Location = New Point(12, 34)
+        TextBox4.Location = New Point(12, 31)
         TextBox4.Name = "TextBox4"
         TextBox4.ReadOnly = True
         TextBox4.Size = New Size(201, 23)
@@ -172,7 +172,7 @@ Partial Class Config_Clean
         ' 
         ' Button3
         ' 
-        Button3.Location = New Point(219, 30)
+        Button3.Location = New Point(219, 27)
         Button3.Name = "Button3"
         Button3.Size = New Size(75, 30)
         Button3.TabIndex = 15
@@ -191,7 +191,7 @@ Partial Class Config_Clean
         ' Label5
         ' 
         Label5.AutoSize = True
-        Label5.Location = New Point(313, 9)
+        Label5.Location = New Point(300, 9)
         Label5.Name = "Label5"
         Label5.Size = New Size(71, 17)
         Label5.TabIndex = 35
@@ -200,23 +200,23 @@ Partial Class Config_Clean
         ' TextPreview
         ' 
         TextPreview.BackColor = SystemColors.Info
-        TextPreview.Location = New Point(313, 34)
+        TextPreview.Location = New Point(300, 29)
         TextPreview.Multiline = True
         TextPreview.Name = "TextPreview"
         TextPreview.ReadOnly = True
-        TextPreview.Size = New Size(282, 399)
+        TextPreview.Size = New Size(282, 333)
         TextPreview.TabIndex = 34
         ' 
         ' TextBox5
         ' 
-        TextBox5.Location = New Point(189, 235)
+        TextBox5.Location = New Point(189, 214)
         TextBox5.Name = "TextBox5"
         TextBox5.Size = New Size(105, 23)
         TextBox5.TabIndex = 39
         ' 
         ' TextBox6
         ' 
-        TextBox6.Location = New Point(28, 235)
+        TextBox6.Location = New Point(28, 214)
         TextBox6.Name = "TextBox6"
         TextBox6.Size = New Size(105, 23)
         TextBox6.TabIndex = 38
@@ -224,7 +224,7 @@ Partial Class Config_Clean
         ' Label2
         ' 
         Label2.AutoSize = True
-        Label2.Location = New Point(139, 238)
+        Label2.Location = New Point(139, 217)
         Label2.Name = "Label2"
         Label2.Size = New Size(44, 17)
         Label2.TabIndex = 37
@@ -233,7 +233,7 @@ Partial Class Config_Clean
         ' CheckBox6
         ' 
         CheckBox6.AutoSize = True
-        CheckBox6.Location = New Point(12, 208)
+        CheckBox6.Location = New Point(12, 190)
         CheckBox6.Name = "CheckBox6"
         CheckBox6.Size = New Size(135, 21)
         CheckBox6.TabIndex = 36
@@ -244,7 +244,7 @@ Partial Class Config_Clean
         ' 
         AutoScaleDimensions = New SizeF(7F, 17F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(603, 478)
+        ClientSize = New Size(589, 405)
         ControlBox = False
         Controls.Add(TextBox5)
         Controls.Add(TextBox6)

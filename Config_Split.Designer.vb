@@ -34,6 +34,7 @@ Partial Class Config_Split
         Label3 = New Label()
         NumericUpDown2 = New NumericUpDown()
         Label2 = New Label()
+        CheckBox1 = New CheckBox()
         CType(NumericUpDown4, ComponentModel.ISupportInitialize).BeginInit()
         CType(NumericUpDown3, ComponentModel.ISupportInitialize).BeginInit()
         CType(NumericUpDown2, ComponentModel.ISupportInitialize).BeginInit()
@@ -63,7 +64,7 @@ Partial Class Config_Split
         ' 
         ' Button2
         ' 
-        Button2.Location = New Point(216, 187)
+        Button2.Location = New Point(216, 211)
         Button2.Name = "Button2"
         Button2.Size = New Size(75, 30)
         Button2.TabIndex = 44
@@ -72,7 +73,7 @@ Partial Class Config_Split
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(135, 187)
+        Button1.Location = New Point(135, 211)
         Button1.Name = "Button1"
         Button1.Size = New Size(75, 30)
         Button1.TabIndex = 43
@@ -81,7 +82,7 @@ Partial Class Config_Split
         ' 
         ' Button3
         ' 
-        Button3.Location = New Point(216, 151)
+        Button3.Location = New Point(216, 175)
         Button3.Name = "Button3"
         Button3.Size = New Size(75, 30)
         Button3.TabIndex = 42
@@ -90,7 +91,7 @@ Partial Class Config_Split
         ' 
         ' TextBox4
         ' 
-        TextBox4.Location = New Point(13, 155)
+        TextBox4.Location = New Point(13, 179)
         TextBox4.Name = "TextBox4"
         TextBox4.ReadOnly = True
         TextBox4.Size = New Size(197, 23)
@@ -152,11 +153,23 @@ Partial Class Config_Split
         Label2.TabIndex = 26
         Label2.Text = "基因最小长度"
         ' 
+        ' CheckBox1
+        ' 
+        CheckBox1.AutoSize = True
+        CheckBox1.Location = New Point(14, 154)
+        CheckBox1.Name = "CheckBox1"
+        CheckBox1.Size = New Size(111, 21)
+        CheckBox1.TabIndex = 47
+        CheckBox1.Text = "比对获取的序列"
+        CheckBox1.UseVisualStyleBackColor = True
+        ' 
         ' Config_Split
         ' 
         AutoScaleDimensions = New SizeF(7F, 17F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(303, 228)
+        ClientSize = New Size(303, 250)
+        ControlBox = False
+        Controls.Add(CheckBox1)
         Controls.Add(RadioButton2)
         Controls.Add(RadioButton1)
         Controls.Add(Button2)
@@ -171,6 +184,7 @@ Partial Class Config_Split
         Controls.Add(Label2)
         Name = "Config_Split"
         Text = "分割序列"
+        TopMost = True
         CType(NumericUpDown4, ComponentModel.ISupportInitialize).EndInit()
         CType(NumericUpDown3, ComponentModel.ISupportInitialize).EndInit()
         CType(NumericUpDown2, ComponentModel.ISupportInitialize).EndInit()
@@ -190,4 +204,5 @@ Partial Class Config_Split
     Friend WithEvents Label3 As Label
     Friend WithEvents NumericUpDown2 As NumericUpDown
     Friend WithEvents Label2 As Label
+    Friend WithEvents CheckBox1 As CheckBox
 End Class

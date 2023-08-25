@@ -1,5 +1,36 @@
 ﻿Imports System.IO
 Module Module_Function
+	Public Function ReadSettings(filePath As String) As Dictionary(Of String, String)
+		Dim settings As New Dictionary(Of String, String)()
+
+		If File.Exists(filePath) Then
+			Dim lines As String() = File.ReadAllLines(filePath)
+
+			For Each line As String In lines
+				Dim parts As String() = line.Split("="c)
+				If parts.Length = 2 Then
+					Dim key As String = parts(0).Trim()
+					Dim value As String = parts(1).Trim()
+					settings(key) = value
+				End If
+			Next
+		End If
+
+		Return settings
+	End Function
+
+	' 保存设置到文件
+	Public Sub SaveSettings(filePath As String, settings As Dictionary(Of String, String))
+		Dim lines As New List(Of String)()
+
+		For Each kvp As KeyValuePair(Of String, String) In settings
+			Dim line As String = $"{kvp.Key}={kvp.Value}"
+			lines.Add(line)
+		Next
+
+		File.WriteAllLines(filePath, lines)
+	End Sub
+
 	Public Function new_line(ByVal is_LF As Boolean) As String
 		If is_LF Then
 			Return vbLf
@@ -576,7 +607,7 @@ go_to1:             End If
 			startInfo.Arguments += " -exts " + exts
 			startInfo.Arguments += " -missing " + missingchar
 			Dim process As Process = Process.Start(startInfo)
-			Process.WaitForExit()
+			process.WaitForExit()
 			process.Close()
 		End If
 		info_text = ""

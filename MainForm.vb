@@ -8,6 +8,7 @@ Imports Newtonsoft.Json.Linq
 Imports System.Reflection.Emit
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Button
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
+Imports System.Windows.Forms
 
 Public Class Mainform
     Public Taxon_Dataset As New DataSet
@@ -21,7 +22,7 @@ Public Class Mainform
         Me.Invoke(Append_Text, New Object() {Format(Now(), "yyyy/MM/dd H:mm:ss") + vbTab + info + Chr(13)})
     End Sub
 
-    Public Sub OpenData()
+    Public Sub initialize_data()
         Dim Column_Select As New DataGridViewCheckBoxColumn
         Column_Select.HeaderText = "Select"
         DataGridView1.Columns.Insert(0, Column_Select)
@@ -58,6 +59,8 @@ Public Class Mainform
         WebView_main.Source = New Uri(url)
     End Sub
     Private Sub Mainform_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        Dim filePath As String = root_path + "main\" + "setting.ini"
+        SaveSettings(filePath, settings)
         End
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -66,7 +69,7 @@ Public Class Mainform
         set_web_main_url = New SetUrl(AddressOf web_main_seturl)
         Append_Text = New AppendText(AddressOf RT_Append_Text)
         WebView_main.Source = New Uri("file:///" + currentDirectory + "/main/" + language + "/main.html")
-        OpenData()
+        initialize_data()
     End Sub
     Private Sub WebView_main_CoreWebView2InitializationCompleted(sender As Object, e As CoreWebView2InitializationCompletedEventArgs) Handles WebView_main.CoreWebView2InitializationCompleted
         WebView_main.CoreWebView2.Settings.IsStatusBarEnabled = False
@@ -75,7 +78,7 @@ Public Class Mainform
 
     Private Sub 载入序列ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 载入序列ToolStripMenuItem.Click
         Dim opendialog As New OpenFileDialog
-        opendialog.Filter = "Fasta File(*.*)|*.fas;*.fasta;*.fa|GenBank File|*.gb"
+        opendialog.Filter = "Fasta File(*.fasta)|*.fas;*.fasta;*.fa|GenBank File|*.gb"
         opendialog.FileName = ""
         opendialog.Multiselect = False
         opendialog.DefaultExt = ".fas"
@@ -493,16 +496,16 @@ Public Class Mainform
 
                 If IsNumeric(DataGridView1.Rows(i - 1).Cells(6).Value) = False Then
                     checked = False
-                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value + ", Date:" + DataGridView1.Rows(i - 1).Cells(6).Value + " is not a numerical value.")
+                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value.ToString + ", Date:" + DataGridView1.Rows(i - 1).Cells(6).Value.ToString + " is not a numerical value.")
                     Exit For
                 End If
                 If IsNumeric(DataGridView1.Rows(i - 1).Cells(5).Value) = False Then
                     checked = False
-                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value + " is not a numerical value.")
+                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value.ToString + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value.ToString + " is not a numerical value.")
                     Exit For
                 ElseIf CInt(DataGridView1.Rows(i - 1).Cells(5).Value) <= 0 Then
                     checked = False
-                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value + " cannot be less than zero.")
+                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value.ToString + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value.ToString + " cannot be less than zero.")
                     Exit For
                 End If
 
@@ -517,6 +520,8 @@ Public Class Mainform
                     MsgBox("Please select at least one sequence!")
                 End If
             End If
+        Else
+            MsgBox("Please select at least one sequence!")
         End If
     End Sub
     Public Sub analysis_network(ByVal network_type As String)
@@ -527,6 +532,15 @@ Public Class Mainform
         Dim in_path As String = root_path + "results\" + currentTimeStamp.ToString + ".fasta"
         Dim sw As New StreamWriter(in_path)
         Dim isaligened As Boolean = True
+        Dim epsilon_str As String = ""
+        If exe_mode = "advanced" Then
+            Select Case network_type
+                Case "msn", "mjn"
+                    epsilon_str = " -e " + InputBox("Enter the epsilon", "Enter the epsilon", "0")
+                Case Else
+            End Select
+        End If
+
         For i As Integer = 1 To dtView.Count
             If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
                 sw.WriteLine(">" + dtView.Item(i - 1).Item(1) + "=" + dtView.Item(i - 1).Item(5) + "=" + dtView.Item(i - 1).Item(4) + "$SPLIT$" + dtView.Item(i - 1).Item(3))
@@ -546,7 +560,7 @@ Public Class Mainform
             startInfo.FileName = currentDirectory + "analysis\muscle5.1.win64.exe" ' 替换为实际的命令行程序路径
             startInfo.WorkingDirectory = currentDirectory + "results\" ' 替换为实际的运行文件夹路径
             'startInfo.CreateNoWindow = True
-            startInfo.Arguments = "-super5 " + """" + in_path + """" + " -output " + """" + out_path + """"
+            startInfo.Arguments = "-super5 " + """" + in_path + """" + " -output " + """" + out_path + """" + epsilon_str
             Dim process As Process = Process.Start(startInfo)
             process.WaitForExit()
             process.Close()
@@ -558,7 +572,7 @@ Public Class Mainform
                 startInfo_hap.FileName = currentDirectory + "analysis\fastHaN_win.exe" ' 替换为实际的命令行程序路径
                 startInfo_hap.WorkingDirectory = currentDirectory + "results\" ' 替换为实际的运行文件夹路径
                 'startInfo_hap.CreateNoWindow = True
-                startInfo_hap.Arguments = network_type + " -i " + """" + root_path + "results\" + currentTimeStamp.ToString + "_seq.phy" + """" + " -o " + """" + root_path + "results\" + currentTimeStamp.ToString + """"
+                startInfo_hap.Arguments = network_type + " -i " + """" + root_path + "results\" + currentTimeStamp.ToString + "_seq.phy" + """" + " -o " + """" + root_path + "results\" + currentTimeStamp.ToString + """" + epsilon_str
                 Dim process_hap As Process = Process.Start(startInfo_hap)
                 process_hap.WaitForExit()
                 process_hap.Close()
@@ -651,6 +665,8 @@ Public Class Mainform
                     MsgBox("Please select at least one sequence!")
                 End If
             End If
+        Else
+            MsgBox("Please select at least one sequence!")
         End If
     End Sub
 
@@ -682,12 +698,15 @@ Public Class Mainform
                 If selected_count >= 1 Then
                     TabControl1.SelectedIndex = 0
                     Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "main/" + language + "/waiting.html"})
+
                     Dim th1 As New Threading.Thread(AddressOf analysis_network)
                     th1.Start("msn")
                 Else
                     MsgBox("Please select at least one sequence!")
                 End If
             End If
+        Else
+            MsgBox("Please select at least one sequence!")
         End If
     End Sub
 
@@ -896,6 +915,8 @@ Public Class Mainform
                 MsgBox("Please select at least one sequence!")
             End If
 
+        Else
+            MsgBox("Please select at least one sequence!")
         End If
     End Sub
 
@@ -937,7 +958,8 @@ Public Class Mainform
             Else
                 MsgBox("Please select at least one sequence!")
             End If
-
+        Else
+            MsgBox("Please select at least one sequence!")
         End If
     End Sub
 
@@ -1024,6 +1046,7 @@ Public Class Mainform
         Else
             to_en()
         End If
+        settings("language") = language
     End Sub
 
     Private Sub 增加数据ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 增加数据ToolStripMenuItem.Click
@@ -1074,7 +1097,8 @@ Public Class Mainform
             Else
                 MsgBox("Please select at least one sequence!")
             End If
-
+        Else
+            MsgBox("Please select at least one sequence!")
         End If
     End Sub
 

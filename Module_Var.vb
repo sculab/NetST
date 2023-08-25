@@ -7,6 +7,7 @@
 #ElseIf TargetOS = "win32" Then
     Public TargetOS As String = "win32"
 #End If
+    Public settings As Dictionary(Of String, String)
     Public currentDirectory As String
     Public dtView As New DataView
     Public ci As Globalization.CultureInfo = New Globalization.CultureInfo("en-us")
@@ -30,6 +31,7 @@
     Public PB_value As Integer = 0
     Public info_text As String = ""
     Public language As String = "CH"
+    Public exe_mode As String = "pro"
     Public fasta_seq() As String
     Public add_data As Boolean = False
     Public data_type As String = "gb"

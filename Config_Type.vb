@@ -81,11 +81,12 @@ Public Class Config_Type
         Next
         sw.Close()
         Dim k_value As String = NumericUpDown1.Value.ToString
-        Dim dict_file, ref_file, target_file, result_file As String
+        Dim dict_file As String = ""
+        Dim ref_file As String = ""
+        Dim target_file, result_file As String
         If RadioButton1.Checked Then
             ref_file = TextBox1.Text
             dict_file = root_path + "results\" + currentTimeStamp.ToString + ".gz"
-
         End If
         If RadioButton2.Checked Then
             ref_file = "nofile"

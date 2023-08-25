@@ -11,15 +11,56 @@ Public Class Welcome
         Timer1.Enabled = True
         form_main.Show()
         format_path()
-        to_en()
         Dim th1 As New Thread(AddressOf load_main)
         th1.Start()
     End Sub
     Public Sub load_main()
         My.Computer.FileSystem.CreateDirectory(root_path + "results")
         current_file = total_file
+
+        Dim filePath As String = root_path + "main\" + "setting.ini"
+        settings = ReadSettings(filePath)
+
+        ' 读取 language 和 mode 设置
+        language = settings.GetValueOrDefault("language", "EN")
+        exe_mode = settings.GetValueOrDefault("mode", "pro")
+
+        If language = "CH" Then
+            to_ch()
+        Else
+            to_en()
+        End If
+
+        If exe_mode = "basic" Then
+            form_main.分型ToolStripMenuItem.Visible = False
+            form_main.本地分析ToolStripMenuItem.Visible = False
+            form_main.ToolStripSeparator2.Visible = False
+            form_main.ToolStripSeparator9.Visible = False
+            form_main.分型引物构建ToolStripMenuItem.Visible = False
+            form_main.获取序列信息ToolStripMenuItem.Visible = False
+            form_main.ToolStripSeparator11.Visible = False
+        End If
+        If exe_mode = "advanced" Then
+            form_main.分型ToolStripMenuItem.Visible = True
+            form_main.本地分析ToolStripMenuItem.Visible = True
+            form_main.ToolStripSeparator2.Visible = True
+            form_main.ToolStripSeparator9.Visible = True
+            form_main.分型引物构建ToolStripMenuItem.Visible = True
+            form_main.获取序列信息ToolStripMenuItem.Visible = True
+            form_main.ToolStripSeparator11.Visible = True
+        End If
+        If exe_mode = "HIV" Then
+            form_main.分型ToolStripMenuItem.Visible = True
+            form_main.本地分析ToolStripMenuItem.Visible = True
+            form_main.ToolStripSeparator2.Visible = False
+            form_main.ToolStripSeparator9.Visible = False
+            form_main.分型引物构建ToolStripMenuItem.Visible = False
+            form_main.获取序列信息ToolStripMenuItem.Visible = False
+            form_main.ToolStripSeparator11.Visible = False
+        End If
     End Sub
     Private Sub Welcome_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+
     End Sub
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
         If current_file < total_file Then

@@ -174,13 +174,13 @@ Partial Class Mainform
         ' 全选ToolStripMenuItem
         ' 
         全选ToolStripMenuItem.Name = "全选ToolStripMenuItem"
-        全选ToolStripMenuItem.Size = New Size(180, 22)
+        全选ToolStripMenuItem.Size = New Size(100, 22)
         全选ToolStripMenuItem.Text = "全选"
         ' 
         ' 清除ToolStripMenuItem
         ' 
         清除ToolStripMenuItem.Name = "清除ToolStripMenuItem"
-        清除ToolStripMenuItem.Size = New Size(180, 22)
+        清除ToolStripMenuItem.Size = New Size(100, 22)
         清除ToolStripMenuItem.Text = "清除"
         ' 
         ' 分析ToolStripMenuItem
@@ -195,17 +195,20 @@ Partial Class Mainform
         分型ToolStripMenuItem.Name = "分型ToolStripMenuItem"
         分型ToolStripMenuItem.Size = New Size(189, 22)
         分型ToolStripMenuItem.Text = "HIV耐药性分析(远程)"
+        分型ToolStripMenuItem.Visible = False
         ' 
         ' 本地分析ToolStripMenuItem
         ' 
         本地分析ToolStripMenuItem.Name = "本地分析ToolStripMenuItem"
         本地分析ToolStripMenuItem.Size = New Size(189, 22)
         本地分析ToolStripMenuItem.Text = "HIV耐药性分析(本地)"
+        本地分析ToolStripMenuItem.Visible = False
         ' 
         ' ToolStripSeparator2
         ' 
         ToolStripSeparator2.Name = "ToolStripSeparator2"
         ToolStripSeparator2.Size = New Size(186, 6)
+        ToolStripSeparator2.Visible = False
         ' 
         ' MSN单倍型网络ToolStripMenuItem
         ' 
@@ -263,12 +266,14 @@ Partial Class Mainform
         ' 
         ToolStripSeparator9.Name = "ToolStripSeparator9"
         ToolStripSeparator9.Size = New Size(186, 6)
+        ToolStripSeparator9.Visible = False
         ' 
         ' 分型引物构建ToolStripMenuItem
         ' 
         分型引物构建ToolStripMenuItem.Name = "分型引物构建ToolStripMenuItem"
         分型引物构建ToolStripMenuItem.Size = New Size(189, 22)
         分型引物构建ToolStripMenuItem.Text = "分型引物构建"
+        分型引物构建ToolStripMenuItem.Visible = False
         ' 
         ' 工具ToolStripMenuItem
         ' 
@@ -280,54 +285,54 @@ Partial Class Mainform
         ' 分割序列文件ToolStripMenuItem
         ' 
         分割序列文件ToolStripMenuItem.Name = "分割序列文件ToolStripMenuItem"
-        分割序列文件ToolStripMenuItem.Size = New Size(180, 22)
+        分割序列文件ToolStripMenuItem.Size = New Size(160, 22)
         分割序列文件ToolStripMenuItem.Text = "分割序列文件"
         ' 
         ' 合并序列文件ToolStripMenuItem
         ' 
         合并序列文件ToolStripMenuItem.Name = "合并序列文件ToolStripMenuItem"
-        合并序列文件ToolStripMenuItem.Size = New Size(180, 22)
+        合并序列文件ToolStripMenuItem.Size = New Size(160, 22)
         合并序列文件ToolStripMenuItem.Text = "合并序列文件"
         ' 
         ' 清理序列ToolStripMenuItem
         ' 
         清理序列ToolStripMenuItem.Name = "清理序列ToolStripMenuItem"
-        清理序列ToolStripMenuItem.Size = New Size(180, 22)
+        清理序列ToolStripMenuItem.Size = New Size(160, 22)
         清理序列ToolStripMenuItem.Text = "清理序列数据"
         ' 
         ' ToolStripSeparator6
         ' 
         ToolStripSeparator6.Name = "ToolStripSeparator6"
-        ToolStripSeparator6.Size = New Size(177, 6)
+        ToolStripSeparator6.Size = New Size(157, 6)
         ' 
         ' 获取序列信息ToolStripMenuItem
         ' 
         获取序列信息ToolStripMenuItem.Name = "获取序列信息ToolStripMenuItem"
-        获取序列信息ToolStripMenuItem.Size = New Size(180, 22)
+        获取序列信息ToolStripMenuItem.Size = New Size(160, 22)
         获取序列信息ToolStripMenuItem.Text = "序列生成表格"
         获取序列信息ToolStripMenuItem.Visible = False
         ' 
         ' ToolStripSeparator7
         ' 
         ToolStripSeparator7.Name = "ToolStripSeparator7"
-        ToolStripSeparator7.Size = New Size(177, 6)
+        ToolStripSeparator7.Size = New Size(157, 6)
         ToolStripSeparator7.Visible = False
         ' 
         ' 日期转换数字ToolStripMenuItem
         ' 
         日期转换数字ToolStripMenuItem.Name = "日期转换数字ToolStripMenuItem"
-        日期转换数字ToolStripMenuItem.Size = New Size(180, 22)
+        日期转换数字ToolStripMenuItem.Size = New Size(160, 22)
         日期转换数字ToolStripMenuItem.Text = "日期转换数字"
         ' 
         ' ToolStripSeparator11
         ' 
         ToolStripSeparator11.Name = "ToolStripSeparator11"
-        ToolStripSeparator11.Size = New Size(177, 6)
+        ToolStripSeparator11.Size = New Size(157, 6)
         ' 
         ' CSV生成序列ToolStripMenuItem
         ' 
         CSV生成序列ToolStripMenuItem.Name = "CSV生成序列ToolStripMenuItem"
-        CSV生成序列ToolStripMenuItem.Size = New Size(180, 22)
+        CSV生成序列ToolStripMenuItem.Size = New Size(160, 22)
         CSV生成序列ToolStripMenuItem.Text = "构建分型数据集"
         ' 
         ' 浏览ToolStripMenuItem
@@ -457,6 +462,7 @@ Partial Class Mainform
         RichTextBox1.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         RichTextBox1.Location = New Point(3, 5)
         RichTextBox1.Name = "RichTextBox1"
+        RichTextBox1.ReadOnly = True
         RichTextBox1.Size = New Size(609, 430)
         RichTextBox1.TabIndex = 0
         RichTextBox1.Text = ""
