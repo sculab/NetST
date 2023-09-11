@@ -12,11 +12,11 @@ NetST软件具有命令行版本和图形界面版本。对于Linux和MacOS用�
 
 ### 运行NetST
 
-对于Windows用户，可以在https://github.com/sculab/NetST/releases中下载NetST-GUI的软件压缩包，解压缩后在压缩文件夹中可以看到NetST软件相关文件。
+对于Windows用户，可以在[https://github.com/sculab/NetST/releases](https://github.com/sculab/NetST/releases)中下载NetST-GUI的软件压缩包，解压缩后在压缩文件夹中可以看到NetST软件相关文件。
 
 通过双击NetST.exe的图标即可运行NetST。当你运行后，你会看到这样一个窗口：
 
-![image-20230820150248051](https://cdn.jsdelivr.net/gh/plant720/TyporaPic/img/202308201504998.png)
+![image-20230820150248051](https://github.com/sculab/NetST/blob/master/main/screen.png)
 
 您需要做的第一件事是加载带有离散性状和连续性状的序列数据，可以是fasta格式或者csv格式。在本教程中，所有的文件都存储在DEMOS/DEMO_01文件夹下。DEMOS/DEMO_01文件夹下包含一个名为TEST_HA.fasta的fasta格式序列文件和一个名为HA_REFS.csv的csv格式的序列文件。两份文件的内容一致，仅格式不同。
 

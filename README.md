@@ -32,9 +32,9 @@ NetST-cmd版本需要用户参考下面的流程进行下载并安装：
 
 NetST-GUI版本可以参考用户手册。
 
-[教程1: 构建单倍型网络](https://github.com/sculab/NetST/blob/master/examples/zh_cn/class1.md)
+[教程1: 构建单倍型网络](https://github.com/sculab/NetST/blob/master/examples/ZH_CN/class1.md)
 
-[教程2: 序列分型](https://github.com/sculab/NetST/blob/master/examples/zh_cn/class2.md)
+[教程2: 序列分型](https://github.com/sculab/NetST/blob/master/examples/ZH_CN/class2.md)
 
 ## 联系我们
 
