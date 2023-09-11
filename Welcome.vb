@@ -9,6 +9,7 @@ Public Class Welcome
     Private Sub Welcome_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         System.Threading.Thread.CurrentThread.CurrentCulture = ci
         Timer1.Enabled = True
+
         form_main.Show()
         format_path()
         Dim th1 As New Thread(AddressOf load_main)
@@ -16,6 +17,7 @@ Public Class Welcome
     End Sub
     Public Sub load_main()
         My.Computer.FileSystem.CreateDirectory(root_path + "results")
+        My.Computer.FileSystem.CreateDirectory(root_path + "temp")
         current_file = total_file
 
         Dim filePath As String = root_path + "main\" + "setting.ini"

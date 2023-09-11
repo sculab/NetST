@@ -227,8 +227,7 @@ Public Class Mainform
             data_loaded = False
             Dim th1 As New Threading.Thread(AddressOf load_csv_data)
             th1.Start(opendialog.FileName)
-
-
+            data_type = "fas"
         End If
     End Sub
     Public Sub load_csv_data(ByVal file_path As String)
@@ -248,6 +247,7 @@ Public Class Mainform
                     count += 1
                     dtView.AddNew()
                     Dim newrow() As String = line.Split(",")
+                    ReDim Preserve newrow(6)
                     newrow(0) = pre_fasta_seq + count
                     ReDim Preserve fasta_seq(count)
                     fasta_seq(count) = newrow(2)

@@ -3,7 +3,7 @@ Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Button
 
 Module Module_Language
     Public Sub to_en()
-        form_main.Text = "NetST (Network for Sequences and Traits)"
+        form_main.Text = "NetST (Network for Sequences and Traits)" + " ver. " + version
         form_main.文件FToolStripMenuItem.Text = "File"
         form_main.载入序列ToolStripMenuItem.Text = "Load Sequences"
         form_main.载入数据ToolStripMenuItem.Text = "Load Table"
@@ -193,7 +193,7 @@ Module Module_Language
     End Sub
 
     Public Sub to_ch()
-        form_main.Text = "NetST 序列和性状网络分析"
+        form_main.Text = "NetST 序列和性状网络分析" + " ver." + version
         form_main.文件FToolStripMenuItem.Text = "文件"
         form_main.载入序列ToolStripMenuItem.Text = "载入序列"
         form_main.载入数据ToolStripMenuItem.Text = "载入表格"
