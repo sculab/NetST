@@ -959,8 +959,8 @@ $(function () {
                 id: 'btn-style', type: 'menu', text: '风格', icon: 'icon-cross-4', disabled: true,
                 items: [
                   { text: 'All', styleid: "0" },
-                  { text: 'States', styleid: "1" },
-                  { text: 'Dates', styleid: "2" },
+                  { text: 'Trait1', styleid: "1" },
+                  { text: 'Trait2', styleid: "2" },
                 ]
               },
               { id: 'btn-legend', type: 'check', text: '图例', icon: 'icon-legend', disabled: true, checked: false },
