@@ -193,7 +193,7 @@ Module Module_Language
     End Sub
 
     Public Sub to_ch()
-        form_main.Text = "NetST 序列和性状网络分析" + " ver." + version
+        form_main.Text = "NetST 序列和性状网络分析" + " ver. " + version
         form_main.文件FToolStripMenuItem.Text = "文件"
         form_main.载入序列ToolStripMenuItem.Text = "载入序列"
         form_main.载入数据ToolStripMenuItem.Text = "载入表格"
