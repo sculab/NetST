@@ -9,6 +9,7 @@ Imports System.Reflection.Emit
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Button
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports System.Windows.Forms
+Imports System.Text
 
 Public Class Mainform
     Public Taxon_Dataset As New DataSet
@@ -557,19 +558,32 @@ Public Class Mainform
             File.Copy(in_path, out_path)
         Else
             Dim startInfo As New ProcessStartInfo()
-            startInfo.FileName = currentDirectory + "analysis\muscle5.1.win64.exe" ' 替换为实际的命令行程序路径
-            startInfo.WorkingDirectory = currentDirectory + "results\" ' 替换为实际的运行文件夹路径
+            startInfo.FileName = currentDirectory + "analysis\mafft-win\mafft.bat" ' 替换为实际的命令行程序路径
+            startInfo.WorkingDirectory = currentDirectory + "analysis\mafft-win\" ' 替换为实际的运行文件夹路径
             'startInfo.CreateNoWindow = True
-            startInfo.Arguments = "-super5 " + """" + in_path + """" + " -output " + """" + out_path + """" + epsilon_str
+            startInfo.Arguments = "--retree 2 --inputorder " + """" + in_path + """" + ">" + """" + out_path + """"
             Dim process As Process = Process.Start(startInfo)
             process.WaitForExit()
             process.Close()
         End If
         PB_value = 30
         If File.Exists(out_path) Then
+            Dim encoding As Encoding = DetectFileEncoding(out_path)
+
+            If encoding IsNot Nothing AndAlso Not encoding.Equals(Encoding.UTF8) Then
+                ' 读取文件内容
+                Dim fileContent As String = File.ReadAllText(out_path, encoding)
+
+                ' 将文件内容以UTF-8编码保存
+                File.WriteAllText(out_path, fileContent, Encoding.UTF8)
+            End If
+            Dim network_app As String = "fastHaN_win_intel.exe"
+            If cpu_info.ToUpper.StartsWith("ARM") Then
+                network_app = "fastHaN_win_arm.exe"
+            End If
             If hap_fasta(out_path, root_path + "results\" + currentTimeStamp.ToString, new_line(False)) Then
                 Dim startInfo_hap As New ProcessStartInfo()
-                startInfo_hap.FileName = currentDirectory + "analysis\fastHaN_win.exe" ' 替换为实际的命令行程序路径
+                startInfo_hap.FileName = currentDirectory + "analysis\" + network_app ' 替换为实际的命令行程序路径
                 startInfo_hap.WorkingDirectory = currentDirectory + "results\" ' 替换为实际的运行文件夹路径
                 'startInfo_hap.CreateNoWindow = True
                 startInfo_hap.Arguments = network_type + " -i " + """" + root_path + "results\" + currentTimeStamp.ToString + "_seq.phy" + """" + " -o " + """" + root_path + "results\" + currentTimeStamp.ToString + """" + epsilon_str
@@ -767,107 +781,27 @@ Public Class Mainform
     End Sub
 
     Private Sub 序列比对ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 序列比对ToolStripMenuItem.Click
-        DataGridView1.EndEdit()
-        DataGridView1.RefreshEdit()
-        If dtView.Count > 1 Then
-            Dim selected_count As Integer = 0
-            For i As Integer = 1 To dtView.Count
-                If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
-                    selected_count += 1
-                End If
-            Next
-            If selected_count > 1 Then
-                TabControl1.SelectedIndex = 0
-                Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "main/" + language + "/waiting.html"})
-                Dim th1 As New Threading.Thread(AddressOf analysis_align)
-                th1.Start("align")
-            Else
-                MsgBox("Please select at least two sequences!")
-            End If
-        End If
+        'DataGridView1.EndEdit()
+        'DataGridView1.RefreshEdit()
+        'If dtView.Count > 1 Then
+        '    Dim selected_count As Integer = 0
+        '    For i As Integer = 1 To dtView.Count
+        '        If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
+        '            selected_count += 1
+        '        End If
+        '    Next
+        '    If selected_count > 1 Then
+        '        TabControl1.SelectedIndex = 0
+        '        Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "main/" + language + "/waiting.html"})
+        '        Dim th1 As New Threading.Thread(AddressOf analysis_align)
+        '        th1.Start("2")
+        '    Else
+        '        MsgBox("Please select at least two sequences!")
+        '    End If
+        'End If
 
     End Sub
-    Public Sub analysis_align(ByVal method As String)
-        Dim currentTime As DateTime = DateTime.Now
-        Dim currentTimeStamp As Long = (currentTime - New DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds
-        Dim formattedTime As String = currentTime.ToString("yyyy-MM-dd HH:mm")
-        Dim in_path As String = root_path + "results\" + currentTimeStamp.ToString + ".fasta"
-        Dim sw As New StreamWriter(in_path)
-        For i As Integer = 1 To dtView.Count
-            If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
-                sw.WriteLine(">T" + dtView.Item(i - 1).Item(0).ToString)
-                sw.WriteLine(fasta_seq(i))
-            End If
-        Next
-        sw.Close()
-        PB_value = 10
-        Dim out_path As String = root_path + "results\" + currentTimeStamp.ToString + "_tmp.fasta"
 
-        Dim startInfo As New ProcessStartInfo()
-        startInfo.FileName = currentDirectory + "analysis\muscle5.1.win64.exe" ' 替换为实际的命令行程序路径
-        startInfo.WorkingDirectory = currentDirectory + "results\" ' 替换为实际的运行文件夹路径
-        startInfo.CreateNoWindow = True
-        startInfo.Arguments = "-" + method + " " + """" + in_path + """" + " -output " + """" + out_path + """"
-        Dim process As Process = Process.Start(startInfo)
-        process.WaitForExit()
-        process.Close()
-
-        If File.Exists(out_path) Then
-            Dim sr As New StreamReader(out_path)
-            Dim line As String = sr.ReadLine
-            Dim tmp_id As String = ""
-            Do
-                If line <> "" Then
-                    If line(0) = ">" Then
-                        tmp_id = line.Substring(2)
-                        fasta_seq(Int(tmp_id)) = ""
-                    Else
-                        fasta_seq(Int(tmp_id)) += line.ToUpper
-                    End If
-                End If
-                line = sr.ReadLine
-            Loop Until line Is Nothing
-            sr.Close()
-            out_path = root_path + "results\" + currentTimeStamp.ToString + "_aln.fasta"
-            Dim sw1 As New StreamWriter(out_path)
-            For i As Integer = 1 To dtView.Count
-                If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
-                    dtView.Item(i - 1).Item(2) = fasta_seq(i)
-                    sw1.WriteLine(">" + dtView.Item(i - 1).Item(1))
-                    sw1.WriteLine(fasta_seq(i))
-                End If
-            Next
-            sw1.Close()
-        Else
-            Exit Sub
-            MsgBox("Met errors in align!")
-        End If
-
-
-        PB_value = 100
-        Dim sw_align As New StreamWriter(root_path + "results\" + currentTimeStamp.ToString + ".js")
-        Dim sr_align As New StreamReader(out_path)
-        sw_align.Write("$(document).ready(function () { let data = " + """")
-        sw_align.Write(sr_align.ReadToEnd.Replace(vbCrLf, "\n").Replace(vbCr, "\n").Replace(vbLf, "\n"))
-        sr_align.Close()
-        sw_align.Write("""" + ";" + vbCrLf)
-        sw_align.Write("loadNewMSA(data);" + vbCrLf)
-        sw_align.Write("});")
-        sw_align.Close()
-        If File.Exists(root_path + "results\" + currentTimeStamp.ToString + ".js") Then
-            Dim sw0 As New StreamWriter(currentDirectory + "results/" + currentTimeStamp.ToString + ".html")
-            Dim sr1 As New StreamReader(currentDirectory + "main/" + language + "/alignmentviewer.txt")
-            sw0.Write(sr1.ReadToEnd.Replace("$data$", currentTimeStamp.ToString + ".js"))
-            sr1.Close()
-            sw0.Close()
-            Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "results/" + currentTimeStamp.ToString + ".html"})
-        End If
-        PB_value = 0
-        Dim sw4 As New StreamWriter(currentDirectory + "results/history.csv", True)
-        sw4.WriteLine(formattedTime + "," + currentTimeStamp.ToString + ",Sequence Alignment")
-        sw4.Close()
-        PB_value = 0
-    End Sub
 
     'Private Sub 载入待处理序列ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 载入待处理序列ToolStripMenuItem.Click
     '    Dim opendialog As New OpenFileDialog
@@ -925,24 +859,7 @@ Public Class Mainform
     End Sub
 
     Private Sub 序列比对高速ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 序列比对高速ToolStripMenuItem.Click
-        DataGridView1.EndEdit()
-        DataGridView1.RefreshEdit()
-        If dtView.Count > 1 Then
-            Dim selected_count As Integer = 0
-            For i As Integer = 1 To dtView.Count
-                If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
-                    selected_count += 1
-                End If
-            Next
-            If selected_count > 1 Then
-                TabControl1.SelectedIndex = 0
-                Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "main/" + language + "/waiting.html"})
-                Dim th1 As New Threading.Thread(AddressOf analysis_align)
-                th1.Start("super5")
-            Else
-                MsgBox("Please select at least two sequences!")
-            End If
-        End If
+
     End Sub
 
     Private Sub 混合分型分析ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 混合分型分析ToolStripMenuItem.Click
@@ -1040,14 +957,7 @@ Public Class Mainform
         Next
     End Sub
 
-    Private Sub EnglishToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EnglishToolStripMenuItem.Click
-        If language = "EN" Then
-            to_ch()
-        Else
-            to_en()
-        End If
-        settings("language") = language
-    End Sub
+
 
     Private Sub 增加数据ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 增加数据ToolStripMenuItem.Click
         Dim opendialog As New OpenFileDialog
@@ -1117,5 +1027,270 @@ Public Class Mainform
             End If
 
         End If
+    End Sub
+
+    Private Sub AutoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AutoToolStripMenuItem.Click
+        mafft_align("--auto")
+    End Sub
+    Public Sub mafft_align(ByVal method As String)
+        DataGridView1.EndEdit()
+        DataGridView1.RefreshEdit()
+        If dtView.Count > 1 Then
+            Dim selected_count As Integer = 0
+            For i As Integer = 1 To dtView.Count
+                If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
+                    selected_count += 1
+                End If
+            Next
+            If selected_count > 1 Then
+                TabControl1.SelectedIndex = 0
+                Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "main/" + language + "/waiting.html"})
+                Dim th1 As New Threading.Thread(AddressOf do_mafft_align)
+                th1.Start(method)
+            Else
+                MsgBox("Please select at least two sequences!")
+            End If
+        End If
+    End Sub
+    Public Sub do_mafft_align(ByVal method As String)
+        Dim currentTime As DateTime = DateTime.Now
+        Dim currentTimeStamp As Long = (currentTime - New DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds
+        Dim formattedTime As String = currentTime.ToString("yyyy-MM-dd HH:mm")
+        Dim in_path As String = root_path + "results\" + currentTimeStamp.ToString + ".fasta"
+        Dim sw As New StreamWriter(in_path)
+        For i As Integer = 1 To dtView.Count
+            If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
+                sw.WriteLine(">T" + dtView.Item(i - 1).Item(0).ToString)
+                sw.WriteLine(fasta_seq(i))
+            End If
+        Next
+        sw.Close()
+        PB_value = 10
+        Dim out_path As String = root_path + "results\" + currentTimeStamp.ToString + "_tmp.fasta"
+
+        Dim startInfo As New ProcessStartInfo()
+        startInfo.FileName = currentDirectory + "analysis\mafft-win\mafft.bat" ' 替换为实际的命令行程序路径
+        startInfo.WorkingDirectory = currentDirectory + "analysis\mafft-win\" ' 替换为实际的运行文件夹路径
+        'startInfo.CreateNoWindow = True
+        startInfo.Arguments = method + " --inputorder " + """" + in_path + """" + ">" + """" + out_path + """"
+        Dim process As Process = Process.Start(startInfo)
+        process.WaitForExit()
+        process.Close()
+
+        If File.Exists(out_path) Then
+            Dim encoding As Encoding = DetectFileEncoding(out_path)
+            If encoding IsNot Nothing AndAlso Not encoding.Equals(Encoding.UTF8) Then
+                ' 读取文件内容
+                Dim fileContent As String = File.ReadAllText(out_path, encoding)
+                ' 将文件内容以UTF-8编码保存
+                File.WriteAllText(out_path, fileContent, Encoding.UTF8)
+            End If
+
+            Dim sr As New StreamReader(out_path)
+            Dim line As String = sr.ReadLine
+            Dim tmp_id As String = ""
+            Do
+                If line <> "" Then
+                    If line(0) = ">" Then
+                        tmp_id = line.Substring(2)
+                        fasta_seq(Int(tmp_id)) = ""
+                    Else
+                        fasta_seq(Int(tmp_id)) += line.ToUpper
+                    End If
+                End If
+                line = sr.ReadLine
+            Loop Until line Is Nothing
+            sr.Close()
+            out_path = root_path + "results\" + currentTimeStamp.ToString + "_aln.fasta"
+            Dim sw1 As New StreamWriter(out_path)
+            For i As Integer = 1 To dtView.Count
+                If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
+                    dtView.Item(i - 1).Item(2) = fasta_seq(i)
+                    sw1.WriteLine(">" + dtView.Item(i - 1).Item(1))
+                    sw1.WriteLine(fasta_seq(i))
+                End If
+            Next
+            sw1.Close()
+        Else
+            Exit Sub
+            MsgBox("Met errors in align!")
+        End If
+
+
+        PB_value = 100
+        Dim sw_align As New StreamWriter(root_path + "results\" + currentTimeStamp.ToString + ".js")
+        Dim sr_align As New StreamReader(out_path)
+        sw_align.Write("$(document).ready(function () { let data = " + """")
+        sw_align.Write(sr_align.ReadToEnd.Replace(vbCrLf, "\n").Replace(vbCr, "\n").Replace(vbLf, "\n"))
+        sr_align.Close()
+        sw_align.Write("""" + ";" + vbCrLf)
+        sw_align.Write("loadNewMSA(data);" + vbCrLf)
+        sw_align.Write("});")
+        sw_align.Close()
+        If File.Exists(root_path + "results\" + currentTimeStamp.ToString + ".js") Then
+            Dim sw0 As New StreamWriter(currentDirectory + "results/" + currentTimeStamp.ToString + ".html")
+            Dim sr1 As New StreamReader(currentDirectory + "main/" + language + "/alignmentviewer.txt")
+            sw0.Write(sr1.ReadToEnd.Replace("$data$", currentTimeStamp.ToString + ".js"))
+            sr1.Close()
+            sw0.Close()
+            Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "results/" + currentTimeStamp.ToString + ".html"})
+        End If
+        PB_value = 0
+        Dim sw4 As New StreamWriter(currentDirectory + "results/history.csv", True)
+        sw4.WriteLine(formattedTime + "," + currentTimeStamp.ToString + ",Sequence Alignment")
+        sw4.Close()
+        PB_value = 0
+    End Sub
+
+    Private Sub FFTNS1VeryFastButVeryRoughToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FFTNS1VeryFastButVeryRoughToolStripMenuItem.Click
+        mafft_align("--retree 1")
+
+    End Sub
+
+    Private Sub FFTNS2FastButRoughToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FFTNS2FastButRoughToolStripMenuItem.Click
+        mafft_align("--retree 2")
+
+    End Sub
+
+    Private Sub GINSiVerySlowToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GINSiVerySlowToolStripMenuItem.Click
+        mafft_align("--globalpair --maxiterate 16")
+    End Sub
+
+    Private Sub LINSiMostAccurateVerySlowToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LINSiMostAccurateVerySlowToolStripMenuItem.Click
+        mafft_align("--localpair  --maxiterate 16")
+
+    End Sub
+
+    Private Sub EINSiForLongUnalignableRegionsVerySlowToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EINSiForLongUnalignableRegionsVerySlowToolStripMenuItem.Click
+        mafft_align("--genafpair  --maxiterate 16")
+
+    End Sub
+
+
+    Private Sub EnglishToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles EnglishToolStripMenuItem.Click
+        If language = "EN" Then
+            to_ch()
+        Else
+            to_en()
+        End If
+        settings("language") = language
+    End Sub
+
+    Private Sub PPPAlgorithmToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PPPAlgorithmToolStripMenuItem.Click
+        muscle_align("-align")
+    End Sub
+    Public Sub muscle_align(ByVal method As String)
+        DataGridView1.EndEdit()
+        DataGridView1.RefreshEdit()
+        If dtView.Count > 1 Then
+            Dim selected_count As Integer = 0
+            For i As Integer = 1 To dtView.Count
+                If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
+                    selected_count += 1
+                End If
+            Next
+            If selected_count > 1 Then
+                TabControl1.SelectedIndex = 0
+                Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "main/" + language + "/waiting.html"})
+                Dim th1 As New Threading.Thread(AddressOf do_muscle_align)
+                th1.Start(method)
+            Else
+                MsgBox("Please select at least two sequences!")
+            End If
+        End If
+    End Sub
+    Public Sub do_muscle_align(ByVal method As String)
+        Dim currentTime As DateTime = DateTime.Now
+        Dim currentTimeStamp As Long = (currentTime - New DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds
+        Dim formattedTime As String = currentTime.ToString("yyyy-MM-dd HH:mm")
+        Dim in_path As String = root_path + "results\" + currentTimeStamp.ToString + ".fasta"
+        Dim sw As New StreamWriter(in_path)
+        For i As Integer = 1 To dtView.Count
+            If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
+                sw.WriteLine(">T" + dtView.Item(i - 1).Item(0).ToString)
+                sw.WriteLine(fasta_seq(i))
+            End If
+        Next
+        sw.Close()
+        PB_value = 10
+        Dim out_path As String = root_path + "results\" + currentTimeStamp.ToString + "_tmp.fasta"
+
+        Dim startInfo As New ProcessStartInfo()
+        startInfo.FileName = currentDirectory + "analysis\muscle5.1.win64.exe" ' 替换为实际的命令行程序路径
+        startInfo.WorkingDirectory = currentDirectory + "analysis\" ' 替换为实际的运行文件夹路径
+        'startInfo.CreateNoWindow = True
+        startInfo.Arguments = method + " " + """" + in_path + """" + " -output " + """" + out_path + """"
+        Dim process As Process = Process.Start(startInfo)
+        process.WaitForExit()
+        process.Close()
+
+        If File.Exists(out_path) Then
+            Dim encoding As Encoding = DetectFileEncoding(out_path)
+            If encoding IsNot Nothing AndAlso Not encoding.Equals(Encoding.UTF8) Then
+                ' 读取文件内容
+                Dim fileContent As String = File.ReadAllText(out_path, encoding)
+                ' 将文件内容以UTF-8编码保存
+                File.WriteAllText(out_path, fileContent, Encoding.UTF8)
+            End If
+
+            Dim sr As New StreamReader(out_path)
+            Dim line As String = sr.ReadLine
+            Dim tmp_id As String = ""
+            Do
+                If line <> "" Then
+                    If line(0) = ">" Then
+                        tmp_id = line.Substring(2)
+                        fasta_seq(Int(tmp_id)) = ""
+                    Else
+                        fasta_seq(Int(tmp_id)) += line.ToUpper
+                    End If
+                End If
+                line = sr.ReadLine
+            Loop Until line Is Nothing
+            sr.Close()
+            out_path = root_path + "results\" + currentTimeStamp.ToString + "_aln.fasta"
+            Dim sw1 As New StreamWriter(out_path)
+            For i As Integer = 1 To dtView.Count
+                If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
+                    dtView.Item(i - 1).Item(2) = fasta_seq(i)
+                    sw1.WriteLine(">" + dtView.Item(i - 1).Item(1))
+                    sw1.WriteLine(fasta_seq(i))
+                End If
+            Next
+            sw1.Close()
+        Else
+            Exit Sub
+            MsgBox("Met errors in align!")
+        End If
+
+
+        PB_value = 100
+        Dim sw_align As New StreamWriter(root_path + "results\" + currentTimeStamp.ToString + ".js")
+        Dim sr_align As New StreamReader(out_path)
+        sw_align.Write("$(document).ready(function () { let data = " + """")
+        sw_align.Write(sr_align.ReadToEnd.Replace(vbCrLf, "\n").Replace(vbCr, "\n").Replace(vbLf, "\n"))
+        sr_align.Close()
+        sw_align.Write("""" + ";" + vbCrLf)
+        sw_align.Write("loadNewMSA(data);" + vbCrLf)
+        sw_align.Write("});")
+        sw_align.Close()
+        If File.Exists(root_path + "results\" + currentTimeStamp.ToString + ".js") Then
+            Dim sw0 As New StreamWriter(currentDirectory + "results/" + currentTimeStamp.ToString + ".html")
+            Dim sr1 As New StreamReader(currentDirectory + "main/" + language + "/alignmentviewer.txt")
+            sw0.Write(sr1.ReadToEnd.Replace("$data$", currentTimeStamp.ToString + ".js"))
+            sr1.Close()
+            sw0.Close()
+            Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "results/" + currentTimeStamp.ToString + ".html"})
+        End If
+        PB_value = 0
+        Dim sw4 As New StreamWriter(currentDirectory + "results/history.csv", True)
+        sw4.WriteLine(formattedTime + "," + currentTimeStamp.ToString + ",Sequence Alignment")
+        sw4.Close()
+        PB_value = 0
+    End Sub
+
+    Private Sub Super5AlgorithmToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles Super5AlgorithmToolStripMenuItem.Click
+        muscle_align("-super5")
+
     End Sub
 End Class

@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Text
 Module Module_Function
 	Public Function ReadSettings(filePath As String) As Dictionary(Of String, String)
 		Dim settings As New Dictionary(Of String, String)()
@@ -561,6 +562,19 @@ go_to1:             End If
 			Return False
 		End Try
 
+	End Function
+	Public Function DetectFileEncoding(filePath As String) As Encoding
+		Try
+			Using fs As New FileStream(filePath, FileMode.Open, FileAccess.Read)
+				Using reader As New StreamReader(fs, Encoding.Default, True)
+					reader.Peek() ' 自动检测文件编码
+					Return reader.CurrentEncoding
+				End Using
+			End Using
+		Catch ex As Exception
+			Console.WriteLine($"无法检测文件编码：{ex.Message}")
+			Return Nothing
+		End Try
 	End Function
 	Public Function get_total_number(ByVal input As String) As Integer
 		Dim pre_read As New StreamReader(input)

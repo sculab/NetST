@@ -48,7 +48,15 @@ Partial Class Mainform
         单倍型网络ToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator3 = New ToolStripSeparator()
         序列比对高速ToolStripMenuItem = New ToolStripMenuItem()
+        AutoToolStripMenuItem = New ToolStripMenuItem()
+        FFTNS1VeryFastButVeryRoughToolStripMenuItem = New ToolStripMenuItem()
+        FFTNS2FastButRoughToolStripMenuItem = New ToolStripMenuItem()
+        GINSiVerySlowToolStripMenuItem = New ToolStripMenuItem()
+        LINSiMostAccurateVerySlowToolStripMenuItem = New ToolStripMenuItem()
+        EINSiForLongUnalignableRegionsVerySlowToolStripMenuItem = New ToolStripMenuItem()
         序列比对ToolStripMenuItem = New ToolStripMenuItem()
+        PPPAlgorithmToolStripMenuItem = New ToolStripMenuItem()
+        Super5AlgorithmToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator5 = New ToolStripSeparator()
         基于参考序列分型ToolStripMenuItem = New ToolStripMenuItem()
         混合分型分析ToolStripMenuItem = New ToolStripMenuItem()
@@ -69,7 +77,6 @@ Partial Class Mainform
         后退ToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator1 = New ToolStripSeparator()
         分析记录ToolStripMenuItem = New ToolStripMenuItem()
-        ToolStripSeparator8 = New ToolStripSeparator()
         EnglishToolStripMenuItem = New ToolStripMenuItem()
         TabControl1 = New TabControl()
         TabPage1 = New TabPage()
@@ -100,11 +107,11 @@ Partial Class Mainform
         WebView_main.Name = "WebView_main"
         WebView_main.Size = New Size(786, 432)
         WebView_main.TabIndex = 0
-        WebView_main.ZoomFactor = 1R
+        WebView_main.ZoomFactor = 1.0R
         ' 
         ' MenuStrip1
         ' 
-        MenuStrip1.Items.AddRange(New ToolStripItem() {文件FToolStripMenuItem, 编辑ToolStripMenuItem, 分析ToolStripMenuItem, 工具ToolStripMenuItem, 浏览ToolStripMenuItem})
+        MenuStrip1.Items.AddRange(New ToolStripItem() {文件FToolStripMenuItem, 编辑ToolStripMenuItem, 分析ToolStripMenuItem, 工具ToolStripMenuItem, 浏览ToolStripMenuItem, EnglishToolStripMenuItem})
         MenuStrip1.Location = New Point(0, 0)
         MenuStrip1.Name = "MenuStrip1"
         MenuStrip1.Size = New Size(800, 25)
@@ -235,15 +242,65 @@ Partial Class Mainform
         ' 
         ' 序列比对高速ToolStripMenuItem
         ' 
+        序列比对高速ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {AutoToolStripMenuItem, FFTNS1VeryFastButVeryRoughToolStripMenuItem, FFTNS2FastButRoughToolStripMenuItem, GINSiVerySlowToolStripMenuItem, LINSiMostAccurateVerySlowToolStripMenuItem, EINSiForLongUnalignableRegionsVerySlowToolStripMenuItem})
         序列比对高速ToolStripMenuItem.Name = "序列比对高速ToolStripMenuItem"
         序列比对高速ToolStripMenuItem.Size = New Size(189, 22)
-        序列比对高速ToolStripMenuItem.Text = "序列比对(高速)"
+        序列比对高速ToolStripMenuItem.Text = "序列比对(Mafft)"
+        ' 
+        ' AutoToolStripMenuItem
+        ' 
+        AutoToolStripMenuItem.Name = "AutoToolStripMenuItem"
+        AutoToolStripMenuItem.Size = New Size(358, 22)
+        AutoToolStripMenuItem.Text = "Auto"
+        ' 
+        ' FFTNS1VeryFastButVeryRoughToolStripMenuItem
+        ' 
+        FFTNS1VeryFastButVeryRoughToolStripMenuItem.Name = "FFTNS1VeryFastButVeryRoughToolStripMenuItem"
+        FFTNS1VeryFastButVeryRoughToolStripMenuItem.Size = New Size(358, 22)
+        FFTNS1VeryFastButVeryRoughToolStripMenuItem.Text = "FFT-NS-1 (Very fast but very rough)"
+        ' 
+        ' FFTNS2FastButRoughToolStripMenuItem
+        ' 
+        FFTNS2FastButRoughToolStripMenuItem.Name = "FFTNS2FastButRoughToolStripMenuItem"
+        FFTNS2FastButRoughToolStripMenuItem.Size = New Size(358, 22)
+        FFTNS2FastButRoughToolStripMenuItem.Text = "FFT-NS-2 (Fast but rough)"
+        ' 
+        ' GINSiVerySlowToolStripMenuItem
+        ' 
+        GINSiVerySlowToolStripMenuItem.Name = "GINSiVerySlowToolStripMenuItem"
+        GINSiVerySlowToolStripMenuItem.Size = New Size(358, 22)
+        GINSiVerySlowToolStripMenuItem.Text = "G-INS-i (For similar lengths, very slow)"
+        ' 
+        ' LINSiMostAccurateVerySlowToolStripMenuItem
+        ' 
+        LINSiMostAccurateVerySlowToolStripMenuItem.Name = "LINSiMostAccurateVerySlowToolStripMenuItem"
+        LINSiMostAccurateVerySlowToolStripMenuItem.Size = New Size(358, 22)
+        LINSiMostAccurateVerySlowToolStripMenuItem.Text = "L-INS-i (Most accurate, very slow)"
+        ' 
+        ' EINSiForLongUnalignableRegionsVerySlowToolStripMenuItem
+        ' 
+        EINSiForLongUnalignableRegionsVerySlowToolStripMenuItem.Name = "EINSiForLongUnalignableRegionsVerySlowToolStripMenuItem"
+        EINSiForLongUnalignableRegionsVerySlowToolStripMenuItem.Size = New Size(358, 22)
+        EINSiForLongUnalignableRegionsVerySlowToolStripMenuItem.Text = "E-INS-i (For long unalignable regions, very slow)"
         ' 
         ' 序列比对ToolStripMenuItem
         ' 
+        序列比对ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {PPPAlgorithmToolStripMenuItem, Super5AlgorithmToolStripMenuItem})
         序列比对ToolStripMenuItem.Name = "序列比对ToolStripMenuItem"
         序列比对ToolStripMenuItem.Size = New Size(189, 22)
-        序列比对ToolStripMenuItem.Text = "序列比对(精确)"
+        序列比对ToolStripMenuItem.Text = "序列比对(Muscle)"
+        ' 
+        ' PPPAlgorithmToolStripMenuItem
+        ' 
+        PPPAlgorithmToolStripMenuItem.Name = "PPPAlgorithmToolStripMenuItem"
+        PPPAlgorithmToolStripMenuItem.Size = New Size(180, 22)
+        PPPAlgorithmToolStripMenuItem.Text = "PPP algorithm"
+        ' 
+        ' Super5AlgorithmToolStripMenuItem
+        ' 
+        Super5AlgorithmToolStripMenuItem.Name = "Super5AlgorithmToolStripMenuItem"
+        Super5AlgorithmToolStripMenuItem.Size = New Size(180, 22)
+        Super5AlgorithmToolStripMenuItem.Text = "Super5 algorithm"
         ' 
         ' ToolStripSeparator5
         ' 
@@ -337,7 +394,7 @@ Partial Class Mainform
         ' 
         ' 浏览ToolStripMenuItem
         ' 
-        浏览ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {前进ToolStripMenuItem, 后退ToolStripMenuItem, ToolStripSeparator1, 分析记录ToolStripMenuItem, ToolStripSeparator8, EnglishToolStripMenuItem})
+        浏览ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {前进ToolStripMenuItem, 后退ToolStripMenuItem, ToolStripSeparator1, 分析记录ToolStripMenuItem})
         浏览ToolStripMenuItem.Name = "浏览ToolStripMenuItem"
         浏览ToolStripMenuItem.Size = New Size(44, 21)
         浏览ToolStripMenuItem.Text = "浏览"
@@ -365,15 +422,10 @@ Partial Class Mainform
         分析记录ToolStripMenuItem.Size = New Size(124, 22)
         分析记录ToolStripMenuItem.Text = "查看记录"
         ' 
-        ' ToolStripSeparator8
-        ' 
-        ToolStripSeparator8.Name = "ToolStripSeparator8"
-        ToolStripSeparator8.Size = New Size(121, 6)
-        ' 
         ' EnglishToolStripMenuItem
         ' 
         EnglishToolStripMenuItem.Name = "EnglishToolStripMenuItem"
-        EnglishToolStripMenuItem.Size = New Size(124, 22)
+        EnglishToolStripMenuItem.Size = New Size(61, 21)
         EnglishToolStripMenuItem.Text = "English"
         ' 
         ' TabControl1
@@ -414,7 +466,7 @@ Partial Class Mainform
         ' 
         DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle1.BackColor = SystemColors.Control
-        DataGridViewCellStyle1.Font = New Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point)
+        DataGridViewCellStyle1.Font = New Font("Microsoft YaHei UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
         DataGridViewCellStyle1.ForeColor = SystemColors.WindowText
         DataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight
         DataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText
@@ -423,7 +475,7 @@ Partial Class Mainform
         DataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle2.BackColor = SystemColors.Window
-        DataGridViewCellStyle2.Font = New Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point)
+        DataGridViewCellStyle2.Font = New Font("Microsoft YaHei UI", 9.0F, FontStyle.Regular, GraphicsUnit.Point)
         DataGridViewCellStyle2.ForeColor = SystemColors.ControlText
         DataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight
         DataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText
@@ -492,7 +544,7 @@ Partial Class Mainform
         ' 
         ' Mainform
         ' 
-        AutoScaleDimensions = New SizeF(7F, 17F)
+        AutoScaleDimensions = New SizeF(7.0F, 17.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(800, 526)
         Controls.Add(ProgressBar1)
@@ -565,11 +617,20 @@ Partial Class Mainform
     Friend WithEvents 日期转换数字ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator7 As ToolStripSeparator
     Friend WithEvents ToolStripSeparator8 As ToolStripSeparator
-    Friend WithEvents EnglishToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 增加数据ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator9 As ToolStripSeparator
     Friend WithEvents 分型引物构建ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 分割序列文件ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator10 As ToolStripSeparator
     Friend WithEvents ToolStripSeparator11 As ToolStripSeparator
+    Friend WithEvents AutoToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents FFTNS1VeryFastButVeryRoughToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents FFTNS2FastButRoughToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents GINSiVerySlowToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents LINSiMostAccurateVerySlowToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents EINSiForLongUnalignableRegionsVerySlowToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents EnglishToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents PPPAlgorithmToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Super5AlgorithmToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents EnglishToolStripMenuItem As ToolStripMenuItem
 End Class

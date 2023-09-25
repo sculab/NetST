@@ -37,4 +37,5 @@
     Public add_data As Boolean = False
     Public data_type As String = "gb"
     Public data_loaded As Boolean = False
+    Public cpu_info As String
 End Module

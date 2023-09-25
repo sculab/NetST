@@ -2,6 +2,7 @@
 Imports System.Threading
 Imports System.Text.RegularExpressions
 Imports System.Timers
+Imports System.Diagnostics
 
 Public Class Welcome
     Dim total_file As Integer = 2
@@ -10,6 +11,8 @@ Public Class Welcome
         System.Threading.Thread.CurrentThread.CurrentCulture = ci
         Timer1.Enabled = True
 
+        cpu_info = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER")
+        'MsgBox(cpu_info)
         form_main.Show()
         format_path()
         Dim th1 As New Thread(AddressOf load_main)

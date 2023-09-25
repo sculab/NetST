@@ -6,7 +6,7 @@
     <StartupObject>NetST.Welcome</StartupObject>
     <UseWindowsForms>True</UseWindowsForms>
     <MyType>WindowsForms</MyType>
-    <ApplicationIcon>ICO.ico</ApplicationIcon>
+    <ApplicationIcon>netst.ico</ApplicationIcon>
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ICO.ico" />
+    <Content Include="netst.ico" />
   </ItemGroup>
 
   <ItemGroup>
