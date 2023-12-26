@@ -95,13 +95,13 @@ Public Class Mainform
             If opendialog.FileName.ToLower.EndsWith(".gb") Then
                 Dim startInfo As New ProcessStartInfo()
                 startInfo.FileName = currentDirectory + "analysis\build_gb.exe" ' 替换为实际的命令行程序路径
-                startInfo.WorkingDirectory = currentDirectory + "results\" ' 替换为实际的运行文件夹路径
+                startInfo.WorkingDirectory = currentDirectory + "history\" ' 替换为实际的运行文件夹路径
                 startInfo.CreateNoWindow = False
                 startInfo.Arguments = "-input " + """" + current_file + """" + " -outdir " + """" + "out_gb" + """"
                 Dim process As Process = Process.Start(startInfo)
                 process.WaitForExit()
                 process.Close()
-                load_csv_data(currentDirectory + "results\out_gb\gb_info.csv")
+                load_csv_data(currentDirectory + "history\out_gb\gb_info.csv")
                 data_type = "gb"
             Else
                 form_config_stand.Show()
@@ -193,7 +193,7 @@ Public Class Mainform
                 GC.Collect()
             Case 5
                 Timer1.Enabled = False
-                Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "results/" + current_file + ".html"})
+                Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "history/" + current_file + ".html"})
                 timer_id = 0
                 PB_value = 0
                 info_text = ""
@@ -354,7 +354,7 @@ Public Class Mainform
         Dim currentTime As DateTime = DateTime.Now
         Dim currentTimeStamp As Long = (currentTime - New DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds
         Dim formattedTime As String = currentTime.ToString("yyyy-MM-dd HH:mm")
-        Dim in_path As String = root_path + "results\" + currentTimeStamp.ToString + ".fasta"
+        Dim in_path As String = root_path + "history\" + currentTimeStamp.ToString + ".fasta"
         Dim sw As New StreamWriter(in_path)
         For i As Integer = 1 To dtView.Count
             If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
@@ -363,7 +363,7 @@ Public Class Mainform
             End If
         Next
         sw.Close()
-        Dim out_path As String = root_path + "results\" + currentTimeStamp.ToString + ".json"
+        Dim out_path As String = root_path + "history\" + currentTimeStamp.ToString + ".json"
         Dim startInfo As New ProcessStartInfo()
         If online Then
             startInfo.FileName = currentDirectory + "analysis\sierra.exe" ' 替换为实际的命令行程序路径
@@ -380,13 +380,13 @@ Public Class Mainform
         Dim process As Process = Process.Start(startInfo)
         process.WaitForExit()
         process.Close()
-        Dim jsonfile As String = root_path + "results\" + currentTimeStamp.ToString + ".0.json"
+        Dim jsonfile As String = root_path + "history\" + currentTimeStamp.ToString + ".0.json"
         If File.Exists(jsonfile) Then
             Dim sr As New StreamReader(jsonfile)
             Dim json_str As String = sr.ReadToEnd
             sr.Close()
             Dim jsonarr As JArray = JsonConvert.DeserializeObject(json_str)
-            Dim sw0 As New StreamWriter(currentDirectory + "results/" + currentTimeStamp.ToString + ".html")
+            Dim sw0 As New StreamWriter(currentDirectory + "history/" + currentTimeStamp.ToString + ".html")
             Dim sr1 As New StreamReader(currentDirectory + "main/" + language + "/header.txt")
             sw0.Write(sr1.ReadToEnd)
             sr1.Close()
@@ -451,9 +451,9 @@ Public Class Mainform
             Dim sr3 As New StreamReader(currentDirectory + "main/" + language + "/footer.txt")
             sw0.Write(sr3.ReadToEnd)
             sw0.Close()
-            Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "results/" + currentTimeStamp.ToString + ".html"})
+            Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "history/" + currentTimeStamp.ToString + ".html"})
 
-            Dim sw4 As New StreamWriter(currentDirectory + "results/history.csv", True)
+            Dim sw4 As New StreamWriter(currentDirectory + "history/history.csv", True)
             If online Then
                 sw4.WriteLine(formattedTime + "," + currentTimeStamp.ToString + ",Genotyping (online)")
             Else
@@ -495,21 +495,20 @@ Public Class Mainform
                     selected_count += 1
                 End If
 
-                If IsNumeric(DataGridView1.Rows(i - 1).Cells(6).Value) = False Then
-                    checked = False
-                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value.ToString + ", Date:" + DataGridView1.Rows(i - 1).Cells(6).Value.ToString + " is not a numerical value.")
-                    Exit For
-                End If
                 If IsNumeric(DataGridView1.Rows(i - 1).Cells(5).Value) = False Then
                     checked = False
-                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value.ToString + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value.ToString + " is not a numerical value.")
-                    Exit For
-                ElseIf CInt(DataGridView1.Rows(i - 1).Cells(5).Value) <= 0 Then
-                    checked = False
-                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value.ToString + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value.ToString + " cannot be less than zero.")
+                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(1).Value.ToString + ", Date:" + DataGridView1.Rows(i - 1).Cells(6).Value + " is not a numerical value.")
                     Exit For
                 End If
-
+                If IsNumeric(DataGridView1.Rows(i - 1).Cells(6).Value) = False Then
+                    checked = False
+                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(1).Value.ToString + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value + " is not a numerical value.")
+                    Exit For
+                ElseIf CInt(DataGridView1.Rows(i - 1).Cells(6).Value) <= 0 Then
+                    checked = False
+                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(1).Value.ToString + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value + " cannot be less than zero.")
+                    Exit For
+                End If
             Next
             If checked Then
                 If selected_count >= 1 Then
@@ -530,7 +529,7 @@ Public Class Mainform
         Dim success As Boolean = True
         Dim currentTimeStamp As Long = (currentTime - New DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds
         Dim formattedTime As String = currentTime.ToString("yyyy-MM-dd HH:mm")
-        Dim in_path As String = root_path + "results\" + currentTimeStamp.ToString + ".fasta"
+        Dim in_path As String = root_path + "history\" + currentTimeStamp.ToString + ".fasta"
         Dim sw As New StreamWriter(in_path)
         Dim isaligened As Boolean = True
         Dim epsilon_str As String = ""
@@ -553,7 +552,7 @@ Public Class Mainform
         Next
         sw.Close()
         PB_value = 10
-        Dim out_path As String = root_path + "results\" + currentTimeStamp.ToString + "_aln.fasta"
+        Dim out_path As String = root_path + "history\" + currentTimeStamp.ToString + "_aln.fasta"
         If isaligened Then
             File.Copy(in_path, out_path)
         Else
@@ -581,33 +580,33 @@ Public Class Mainform
             If cpu_info.ToUpper.StartsWith("ARM") Then
                 network_app = "fastHaN_win_arm.exe"
             End If
-            If hap_fasta(out_path, root_path + "results\" + currentTimeStamp.ToString, new_line(False)) Then
+            If hap_fasta(out_path, root_path + "history\" + currentTimeStamp.ToString, new_line(False)) Then
                 Dim startInfo_hap As New ProcessStartInfo()
                 startInfo_hap.FileName = currentDirectory + "analysis\" + network_app ' 替换为实际的命令行程序路径
-                startInfo_hap.WorkingDirectory = currentDirectory + "results\" ' 替换为实际的运行文件夹路径
+                startInfo_hap.WorkingDirectory = currentDirectory + "history\" ' 替换为实际的运行文件夹路径
                 'startInfo_hap.CreateNoWindow = True
-                startInfo_hap.Arguments = network_type + " -i " + """" + root_path + "results\" + currentTimeStamp.ToString + "_seq.phy" + """" + " -o " + """" + root_path + "results\" + currentTimeStamp.ToString + """" + epsilon_str
+                startInfo_hap.Arguments = network_type + " -i " + """" + root_path + "history\" + currentTimeStamp.ToString + "_seq.phy" + """" + " -o " + """" + root_path + "history\" + currentTimeStamp.ToString + """" + epsilon_str
                 Dim process_hap As Process = Process.Start(startInfo_hap)
                 process_hap.WaitForExit()
                 process_hap.Close()
                 PB_value = 50
-                If File.Exists(root_path + "results\" + currentTimeStamp.ToString + ".gml") Then
+                If File.Exists(root_path + "history\" + currentTimeStamp.ToString + ".gml") Then
                     Dim startInfo_network As New ProcessStartInfo()
                     startInfo_network.FileName = currentDirectory + "analysis\GenNetworkConfig.exe" ' 替换为实际的命令行程序路径
-                    startInfo_network.WorkingDirectory = currentDirectory + "results\" ' 替换为实际的运行文件夹路径
+                    startInfo_network.WorkingDirectory = currentDirectory + "history\" ' 替换为实际的运行文件夹路径
                     'startInfo_network.CreateNoWindow = True
                     startInfo_network.Arguments = currentTimeStamp.ToString + ".gml " + currentTimeStamp.ToString + ".json " + currentTimeStamp.ToString + ".meta " + currentTimeStamp.ToString
                     Dim process_network As Process = Process.Start(startInfo_network)
                     process_network.WaitForExit()
                     process_network.Close()
                     PB_value = 80
-                    If File.Exists(root_path + "results\" + currentTimeStamp.ToString + ".js") Then
-                        Dim sw0 As New StreamWriter(currentDirectory + "results/" + currentTimeStamp.ToString + ".html")
+                    If File.Exists(root_path + "history\" + currentTimeStamp.ToString + ".js") Then
+                        Dim sw0 As New StreamWriter(currentDirectory + "history/" + currentTimeStamp.ToString + ".html")
                         Dim sr1 As New StreamReader(currentDirectory + "main/" + language + "/tcsBU.txt")
                         sw0.Write(sr1.ReadToEnd.Replace("$data$", currentTimeStamp.ToString + ".js"))
                         sr1.Close()
                         sw0.Close()
-                        Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "results/" + currentTimeStamp.ToString + ".html"})
+                        Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "history/" + currentTimeStamp.ToString + ".html"})
                     Else
                         MsgBox("Haplotype network construction failed. Please check the data.")
                         Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "main/" + language + "/main.html"})
@@ -622,7 +621,7 @@ Public Class Mainform
         End If
         PB_value = 100
         If success Then
-            Dim sw4 As New StreamWriter(currentDirectory + "results/history.csv", True)
+            Dim sw4 As New StreamWriter(currentDirectory + "history/history.csv", True)
             sw4.WriteLine(formattedTime + "," + currentTimeStamp.ToString + "," + network_type + "Haplotype network")
             sw4.Close()
         End If
@@ -653,21 +652,20 @@ Public Class Mainform
                     selected_count += 1
                 End If
 
-                If IsNumeric(DataGridView1.Rows(i - 1).Cells(6).Value) = False Then
-                    checked = False
-                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value + ", Date:" + DataGridView1.Rows(i - 1).Cells(6).Value + " is not a numerical value.")
-                    Exit For
-                End If
                 If IsNumeric(DataGridView1.Rows(i - 1).Cells(5).Value) = False Then
                     checked = False
-                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value + " is not a numerical value.")
-                    Exit For
-                ElseIf CInt(DataGridView1.Rows(i - 1).Cells(5).Value) <= 0 Then
-                    checked = False
-                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value + " cannot be less than zero.")
+                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(1).Value.ToString + ", Date:" + DataGridView1.Rows(i - 1).Cells(6).Value + " is not a numerical value.")
                     Exit For
                 End If
-
+                If IsNumeric(DataGridView1.Rows(i - 1).Cells(6).Value) = False Then
+                    checked = False
+                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(1).Value.ToString + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value + " is not a numerical value.")
+                    Exit For
+                ElseIf CInt(DataGridView1.Rows(i - 1).Cells(6).Value) <= 0 Then
+                    checked = False
+                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(1).Value.ToString + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value + " cannot be less than zero.")
+                    Exit For
+                End If
             Next
             If checked Then
                 If selected_count >= 1 Then
@@ -693,18 +691,18 @@ Public Class Mainform
                     selected_count += 1
                 End If
 
-                If IsNumeric(DataGridView1.Rows(i - 1).Cells(6).Value) = False Then
-                    checked = False
-                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value + ", Date:" + DataGridView1.Rows(i - 1).Cells(6).Value + " is not a numerical value.")
-                    Exit For
-                End If
                 If IsNumeric(DataGridView1.Rows(i - 1).Cells(5).Value) = False Then
                     checked = False
-                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value + " is not a numerical value.")
+                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(1).Value.ToString + ", Date:" + DataGridView1.Rows(i - 1).Cells(6).Value + " is not a numerical value.")
                     Exit For
-                ElseIf CInt(DataGridView1.Rows(i - 1).Cells(5).Value) <= 0 Then
+                End If
+                If IsNumeric(DataGridView1.Rows(i - 1).Cells(6).Value) = False Then
                     checked = False
-                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(0).Value + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value + " cannot be less than zero.")
+                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(1).Value.ToString + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value + " is not a numerical value.")
+                    Exit For
+                ElseIf CInt(DataGridView1.Rows(i - 1).Cells(6).Value) <= 0 Then
+                    checked = False
+                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(1).Value.ToString + ", Quantity:" + DataGridView1.Rows(i - 1).Cells(5).Value + " cannot be less than zero.")
                     Exit For
                 End If
             Next
@@ -725,14 +723,14 @@ Public Class Mainform
     End Sub
 
     Private Sub 分析记录ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 分析记录ToolStripMenuItem.Click
-        If File.Exists(currentDirectory + "results/history.csv") = False Then
-            File.Create(currentDirectory + "results/history.csv").Close()
+        If File.Exists(currentDirectory + "history/history.csv") = False Then
+            File.Create(currentDirectory + "history/history.csv").Close()
         End If
-        Dim sw As New StreamWriter(currentDirectory + "results/history.html")
+        Dim sw As New StreamWriter(currentDirectory + "history/history.html")
         Dim sr1 As New StreamReader(currentDirectory + "main/" + language + "/header_history.txt")
         sw.Write(sr1.ReadToEnd)
         sr1.Close()
-        Dim sr2 As New StreamReader(currentDirectory + "results/history.csv")
+        Dim sr2 As New StreamReader(currentDirectory + "history/history.csv")
         Dim lines() As String = sr2.ReadToEnd.Split(vbCrLf)
 
         For Each line In lines.Reverse
@@ -754,7 +752,7 @@ Public Class Mainform
                         sw.WriteLine("<td><a href='./" + line_list(1) + ".html'>View Results</a>")
                         sw.WriteLine("<a href='./" + line_list(1) + ".csv'  target='_new'>Genotyping Results</a> ")
                         sw.WriteLine("<a href='./" + line_list(1) + "_null.csv'  target='_new'>Failed Sequences</a> ")
-                        If File.Exists(currentDirectory + "results/" + line_list(1) + ".gz") Then
+                        If File.Exists(currentDirectory + "history/" + line_list(1) + ".gz") Then
                             sw.WriteLine("<a href='./" + line_list(1) + ".gz'  target='_new'>Genotyping Database</a></td></tr>")
                         Else
                             sw.WriteLine("</tr>")
@@ -777,7 +775,7 @@ Public Class Mainform
         sw.Write(sr3.ReadToEnd)
         sw.Close()
 
-        WebView_main.Source = New Uri("file:///" + currentDirectory + "/results/history.html")
+        WebView_main.Source = New Uri("file:///" + currentDirectory + "/history/history.html")
     End Sub
 
     Private Sub 序列比对ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 序列比对ToolStripMenuItem.Click
@@ -933,7 +931,7 @@ Public Class Mainform
         Dim file_type As String = "fas"
         Dim startInfo As New ProcessStartInfo()
         startInfo.FileName = currentDirectory + "analysis\MakeData.exe" ' 替换为实际的命令行程序路径
-        startInfo.WorkingDirectory = currentDirectory + "results\" ' 替换为实际的运行文件夹路径
+        startInfo.WorkingDirectory = currentDirectory + "history\" ' 替换为实际的运行文件夹路径
         startInfo.Arguments = "-input " + """" + input_folder + "\ref_combine.fasta" + """" + " -file_type " + file_type + " -out_dir " + """" + input_folder + """"
         Dim process As Process = Process.Start(startInfo)
         process.WaitForExit()
@@ -981,13 +979,13 @@ Public Class Mainform
             If opendialog.FileName.ToLower.EndsWith(".gb") Then
                 Dim startInfo As New ProcessStartInfo()
                 startInfo.FileName = currentDirectory + "analysis\build_gb.exe" ' 替换为实际的命令行程序路径
-                startInfo.WorkingDirectory = currentDirectory + "results\" ' 替换为实际的运行文件夹路径
+                startInfo.WorkingDirectory = currentDirectory + "history\" ' 替换为实际的运行文件夹路径
                 startInfo.CreateNoWindow = False
                 startInfo.Arguments = "-input " + """" + current_file + """" + " -outdir " + """" + "out_gb" + """" + " -clean false"
                 Dim process As Process = Process.Start(startInfo)
                 process.WaitForExit()
                 process.Close()
-                load_csv_data(currentDirectory + "results\out_gb\gb_info.csv")
+                load_csv_data(currentDirectory + "history\out_gb\gb_info.csv")
             Else
                 form_config_stand.Show()
             End If
@@ -1056,7 +1054,7 @@ Public Class Mainform
         Dim currentTime As DateTime = DateTime.Now
         Dim currentTimeStamp As Long = (currentTime - New DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds
         Dim formattedTime As String = currentTime.ToString("yyyy-MM-dd HH:mm")
-        Dim in_path As String = root_path + "results\" + currentTimeStamp.ToString + ".fasta"
+        Dim in_path As String = root_path + "history\" + currentTimeStamp.ToString + ".fasta"
         Dim sw As New StreamWriter(in_path)
         For i As Integer = 1 To dtView.Count
             If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
@@ -1066,12 +1064,11 @@ Public Class Mainform
         Next
         sw.Close()
         PB_value = 10
-        Dim out_path As String = root_path + "results\" + currentTimeStamp.ToString + "_tmp.fasta"
+        Dim out_path As String = root_path + "history\" + currentTimeStamp.ToString + "_tmp.fasta"
 
         Dim startInfo As New ProcessStartInfo()
         startInfo.FileName = currentDirectory + "analysis\mafft-win\mafft.bat" ' 替换为实际的命令行程序路径
         startInfo.WorkingDirectory = currentDirectory + "analysis\mafft-win\" ' 替换为实际的运行文件夹路径
-        'startInfo.CreateNoWindow = True
         startInfo.Arguments = method + " --inputorder " + """" + in_path + """" + ">" + """" + out_path + """"
         Dim process As Process = Process.Start(startInfo)
         process.WaitForExit()
@@ -1101,7 +1098,7 @@ Public Class Mainform
                 line = sr.ReadLine
             Loop Until line Is Nothing
             sr.Close()
-            out_path = root_path + "results\" + currentTimeStamp.ToString + "_aln.fasta"
+            out_path = root_path + "history\" + currentTimeStamp.ToString + "_aln.fasta"
             Dim sw1 As New StreamWriter(out_path)
             For i As Integer = 1 To dtView.Count
                 If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
@@ -1113,12 +1110,12 @@ Public Class Mainform
             sw1.Close()
         Else
             Exit Sub
-            MsgBox("Met errors in align!")
+            MsgBox("Meet errors in align!")
         End If
 
 
         PB_value = 100
-        Dim sw_align As New StreamWriter(root_path + "results\" + currentTimeStamp.ToString + ".js")
+        Dim sw_align As New StreamWriter(root_path + "history\" + currentTimeStamp.ToString + ".js")
         Dim sr_align As New StreamReader(out_path)
         sw_align.Write("$(document).ready(function () { let data = " + """")
         sw_align.Write(sr_align.ReadToEnd.Replace(vbCrLf, "\n").Replace(vbCr, "\n").Replace(vbLf, "\n"))
@@ -1127,16 +1124,16 @@ Public Class Mainform
         sw_align.Write("loadNewMSA(data);" + vbCrLf)
         sw_align.Write("});")
         sw_align.Close()
-        If File.Exists(root_path + "results\" + currentTimeStamp.ToString + ".js") Then
-            Dim sw0 As New StreamWriter(currentDirectory + "results/" + currentTimeStamp.ToString + ".html")
+        If File.Exists(root_path + "history\" + currentTimeStamp.ToString + ".js") Then
+            Dim sw0 As New StreamWriter(currentDirectory + "history/" + currentTimeStamp.ToString + ".html")
             Dim sr1 As New StreamReader(currentDirectory + "main/" + language + "/alignmentviewer.txt")
             sw0.Write(sr1.ReadToEnd.Replace("$data$", currentTimeStamp.ToString + ".js"))
             sr1.Close()
             sw0.Close()
-            Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "results/" + currentTimeStamp.ToString + ".html"})
+            Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "history/" + currentTimeStamp.ToString + ".html"})
         End If
         PB_value = 0
-        Dim sw4 As New StreamWriter(currentDirectory + "results/history.csv", True)
+        Dim sw4 As New StreamWriter(currentDirectory + "history/history.csv", True)
         sw4.WriteLine(formattedTime + "," + currentTimeStamp.ToString + ",Sequence Alignment")
         sw4.Close()
         PB_value = 0
@@ -1156,8 +1153,7 @@ Public Class Mainform
         mafft_align("--globalpair --maxiterate 16")
     End Sub
 
-    Private Sub LINSiMostAccurateVerySlowToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LINSiMostAccurateVerySlowToolStripMenuItem.Click
-        mafft_align("--localpair  --maxiterate 16")
+    Private Sub LINSiMostAccurateVerySlowToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LINSiMostAccurateVerySlowToolStripMenuItem.CheckedChanged
 
     End Sub
 
@@ -1203,7 +1199,7 @@ Public Class Mainform
         Dim currentTime As DateTime = DateTime.Now
         Dim currentTimeStamp As Long = (currentTime - New DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds
         Dim formattedTime As String = currentTime.ToString("yyyy-MM-dd HH:mm")
-        Dim in_path As String = root_path + "results\" + currentTimeStamp.ToString + ".fasta"
+        Dim in_path As String = root_path + "history\" + currentTimeStamp.ToString + ".fasta"
         Dim sw As New StreamWriter(in_path)
         For i As Integer = 1 To dtView.Count
             If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
@@ -1213,7 +1209,7 @@ Public Class Mainform
         Next
         sw.Close()
         PB_value = 10
-        Dim out_path As String = root_path + "results\" + currentTimeStamp.ToString + "_tmp.fasta"
+        Dim out_path As String = root_path + "history\" + currentTimeStamp.ToString + "_tmp.fasta"
 
         Dim startInfo As New ProcessStartInfo()
         startInfo.FileName = currentDirectory + "analysis\muscle5.1.win64.exe" ' 替换为实际的命令行程序路径
@@ -1248,7 +1244,7 @@ Public Class Mainform
                 line = sr.ReadLine
             Loop Until line Is Nothing
             sr.Close()
-            out_path = root_path + "results\" + currentTimeStamp.ToString + "_aln.fasta"
+            out_path = root_path + "history\" + currentTimeStamp.ToString + "_aln.fasta"
             Dim sw1 As New StreamWriter(out_path)
             For i As Integer = 1 To dtView.Count
                 If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
@@ -1265,7 +1261,7 @@ Public Class Mainform
 
 
         PB_value = 100
-        Dim sw_align As New StreamWriter(root_path + "results\" + currentTimeStamp.ToString + ".js")
+        Dim sw_align As New StreamWriter(root_path + "history\" + currentTimeStamp.ToString + ".js")
         Dim sr_align As New StreamReader(out_path)
         sw_align.Write("$(document).ready(function () { let data = " + """")
         sw_align.Write(sr_align.ReadToEnd.Replace(vbCrLf, "\n").Replace(vbCr, "\n").Replace(vbLf, "\n"))
@@ -1274,16 +1270,16 @@ Public Class Mainform
         sw_align.Write("loadNewMSA(data);" + vbCrLf)
         sw_align.Write("});")
         sw_align.Close()
-        If File.Exists(root_path + "results\" + currentTimeStamp.ToString + ".js") Then
-            Dim sw0 As New StreamWriter(currentDirectory + "results/" + currentTimeStamp.ToString + ".html")
+        If File.Exists(root_path + "history\" + currentTimeStamp.ToString + ".js") Then
+            Dim sw0 As New StreamWriter(currentDirectory + "history/" + currentTimeStamp.ToString + ".html")
             Dim sr1 As New StreamReader(currentDirectory + "main/" + language + "/alignmentviewer.txt")
             sw0.Write(sr1.ReadToEnd.Replace("$data$", currentTimeStamp.ToString + ".js"))
             sr1.Close()
             sw0.Close()
-            Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "results/" + currentTimeStamp.ToString + ".html"})
+            Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "history/" + currentTimeStamp.ToString + ".html"})
         End If
         PB_value = 0
-        Dim sw4 As New StreamWriter(currentDirectory + "results/history.csv", True)
+        Dim sw4 As New StreamWriter(currentDirectory + "history/history.csv", True)
         sw4.WriteLine(formattedTime + "," + currentTimeStamp.ToString + ",Sequence Alignment")
         sw4.Close()
         PB_value = 0
@@ -1292,5 +1288,40 @@ Public Class Mainform
     Private Sub Super5AlgorithmToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles Super5AlgorithmToolStripMenuItem.Click
         muscle_align("-super5")
 
+    End Sub
+
+    Private Sub 中国HIV分型ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 中国HIV分型ToolStripMenuItem.Click
+        TabControl1.SelectedIndex = 1
+        DataGridView1.EndEdit()
+        Taxon_Dataset.Tables("Taxon Table").Clear()
+        DataGridView1.DataSource = Nothing
+        data_loaded = False
+        Dim th1 As New Threading.Thread(AddressOf load_csv_data)
+        th1.Start(currentDirectory + "\database\NetST\HIV_ch.csv")
+        data_type = "fas"
+    End Sub
+
+    Private Async Sub 网络图后续分析ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 网络图后续分析ToolStripMenuItem.Click
+        Dim currentUri As Uri = WebView_main.Source
+        Dim timeStamp As String = System.IO.Path.GetFileNameWithoutExtension(currentUri.ToString)
+        Dim seq2hap_file As String = timeStamp + "_seq2hap.csv"
+        Dim graph_json As String = timeStamp + ".json"
+        Dim out_file As String = timeStamp + "_hap_analysis.png"
+
+        Dim startInfo As New ProcessStartInfo()
+        startInfo.FileName = currentDirectory + "analysis\haplotype_analysis.exe" ' 替换为实际的命令行程序路径
+        startInfo.WorkingDirectory = currentDirectory + "history\" ' 替换为实际的运行文件夹路径
+        startInfo.Arguments = "-hap_file " + """" + seq2hap_file + """" + " -graph " + graph_json + " -out " + """" + out_file + """"
+
+        Dim process As Process = Process.Start(startInfo)
+        process.WaitForExit()
+        process.Close()
+
+        If File.Exists(root_path + "history\" + out_file) Then
+            Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "history\" + timeStamp + "_hap_analysis.png"})
+        Else
+            MsgBox("Haplotype network analysis failed. Please check the data.")
+            Me.Invoke(set_web_main_url, New Object() {currentUri.ToString})
+        End If
     End Sub
 End Class

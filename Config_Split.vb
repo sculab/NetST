@@ -44,7 +44,7 @@ Public Class Config_Split
 
 
         If data_type = "fas" Then
-            target_file = root_path + "results\" + currentTimeStamp.ToString + ".fasta"
+            target_file = root_path + "history\" + currentTimeStamp.ToString + ".fasta"
             Dim sw As New StreamWriter(target_file)
             For i As Integer = 1 To dtView.Count
                 If form_main.DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
@@ -56,13 +56,13 @@ Public Class Config_Split
         End If
 
         If data_type = "gb" Then
-            target_file = root_path + "results\" + currentTimeStamp.ToString
+            target_file = root_path + "history\" + currentTimeStamp.ToString
             If Directory.Exists(target_file) = False Then
                 My.Computer.FileSystem.CreateDirectory(target_file)
             End If
             For i As Integer = 1 To dtView.Count
                 If form_main.DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
-                    File.Copy(root_path + "results\out_gb\" + dtView.Item(i - 1).Item(0).ToString + ".gb", target_file + "\" + dtView.Item(i - 1).Item(6) + "#" + dtView.Item(i - 1).Item(dis_id).ToString + ".gb")
+                    File.Copy(root_path + "history\out_gb\" + dtView.Item(i - 1).Item(0).ToString + ".gb", target_file + "\" + dtView.Item(i - 1).Item(6) + "#" + dtView.Item(i - 1).Item(dis_id).ToString + ".gb")
                 End If
             Next
         End If
@@ -81,7 +81,7 @@ Public Class Config_Split
         process.WaitForExit()
         process.Close()
 
-        Dim sw4 As New StreamWriter(currentDirectory + "results/history.csv", True)
+        Dim sw4 As New StreamWriter(currentDirectory + "history/history.csv", True)
         sw4.WriteLine(formattedTime + "," + currentTimeStamp.ToString + ",Primer," + TextBox4.Text)
         sw4.Close()
 

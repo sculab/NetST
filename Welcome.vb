@@ -10,32 +10,29 @@ Public Class Welcome
     Private Sub Welcome_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         System.Threading.Thread.CurrentThread.CurrentCulture = ci
         Timer1.Enabled = True
-
         cpu_info = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER")
+        format_path()
+        load_main()
         'MsgBox(cpu_info)
         form_main.Show()
-        format_path()
-        Dim th1 As New Thread(AddressOf load_main)
-        th1.Start()
     End Sub
     Public Sub load_main()
-        My.Computer.FileSystem.CreateDirectory(root_path + "results")
+        My.Computer.FileSystem.CreateDirectory(root_path + "history")
         My.Computer.FileSystem.CreateDirectory(root_path + "temp")
         current_file = total_file
 
-        Dim filePath As String = root_path + "main\" + "setting.ini"
+        Dim filePath As String = root_path + "analysis\" + "setting.ini"
         settings = ReadSettings(filePath)
 
         ' 读取 language 和 mode 设置
         language = settings.GetValueOrDefault("language", "EN")
-        exe_mode = settings.GetValueOrDefault("mode", "pro")
+        exe_mode = settings.GetValueOrDefault("mode", "basic")
 
         If language = "CH" Then
             to_ch()
         Else
             to_en()
         End If
-
         If exe_mode = "basic" Then
             form_main.分型ToolStripMenuItem.Visible = False
             form_main.本地分析ToolStripMenuItem.Visible = False
@@ -44,6 +41,9 @@ Public Class Welcome
             form_main.分型引物构建ToolStripMenuItem.Visible = False
             form_main.获取序列信息ToolStripMenuItem.Visible = False
             form_main.ToolStripSeparator11.Visible = False
+            form_main.内置数据ToolStripMenuItem.Visible = False
+            form_main.ToolStripSeparator12.Visible = False
+            form_main.网络图后续分析ToolStripMenuItem.Visible = False
         End If
         If exe_mode = "advanced" Then
             form_main.分型ToolStripMenuItem.Visible = True
@@ -53,15 +53,21 @@ Public Class Welcome
             form_main.分型引物构建ToolStripMenuItem.Visible = True
             form_main.获取序列信息ToolStripMenuItem.Visible = True
             form_main.ToolStripSeparator11.Visible = True
+            form_main.内置数据ToolStripMenuItem.Visible = True
+            form_main.ToolStripSeparator12.Visible = True
+            form_main.网络图后续分析ToolStripMenuItem.Visible = True
         End If
         If exe_mode = "HIV" Then
             form_main.分型ToolStripMenuItem.Visible = True
             form_main.本地分析ToolStripMenuItem.Visible = True
-            form_main.ToolStripSeparator2.Visible = False
+            form_main.ToolStripSeparator2.Visible = True
             form_main.ToolStripSeparator9.Visible = False
             form_main.分型引物构建ToolStripMenuItem.Visible = False
             form_main.获取序列信息ToolStripMenuItem.Visible = False
             form_main.ToolStripSeparator11.Visible = False
+            form_main.内置数据ToolStripMenuItem.Visible = True
+            form_main.ToolStripSeparator12.Visible = True
+            form_main.网络图后续分析ToolStripMenuItem.Visible = False
         End If
     End Sub
     Private Sub Welcome_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing

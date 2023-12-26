@@ -64,7 +64,7 @@ Public Class Config_Data
         End If
         Dim startInfo As New ProcessStartInfo()
         startInfo.FileName = currentDirectory + "analysis\MakeData.exe" ' 替换为实际的命令行程序路径
-        startInfo.WorkingDirectory = currentDirectory + "results\" ' 替换为实际的运行文件夹路径
+        startInfo.WorkingDirectory = currentDirectory + "history\" ' 替换为实际的运行文件夹路径
         'startInfo.CreateNoWindow = True
         If RadioButton1.Checked Then
             startInfo.Arguments = "-input " + """" + input + """" + " -file_type " + file_type + " -index_name " + ComboBox1.SelectedIndex.ToString + " -index_type " + ComboBox2.SelectedIndex.ToString + " -index_seq " + ComboBox3.SelectedIndex.ToString + " -out_dir " + """" + TextBox2.Text + """" + " -clean " + CInt(CheckBox1.Checked).ToString + " -valid " + CInt(CheckBox2.Checked).ToString

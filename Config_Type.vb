@@ -70,7 +70,7 @@ Public Class Config_Type
         Dim currentTime As DateTime = DateTime.Now
         Dim currentTimeStamp As Long = (currentTime - New DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds
         Dim formattedTime As String = currentTime.ToString("yyyy-MM-dd HH:mm")
-        Dim in_path As String = root_path + "results\" + currentTimeStamp.ToString + ".fasta"
+        Dim in_path As String = root_path + "history\" + currentTimeStamp.ToString + ".fasta"
 
         Dim sw As New StreamWriter(in_path)
         For i As Integer = 1 To dtView.Count
@@ -86,7 +86,7 @@ Public Class Config_Type
         Dim target_file, result_file As String
         If RadioButton1.Checked Then
             ref_file = TextBox1.Text
-            dict_file = root_path + "results\" + currentTimeStamp.ToString + ".gz"
+            dict_file = root_path + "history\" + currentTimeStamp.ToString + ".gz"
         End If
         If RadioButton2.Checked Then
             ref_file = "nofile"
@@ -101,25 +101,25 @@ Public Class Config_Type
             End Select
         End If
         target_file = in_path
-        result_file = root_path + "results\" + currentTimeStamp.ToString
+        result_file = root_path + "history\" + currentTimeStamp.ToString
 
         'PB_value = 10
-        Dim out_path As String = root_path + "results\" + currentTimeStamp.ToString + "_aln.fasta"
+        Dim out_path As String = root_path + "history\" + currentTimeStamp.ToString + "_aln.fasta"
 
         Dim startInfo As New ProcessStartInfo()
         startInfo.FileName = currentDirectory + "analysis\GetType.exe" ' 替换为实际的命令行程序路径
-        startInfo.WorkingDirectory = currentDirectory + "results\" ' 替换为实际的运行文件夹路径
+        startInfo.WorkingDirectory = currentDirectory + "history\" ' 替换为实际的运行文件夹路径
         'startInfo.CreateNoWindow = True
         startInfo.Arguments = "-k " + k_value + " -db " + """" + dict_file + """" + " -ref " + """" + ref_file + """" + " -input " + """" + target_file + """" + " -output " + """" + result_file + """" + " -cut 0"
         Dim process As Process = Process.Start(startInfo)
         process.WaitForExit()
         process.Close()
 
-        Dim sw0 As New StreamWriter(currentDirectory + "results\" + currentTimeStamp.ToString + ".html")
+        Dim sw0 As New StreamWriter(currentDirectory + "history\" + currentTimeStamp.ToString + ".html")
         Dim sr1 As New StreamReader(currentDirectory + "main\" + language + "\header_type.txt")
         sw0.Write(sr1.ReadToEnd)
         sr1.Close()
-        Dim sr2 As New StreamReader(currentDirectory + "results\" + currentTimeStamp.ToString + ".csv")
+        Dim sr2 As New StreamReader(currentDirectory + "history\" + currentTimeStamp.ToString + ".csv")
         Dim line As String = sr2.ReadLine
         line = sr2.ReadLine
         If line <> "" Then
@@ -136,7 +136,7 @@ Public Class Config_Type
         sw0.Write(sr3.ReadToEnd)
         sw0.Close()
 
-        Dim sw4 As New StreamWriter(currentDirectory + "results/history.csv", True)
+        Dim sw4 As New StreamWriter(currentDirectory + "history/history.csv", True)
         sw4.WriteLine(formattedTime + "," + currentTimeStamp.ToString + ",Genotyping")
         sw4.Close()
 
