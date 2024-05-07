@@ -51,6 +51,17 @@ Module Module_Function
 		Next
 		Return True
 	End Function
+
+	Public Function RemoveNonAGCTChars(input As String) As String
+		Dim result As String = ""
+		For Each c As Char In input
+			If "AGCT".Contains(c) Then
+				result &= c
+			End If
+		Next
+		Return result
+	End Function
+
 	Public Sub safe_copy(source, target)
 		If File.Exists(source) Then
 			File.Copy(source, target, True)

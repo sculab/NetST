@@ -10,6 +10,7 @@ Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Button
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports System.Windows.Forms
 Imports System.Text
+Imports Microsoft.Web.WebView2.WinForms
 
 Public Class Mainform
     Public Taxon_Dataset As New DataSet
@@ -65,6 +66,9 @@ Public Class Mainform
         End
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        WebView_main.CreationProperties = New CoreWebView2CreationProperties With {
+            .BrowserExecutableFolder = Path.Combine(root_path, "webview")
+        }
         CheckForIllegalCrossThreadCalls = False
         currentDirectory = Application.StartupPath
         set_web_main_url = New SetUrl(AddressOf web_main_seturl)
@@ -369,18 +373,24 @@ Public Class Mainform
             startInfo.FileName = currentDirectory + "analysis\sierra.exe" ' 替换为实际的命令行程序路径
             startInfo.WorkingDirectory = currentDirectory + "analysis\" ' 替换为实际的运行文件夹路径
             startInfo.Arguments = "fasta " + """" + in_path + """" + " -o " + """" + out_path + """"
-            startInfo.CreateNoWindow = True
+            startInfo.CreateNoWindow = False
         Else
             startInfo.FileName = currentDirectory + "analysis\sierralocal.exe" ' 替换为实际的命令行程序路径
             startInfo.WorkingDirectory = currentDirectory + "analysis\" ' 替换为实际的运行文件夹路径
-            startInfo.CreateNoWindow = True
+            startInfo.CreateNoWindow = False
             startInfo.Arguments = " " + """" + in_path + """" + " -alignment nuc"
         End If
 
         Dim process As Process = Process.Start(startInfo)
         process.WaitForExit()
         process.Close()
-        Dim jsonfile As String = root_path + "history\" + currentTimeStamp.ToString + ".0.json"
+        Dim jsonfile As String
+        If online Then
+            jsonfile = root_path + "history\" + currentTimeStamp.ToString + ".0.json"
+        Else
+            jsonfile = root_path + "history\" + currentTimeStamp.ToString + "_results.json"
+        End If
+
         If File.Exists(jsonfile) Then
             Dim sr As New StreamReader(jsonfile)
             Dim json_str As String = sr.ReadToEnd
@@ -1161,17 +1171,6 @@ Public Class Mainform
         mafft_align("--genafpair  --maxiterate 16")
 
     End Sub
-
-
-    Private Sub EnglishToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles EnglishToolStripMenuItem.Click
-        If language = "EN" Then
-            to_ch()
-        Else
-            to_en()
-        End If
-        settings("language") = language
-    End Sub
-
     Private Sub PPPAlgorithmToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PPPAlgorithmToolStripMenuItem.Click
         muscle_align("-align")
     End Sub
@@ -1297,7 +1296,7 @@ Public Class Mainform
         DataGridView1.DataSource = Nothing
         data_loaded = False
         Dim th1 As New Threading.Thread(AddressOf load_csv_data)
-        th1.Start(currentDirectory + "\database\NetST\HIV_ch.csv")
+        th1.Start(currentDirectory + "analysis\database\HIV_ch.csv")
         data_type = "fas"
     End Sub
 
@@ -1323,5 +1322,14 @@ Public Class Mainform
             MsgBox("Haplotype network analysis failed. Please check the data.")
             Me.Invoke(set_web_main_url, New Object() {currentUri.ToString})
         End If
+    End Sub
+
+    Private Sub EnglishToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EnglishToolStripMenuItem.Click
+        If language = "EN" Then
+            to_ch()
+        Else
+            to_en()
+        End If
+        settings("language") = language
     End Sub
 End Class

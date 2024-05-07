@@ -23,8 +23,8 @@ Partial Class Mainform
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
-        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
         WebView_main = New Microsoft.Web.WebView2.WinForms.WebView2()
         MenuStrip1 = New MenuStrip()
         文件FToolStripMenuItem = New ToolStripMenuItem()
@@ -65,6 +65,11 @@ Partial Class Mainform
         混合分型分析ToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator9 = New ToolStripSeparator()
         分型引物构建ToolStripMenuItem = New ToolStripMenuItem()
+        浏览ToolStripMenuItem = New ToolStripMenuItem()
+        前进ToolStripMenuItem = New ToolStripMenuItem()
+        后退ToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripSeparator1 = New ToolStripSeparator()
+        分析记录ToolStripMenuItem = New ToolStripMenuItem()
         工具ToolStripMenuItem = New ToolStripMenuItem()
         分割序列文件ToolStripMenuItem = New ToolStripMenuItem()
         合并序列文件ToolStripMenuItem = New ToolStripMenuItem()
@@ -75,13 +80,7 @@ Partial Class Mainform
         日期转换数字ToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator11 = New ToolStripSeparator()
         CSV生成序列ToolStripMenuItem = New ToolStripMenuItem()
-        按Barcode分割ToolStripMenuItem = New ToolStripMenuItem()
-        浏览ToolStripMenuItem = New ToolStripMenuItem()
-        前进ToolStripMenuItem = New ToolStripMenuItem()
-        后退ToolStripMenuItem = New ToolStripMenuItem()
-        ToolStripSeparator1 = New ToolStripSeparator()
-        分析记录ToolStripMenuItem = New ToolStripMenuItem()
-        EnglishToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripSeparator13 = New ToolStripSeparator()
         网络图后续分析ToolStripMenuItem = New ToolStripMenuItem()
         TabControl1 = New TabControl()
         TabPage1 = New TabPage()
@@ -93,6 +92,7 @@ Partial Class Mainform
         TextBox1 = New TextBox()
         ProgressBar1 = New ProgressBar()
         Timer1 = New Timer(components)
+        EnglishToolStripMenuItem = New ToolStripMenuItem()
         CType(WebView_main, ComponentModel.ISupportInitialize).BeginInit()
         MenuStrip1.SuspendLayout()
         TabControl1.SuspendLayout()
@@ -116,7 +116,7 @@ Partial Class Mainform
         ' 
         ' MenuStrip1
         ' 
-        MenuStrip1.Items.AddRange(New ToolStripItem() {文件FToolStripMenuItem, 编辑ToolStripMenuItem, 分析ToolStripMenuItem, 工具ToolStripMenuItem, 浏览ToolStripMenuItem, EnglishToolStripMenuItem, 网络图后续分析ToolStripMenuItem})
+        MenuStrip1.Items.AddRange(New ToolStripItem() {文件FToolStripMenuItem, 编辑ToolStripMenuItem, 分析ToolStripMenuItem, 浏览ToolStripMenuItem, 工具ToolStripMenuItem, 网络图后续分析ToolStripMenuItem})
         MenuStrip1.Location = New Point(0, 0)
         MenuStrip1.Name = "MenuStrip1"
         MenuStrip1.Size = New Size(800, 25)
@@ -186,7 +186,7 @@ Partial Class Mainform
         内置数据ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {中国HIV分型ToolStripMenuItem})
         内置数据ToolStripMenuItem.Name = "内置数据ToolStripMenuItem"
         内置数据ToolStripMenuItem.Size = New Size(124, 22)
-        内置数据ToolStripMenuItem.Text = "内置数据"
+        内置数据ToolStripMenuItem.Text = "数据库"
         ' 
         ' 中国HIV分型ToolStripMenuItem
         ' 
@@ -353,72 +353,6 @@ Partial Class Mainform
         分型引物构建ToolStripMenuItem.Text = "分型引物构建"
         分型引物构建ToolStripMenuItem.Visible = False
         ' 
-        ' 工具ToolStripMenuItem
-        ' 
-        工具ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {分割序列文件ToolStripMenuItem, 合并序列文件ToolStripMenuItem, 清理序列ToolStripMenuItem, ToolStripSeparator6, 获取序列信息ToolStripMenuItem, ToolStripSeparator7, 日期转换数字ToolStripMenuItem, ToolStripSeparator11, CSV生成序列ToolStripMenuItem, 按Barcode分割ToolStripMenuItem})
-        工具ToolStripMenuItem.Name = "工具ToolStripMenuItem"
-        工具ToolStripMenuItem.Size = New Size(44, 21)
-        工具ToolStripMenuItem.Text = "工具"
-        ' 
-        ' 分割序列文件ToolStripMenuItem
-        ' 
-        分割序列文件ToolStripMenuItem.Name = "分割序列文件ToolStripMenuItem"
-        分割序列文件ToolStripMenuItem.Size = New Size(161, 22)
-        分割序列文件ToolStripMenuItem.Text = "分割序列文件"
-        ' 
-        ' 合并序列文件ToolStripMenuItem
-        ' 
-        合并序列文件ToolStripMenuItem.Name = "合并序列文件ToolStripMenuItem"
-        合并序列文件ToolStripMenuItem.Size = New Size(161, 22)
-        合并序列文件ToolStripMenuItem.Text = "合并序列文件"
-        ' 
-        ' 清理序列ToolStripMenuItem
-        ' 
-        清理序列ToolStripMenuItem.Name = "清理序列ToolStripMenuItem"
-        清理序列ToolStripMenuItem.Size = New Size(161, 22)
-        清理序列ToolStripMenuItem.Text = "清理序列数据"
-        ' 
-        ' ToolStripSeparator6
-        ' 
-        ToolStripSeparator6.Name = "ToolStripSeparator6"
-        ToolStripSeparator6.Size = New Size(158, 6)
-        ' 
-        ' 获取序列信息ToolStripMenuItem
-        ' 
-        获取序列信息ToolStripMenuItem.Name = "获取序列信息ToolStripMenuItem"
-        获取序列信息ToolStripMenuItem.Size = New Size(161, 22)
-        获取序列信息ToolStripMenuItem.Text = "序列生成表格"
-        获取序列信息ToolStripMenuItem.Visible = False
-        ' 
-        ' ToolStripSeparator7
-        ' 
-        ToolStripSeparator7.Name = "ToolStripSeparator7"
-        ToolStripSeparator7.Size = New Size(158, 6)
-        ToolStripSeparator7.Visible = False
-        ' 
-        ' 日期转换数字ToolStripMenuItem
-        ' 
-        日期转换数字ToolStripMenuItem.Name = "日期转换数字ToolStripMenuItem"
-        日期转换数字ToolStripMenuItem.Size = New Size(161, 22)
-        日期转换数字ToolStripMenuItem.Text = "日期转换数字"
-        ' 
-        ' ToolStripSeparator11
-        ' 
-        ToolStripSeparator11.Name = "ToolStripSeparator11"
-        ToolStripSeparator11.Size = New Size(158, 6)
-        ' 
-        ' CSV生成序列ToolStripMenuItem
-        ' 
-        CSV生成序列ToolStripMenuItem.Name = "CSV生成序列ToolStripMenuItem"
-        CSV生成序列ToolStripMenuItem.Size = New Size(161, 22)
-        CSV生成序列ToolStripMenuItem.Text = "构建分型数据集"
-        ' 
-        ' 按Barcode分割ToolStripMenuItem
-        ' 
-        按Barcode分割ToolStripMenuItem.Name = "按Barcode分割ToolStripMenuItem"
-        按Barcode分割ToolStripMenuItem.Size = New Size(161, 22)
-        按Barcode分割ToolStripMenuItem.Text = "按Barcode分割"
-        ' 
         ' 浏览ToolStripMenuItem
         ' 
         浏览ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {前进ToolStripMenuItem, 后退ToolStripMenuItem, ToolStripSeparator1, 分析记录ToolStripMenuItem})
@@ -449,17 +383,77 @@ Partial Class Mainform
         分析记录ToolStripMenuItem.Size = New Size(124, 22)
         分析记录ToolStripMenuItem.Text = "查看记录"
         ' 
-        ' EnglishToolStripMenuItem
+        ' 工具ToolStripMenuItem
         ' 
-        EnglishToolStripMenuItem.Name = "EnglishToolStripMenuItem"
-        EnglishToolStripMenuItem.Size = New Size(61, 21)
-        EnglishToolStripMenuItem.Text = "English"
+        工具ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {分割序列文件ToolStripMenuItem, 合并序列文件ToolStripMenuItem, 清理序列ToolStripMenuItem, ToolStripSeparator6, 获取序列信息ToolStripMenuItem, ToolStripSeparator7, 日期转换数字ToolStripMenuItem, ToolStripSeparator11, CSV生成序列ToolStripMenuItem, ToolStripSeparator13, EnglishToolStripMenuItem})
+        工具ToolStripMenuItem.Name = "工具ToolStripMenuItem"
+        工具ToolStripMenuItem.Size = New Size(44, 21)
+        工具ToolStripMenuItem.Text = "工具"
+        ' 
+        ' 分割序列文件ToolStripMenuItem
+        ' 
+        分割序列文件ToolStripMenuItem.Name = "分割序列文件ToolStripMenuItem"
+        分割序列文件ToolStripMenuItem.Size = New Size(180, 22)
+        分割序列文件ToolStripMenuItem.Text = "分割序列文件"
+        ' 
+        ' 合并序列文件ToolStripMenuItem
+        ' 
+        合并序列文件ToolStripMenuItem.Name = "合并序列文件ToolStripMenuItem"
+        合并序列文件ToolStripMenuItem.Size = New Size(180, 22)
+        合并序列文件ToolStripMenuItem.Text = "合并序列文件"
+        ' 
+        ' 清理序列ToolStripMenuItem
+        ' 
+        清理序列ToolStripMenuItem.Name = "清理序列ToolStripMenuItem"
+        清理序列ToolStripMenuItem.Size = New Size(180, 22)
+        清理序列ToolStripMenuItem.Text = "清理序列数据"
+        ' 
+        ' ToolStripSeparator6
+        ' 
+        ToolStripSeparator6.Name = "ToolStripSeparator6"
+        ToolStripSeparator6.Size = New Size(177, 6)
+        ' 
+        ' 获取序列信息ToolStripMenuItem
+        ' 
+        获取序列信息ToolStripMenuItem.Name = "获取序列信息ToolStripMenuItem"
+        获取序列信息ToolStripMenuItem.Size = New Size(180, 22)
+        获取序列信息ToolStripMenuItem.Text = "序列生成表格"
+        获取序列信息ToolStripMenuItem.Visible = False
+        ' 
+        ' ToolStripSeparator7
+        ' 
+        ToolStripSeparator7.Name = "ToolStripSeparator7"
+        ToolStripSeparator7.Size = New Size(177, 6)
+        ToolStripSeparator7.Visible = False
+        ' 
+        ' 日期转换数字ToolStripMenuItem
+        ' 
+        日期转换数字ToolStripMenuItem.Name = "日期转换数字ToolStripMenuItem"
+        日期转换数字ToolStripMenuItem.Size = New Size(180, 22)
+        日期转换数字ToolStripMenuItem.Text = "日期转换数字"
+        ' 
+        ' ToolStripSeparator11
+        ' 
+        ToolStripSeparator11.Name = "ToolStripSeparator11"
+        ToolStripSeparator11.Size = New Size(177, 6)
+        ' 
+        ' CSV生成序列ToolStripMenuItem
+        ' 
+        CSV生成序列ToolStripMenuItem.Name = "CSV生成序列ToolStripMenuItem"
+        CSV生成序列ToolStripMenuItem.Size = New Size(180, 22)
+        CSV生成序列ToolStripMenuItem.Text = "构建分型数据集"
+        ' 
+        ' ToolStripSeparator13
+        ' 
+        ToolStripSeparator13.Name = "ToolStripSeparator13"
+        ToolStripSeparator13.Size = New Size(177, 6)
         ' 
         ' 网络图后续分析ToolStripMenuItem
         ' 
         网络图后续分析ToolStripMenuItem.Name = "网络图后续分析ToolStripMenuItem"
         网络图后续分析ToolStripMenuItem.Size = New Size(80, 21)
         网络图后续分析ToolStripMenuItem.Text = "网络图分析"
+        网络图后续分析ToolStripMenuItem.Visible = False
         ' 
         ' TabControl1
         ' 
@@ -497,23 +491,23 @@ Partial Class Mainform
         ' 
         ' DataGridView1
         ' 
-        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = SystemColors.Control
-        DataGridViewCellStyle3.Font = New Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point)
-        DataGridViewCellStyle3.ForeColor = SystemColors.WindowText
-        DataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = DataGridViewTriState.True
-        DataGridView1.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = SystemColors.Control
+        DataGridViewCellStyle1.Font = New Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point)
+        DataGridViewCellStyle1.ForeColor = SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = DataGridViewTriState.True
+        DataGridView1.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         DataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = SystemColors.Window
-        DataGridViewCellStyle4.Font = New Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point)
-        DataGridViewCellStyle4.ForeColor = SystemColors.ControlText
-        DataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = DataGridViewTriState.False
-        DataGridView1.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = SystemColors.Window
+        DataGridViewCellStyle2.Font = New Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point)
+        DataGridViewCellStyle2.ForeColor = SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = DataGridViewTriState.False
+        DataGridView1.DefaultCellStyle = DataGridViewCellStyle2
         DataGridView1.Dock = DockStyle.Fill
         DataGridView1.Location = New Point(3, 3)
         DataGridView1.Name = "DataGridView1"
@@ -574,6 +568,12 @@ Partial Class Mainform
         ' 
         Timer1.Enabled = True
         Timer1.Interval = 1000
+        ' 
+        ' EnglishToolStripMenuItem
+        ' 
+        EnglishToolStripMenuItem.Name = "EnglishToolStripMenuItem"
+        EnglishToolStripMenuItem.Size = New Size(180, 22)
+        EnglishToolStripMenuItem.Text = "English"
         ' 
         ' Mainform
         ' 
@@ -665,10 +665,10 @@ Partial Class Mainform
     Friend WithEvents EnglishToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents PPPAlgorithmToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Super5AlgorithmToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents EnglishToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents 按Barcode分割ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 网络图后续分析ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator12 As ToolStripSeparator
     Friend WithEvents 内置数据ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 中国HIV分型ToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents 网络图后续分析ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator13 As ToolStripSeparator
+    Friend WithEvents EnglishToolStripMenuItem As ToolStripMenuItem
 End Class

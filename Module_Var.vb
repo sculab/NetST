@@ -7,7 +7,7 @@
 #ElseIf TargetOS = "win32" Then
     Public TargetOS As String = "win32"
 #End If
-    Public version As String = "20231207"
+    Public version As String = "20240307"
     Public settings As Dictionary(Of String, String)
     Public currentDirectory As String
     Public dtView As New DataView

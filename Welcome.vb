@@ -13,6 +13,7 @@ Public Class Welcome
         cpu_info = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER")
         format_path()
         load_main()
+
         'MsgBox(cpu_info)
         form_main.Show()
     End Sub
@@ -26,7 +27,7 @@ Public Class Welcome
 
         ' 读取 language 和 mode 设置
         language = settings.GetValueOrDefault("language", "EN")
-        exe_mode = settings.GetValueOrDefault("mode", "basic")
+        exe_mode = settings.GetValueOrDefault("mode", "basic").ToLower
 
         If language = "CH" Then
             to_ch()
@@ -57,7 +58,7 @@ Public Class Welcome
             form_main.ToolStripSeparator12.Visible = True
             form_main.网络图后续分析ToolStripMenuItem.Visible = True
         End If
-        If exe_mode = "HIV" Then
+        If exe_mode = "hiv" Then
             form_main.分型ToolStripMenuItem.Visible = True
             form_main.本地分析ToolStripMenuItem.Visible = True
             form_main.ToolStripSeparator2.Visible = True

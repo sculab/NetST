@@ -172,7 +172,7 @@ Module Module_Language
         form_config_clean.Label5.Text = "Name Preview:"
         form_config_clean.CheckBox6.Text = "Replace Characters in Seq Names"
         form_config_clean.Text = "Sequence Cleanup"
-        form_main.内置数据ToolStripMenuItem.Text = "Build-in Database"
+        form_main.内置数据ToolStripMenuItem.Text = "Database"
 
 
         If data_type = "gb" Then
@@ -360,7 +360,7 @@ Module Module_Language
         form_config_clean.Label5.Text = "序列名预览:"
         form_config_clean.CheckBox6.Text = "替换序列名中的字符"
         form_config_clean.Text = "序列清理"
-        form_main.内置数据ToolStripMenuItem.Text = "内置数据"
+        form_main.内置数据ToolStripMenuItem.Text = "数据库"
 
         If data_type = "gb" Then
             form_config_primer.Label2.Text = "基因最小长度"
