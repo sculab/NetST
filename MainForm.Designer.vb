@@ -34,18 +34,10 @@ Partial Class Mainform
         ToolStripSeparator4 = New ToolStripSeparator()
         保存数据ToolStripMenuItem = New ToolStripMenuItem()
         导出序列ToolStripMenuItem = New ToolStripMenuItem()
-        ToolStripSeparator10 = New ToolStripSeparator()
-        导出分型数据集ToolStripMenuItem = New ToolStripMenuItem()
-        ToolStripSeparator12 = New ToolStripSeparator()
-        内置数据ToolStripMenuItem = New ToolStripMenuItem()
-        中国HIV分型ToolStripMenuItem = New ToolStripMenuItem()
         编辑ToolStripMenuItem = New ToolStripMenuItem()
         全选ToolStripMenuItem = New ToolStripMenuItem()
         清除ToolStripMenuItem = New ToolStripMenuItem()
         分析ToolStripMenuItem = New ToolStripMenuItem()
-        分型ToolStripMenuItem = New ToolStripMenuItem()
-        本地分析ToolStripMenuItem = New ToolStripMenuItem()
-        ToolStripSeparator2 = New ToolStripSeparator()
         MSN单倍型网络ToolStripMenuItem = New ToolStripMenuItem()
         MJN单倍型网络ToolStripMenuItem = New ToolStripMenuItem()
         单倍型网络ToolStripMenuItem = New ToolStripMenuItem()
@@ -61,27 +53,20 @@ Partial Class Mainform
         PPPAlgorithmToolStripMenuItem = New ToolStripMenuItem()
         Super5AlgorithmToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator5 = New ToolStripSeparator()
-        基于参考序列分型ToolStripMenuItem = New ToolStripMenuItem()
-        混合分型分析ToolStripMenuItem = New ToolStripMenuItem()
-        ToolStripSeparator9 = New ToolStripSeparator()
-        分型引物构建ToolStripMenuItem = New ToolStripMenuItem()
+        网络图可视化ToolStripMenuItem = New ToolStripMenuItem()
         浏览ToolStripMenuItem = New ToolStripMenuItem()
         前进ToolStripMenuItem = New ToolStripMenuItem()
         后退ToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator1 = New ToolStripSeparator()
         分析记录ToolStripMenuItem = New ToolStripMenuItem()
         工具ToolStripMenuItem = New ToolStripMenuItem()
-        分割序列文件ToolStripMenuItem = New ToolStripMenuItem()
-        合并序列文件ToolStripMenuItem = New ToolStripMenuItem()
         清理序列ToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator6 = New ToolStripSeparator()
         获取序列信息ToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator7 = New ToolStripSeparator()
         日期转换数字ToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator11 = New ToolStripSeparator()
-        CSV生成序列ToolStripMenuItem = New ToolStripMenuItem()
-        ToolStripSeparator13 = New ToolStripSeparator()
-        网络图后续分析ToolStripMenuItem = New ToolStripMenuItem()
+        EnglishToolStripMenuItem = New ToolStripMenuItem()
         TabControl1 = New TabControl()
         TabPage1 = New TabPage()
         TabPage2 = New TabPage()
@@ -92,7 +77,6 @@ Partial Class Mainform
         TextBox1 = New TextBox()
         ProgressBar1 = New ProgressBar()
         Timer1 = New Timer(components)
-        EnglishToolStripMenuItem = New ToolStripMenuItem()
         CType(WebView_main, ComponentModel.ISupportInitialize).BeginInit()
         MenuStrip1.SuspendLayout()
         TabControl1.SuspendLayout()
@@ -116,7 +100,7 @@ Partial Class Mainform
         ' 
         ' MenuStrip1
         ' 
-        MenuStrip1.Items.AddRange(New ToolStripItem() {文件FToolStripMenuItem, 编辑ToolStripMenuItem, 分析ToolStripMenuItem, 浏览ToolStripMenuItem, 工具ToolStripMenuItem, 网络图后续分析ToolStripMenuItem})
+        MenuStrip1.Items.AddRange(New ToolStripItem() {文件FToolStripMenuItem, 编辑ToolStripMenuItem, 分析ToolStripMenuItem, 浏览ToolStripMenuItem, 工具ToolStripMenuItem})
         MenuStrip1.Location = New Point(0, 0)
         MenuStrip1.Name = "MenuStrip1"
         MenuStrip1.Size = New Size(800, 25)
@@ -125,7 +109,7 @@ Partial Class Mainform
         ' 
         ' 文件FToolStripMenuItem
         ' 
-        文件FToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {载入序列ToolStripMenuItem, 载入数据ToolStripMenuItem, 增加数据ToolStripMenuItem, ToolStripSeparator4, 保存数据ToolStripMenuItem, 导出序列ToolStripMenuItem, ToolStripSeparator10, 导出分型数据集ToolStripMenuItem, ToolStripSeparator12, 内置数据ToolStripMenuItem})
+        文件FToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {载入序列ToolStripMenuItem, 载入数据ToolStripMenuItem, 增加数据ToolStripMenuItem, ToolStripSeparator4, 保存数据ToolStripMenuItem, 导出序列ToolStripMenuItem})
         文件FToolStripMenuItem.Name = "文件FToolStripMenuItem"
         文件FToolStripMenuItem.Size = New Size(58, 21)
         文件FToolStripMenuItem.Text = "文件(&F)"
@@ -165,35 +149,6 @@ Partial Class Mainform
         导出序列ToolStripMenuItem.Size = New Size(124, 22)
         导出序列ToolStripMenuItem.Text = "导出序列"
         ' 
-        ' ToolStripSeparator10
-        ' 
-        ToolStripSeparator10.Name = "ToolStripSeparator10"
-        ToolStripSeparator10.Size = New Size(121, 6)
-        ' 
-        ' 导出分型数据集ToolStripMenuItem
-        ' 
-        导出分型数据集ToolStripMenuItem.Name = "导出分型数据集ToolStripMenuItem"
-        导出分型数据集ToolStripMenuItem.Size = New Size(124, 22)
-        导出分型数据集ToolStripMenuItem.Text = "导出分型"
-        ' 
-        ' ToolStripSeparator12
-        ' 
-        ToolStripSeparator12.Name = "ToolStripSeparator12"
-        ToolStripSeparator12.Size = New Size(121, 6)
-        ' 
-        ' 内置数据ToolStripMenuItem
-        ' 
-        内置数据ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {中国HIV分型ToolStripMenuItem})
-        内置数据ToolStripMenuItem.Name = "内置数据ToolStripMenuItem"
-        内置数据ToolStripMenuItem.Size = New Size(124, 22)
-        内置数据ToolStripMenuItem.Text = "数据库"
-        ' 
-        ' 中国HIV分型ToolStripMenuItem
-        ' 
-        中国HIV分型ToolStripMenuItem.Name = "中国HIV分型ToolStripMenuItem"
-        中国HIV分型ToolStripMenuItem.Size = New Size(145, 22)
-        中国HIV分型ToolStripMenuItem.Text = "中国HIV分型"
-        ' 
         ' 编辑ToolStripMenuItem
         ' 
         编辑ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {全选ToolStripMenuItem, 清除ToolStripMenuItem})
@@ -215,57 +170,39 @@ Partial Class Mainform
         ' 
         ' 分析ToolStripMenuItem
         ' 
-        分析ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {分型ToolStripMenuItem, 本地分析ToolStripMenuItem, ToolStripSeparator2, MSN单倍型网络ToolStripMenuItem, MJN单倍型网络ToolStripMenuItem, 单倍型网络ToolStripMenuItem, ToolStripSeparator3, 序列比对高速ToolStripMenuItem, 序列比对ToolStripMenuItem, ToolStripSeparator5, 基于参考序列分型ToolStripMenuItem, 混合分型分析ToolStripMenuItem, ToolStripSeparator9, 分型引物构建ToolStripMenuItem})
+        分析ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {MSN单倍型网络ToolStripMenuItem, MJN单倍型网络ToolStripMenuItem, 单倍型网络ToolStripMenuItem, ToolStripSeparator3, 序列比对高速ToolStripMenuItem, 序列比对ToolStripMenuItem, ToolStripSeparator5, 网络图可视化ToolStripMenuItem})
         分析ToolStripMenuItem.Name = "分析ToolStripMenuItem"
         分析ToolStripMenuItem.Size = New Size(44, 21)
         分析ToolStripMenuItem.Text = "分析"
         ' 
-        ' 分型ToolStripMenuItem
-        ' 
-        分型ToolStripMenuItem.Name = "分型ToolStripMenuItem"
-        分型ToolStripMenuItem.Size = New Size(189, 22)
-        分型ToolStripMenuItem.Text = "HIV耐药性分析(远程)"
-        ' 
-        ' 本地分析ToolStripMenuItem
-        ' 
-        本地分析ToolStripMenuItem.Name = "本地分析ToolStripMenuItem"
-        本地分析ToolStripMenuItem.Size = New Size(189, 22)
-        本地分析ToolStripMenuItem.Text = "HIV耐药性分析(本地)"
-        ' 
-        ' ToolStripSeparator2
-        ' 
-        ToolStripSeparator2.Name = "ToolStripSeparator2"
-        ToolStripSeparator2.Size = New Size(186, 6)
-        ToolStripSeparator2.Visible = False
-        ' 
         ' MSN单倍型网络ToolStripMenuItem
         ' 
         MSN单倍型网络ToolStripMenuItem.Name = "MSN单倍型网络ToolStripMenuItem"
-        MSN单倍型网络ToolStripMenuItem.Size = New Size(189, 22)
+        MSN单倍型网络ToolStripMenuItem.Size = New Size(173, 22)
         MSN单倍型网络ToolStripMenuItem.Text = "MSN单倍型网络"
         ' 
         ' MJN单倍型网络ToolStripMenuItem
         ' 
         MJN单倍型网络ToolStripMenuItem.Name = "MJN单倍型网络ToolStripMenuItem"
-        MJN单倍型网络ToolStripMenuItem.Size = New Size(189, 22)
+        MJN单倍型网络ToolStripMenuItem.Size = New Size(173, 22)
         MJN单倍型网络ToolStripMenuItem.Text = "MJN单倍型网络"
         ' 
         ' 单倍型网络ToolStripMenuItem
         ' 
         单倍型网络ToolStripMenuItem.Name = "单倍型网络ToolStripMenuItem"
-        单倍型网络ToolStripMenuItem.Size = New Size(189, 22)
+        单倍型网络ToolStripMenuItem.Size = New Size(173, 22)
         单倍型网络ToolStripMenuItem.Text = "TCS单倍型网络"
         ' 
         ' ToolStripSeparator3
         ' 
         ToolStripSeparator3.Name = "ToolStripSeparator3"
-        ToolStripSeparator3.Size = New Size(186, 6)
+        ToolStripSeparator3.Size = New Size(170, 6)
         ' 
         ' 序列比对高速ToolStripMenuItem
         ' 
         序列比对高速ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {AutoToolStripMenuItem, FFTNS1VeryFastButVeryRoughToolStripMenuItem, FFTNS2FastButRoughToolStripMenuItem, GINSiVerySlowToolStripMenuItem, LINSiMostAccurateVerySlowToolStripMenuItem, EINSiForLongUnalignableRegionsVerySlowToolStripMenuItem})
         序列比对高速ToolStripMenuItem.Name = "序列比对高速ToolStripMenuItem"
-        序列比对高速ToolStripMenuItem.Size = New Size(189, 22)
+        序列比对高速ToolStripMenuItem.Size = New Size(173, 22)
         序列比对高速ToolStripMenuItem.Text = "序列比对(Mafft)"
         ' 
         ' AutoToolStripMenuItem
@@ -308,7 +245,7 @@ Partial Class Mainform
         ' 
         序列比对ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {PPPAlgorithmToolStripMenuItem, Super5AlgorithmToolStripMenuItem})
         序列比对ToolStripMenuItem.Name = "序列比对ToolStripMenuItem"
-        序列比对ToolStripMenuItem.Size = New Size(189, 22)
+        序列比对ToolStripMenuItem.Size = New Size(173, 22)
         序列比对ToolStripMenuItem.Text = "序列比对(Muscle)"
         ' 
         ' PPPAlgorithmToolStripMenuItem
@@ -326,32 +263,13 @@ Partial Class Mainform
         ' ToolStripSeparator5
         ' 
         ToolStripSeparator5.Name = "ToolStripSeparator5"
-        ToolStripSeparator5.Size = New Size(186, 6)
+        ToolStripSeparator5.Size = New Size(170, 6)
         ' 
-        ' 基于参考序列分型ToolStripMenuItem
+        ' 网络图可视化ToolStripMenuItem
         ' 
-        基于参考序列分型ToolStripMenuItem.Name = "基于参考序列分型ToolStripMenuItem"
-        基于参考序列分型ToolStripMenuItem.Size = New Size(189, 22)
-        基于参考序列分型ToolStripMenuItem.Text = "快速分型/鉴定"
-        ' 
-        ' 混合分型分析ToolStripMenuItem
-        ' 
-        混合分型分析ToolStripMenuItem.Name = "混合分型分析ToolStripMenuItem"
-        混合分型分析ToolStripMenuItem.Size = New Size(189, 22)
-        混合分型分析ToolStripMenuItem.Text = "混合分型分析"
-        ' 
-        ' ToolStripSeparator9
-        ' 
-        ToolStripSeparator9.Name = "ToolStripSeparator9"
-        ToolStripSeparator9.Size = New Size(186, 6)
-        ToolStripSeparator9.Visible = False
-        ' 
-        ' 分型引物构建ToolStripMenuItem
-        ' 
-        分型引物构建ToolStripMenuItem.Name = "分型引物构建ToolStripMenuItem"
-        分型引物构建ToolStripMenuItem.Size = New Size(189, 22)
-        分型引物构建ToolStripMenuItem.Text = "分型引物构建"
-        分型引物构建ToolStripMenuItem.Visible = False
+        网络图可视化ToolStripMenuItem.Name = "网络图可视化ToolStripMenuItem"
+        网络图可视化ToolStripMenuItem.Size = New Size(173, 22)
+        网络图可视化ToolStripMenuItem.Text = "网络图可视化"
         ' 
         ' 浏览ToolStripMenuItem
         ' 
@@ -385,22 +303,10 @@ Partial Class Mainform
         ' 
         ' 工具ToolStripMenuItem
         ' 
-        工具ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {分割序列文件ToolStripMenuItem, 合并序列文件ToolStripMenuItem, 清理序列ToolStripMenuItem, ToolStripSeparator6, 获取序列信息ToolStripMenuItem, ToolStripSeparator7, 日期转换数字ToolStripMenuItem, ToolStripSeparator11, CSV生成序列ToolStripMenuItem, ToolStripSeparator13, EnglishToolStripMenuItem})
+        工具ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {清理序列ToolStripMenuItem, ToolStripSeparator6, 获取序列信息ToolStripMenuItem, ToolStripSeparator7, 日期转换数字ToolStripMenuItem, ToolStripSeparator11, EnglishToolStripMenuItem})
         工具ToolStripMenuItem.Name = "工具ToolStripMenuItem"
         工具ToolStripMenuItem.Size = New Size(44, 21)
         工具ToolStripMenuItem.Text = "工具"
-        ' 
-        ' 分割序列文件ToolStripMenuItem
-        ' 
-        分割序列文件ToolStripMenuItem.Name = "分割序列文件ToolStripMenuItem"
-        分割序列文件ToolStripMenuItem.Size = New Size(180, 22)
-        分割序列文件ToolStripMenuItem.Text = "分割序列文件"
-        ' 
-        ' 合并序列文件ToolStripMenuItem
-        ' 
-        合并序列文件ToolStripMenuItem.Name = "合并序列文件ToolStripMenuItem"
-        合并序列文件ToolStripMenuItem.Size = New Size(180, 22)
-        合并序列文件ToolStripMenuItem.Text = "合并序列文件"
         ' 
         ' 清理序列ToolStripMenuItem
         ' 
@@ -437,23 +343,11 @@ Partial Class Mainform
         ToolStripSeparator11.Name = "ToolStripSeparator11"
         ToolStripSeparator11.Size = New Size(177, 6)
         ' 
-        ' CSV生成序列ToolStripMenuItem
+        ' EnglishToolStripMenuItem
         ' 
-        CSV生成序列ToolStripMenuItem.Name = "CSV生成序列ToolStripMenuItem"
-        CSV生成序列ToolStripMenuItem.Size = New Size(180, 22)
-        CSV生成序列ToolStripMenuItem.Text = "构建分型数据集"
-        ' 
-        ' ToolStripSeparator13
-        ' 
-        ToolStripSeparator13.Name = "ToolStripSeparator13"
-        ToolStripSeparator13.Size = New Size(177, 6)
-        ' 
-        ' 网络图后续分析ToolStripMenuItem
-        ' 
-        网络图后续分析ToolStripMenuItem.Name = "网络图后续分析ToolStripMenuItem"
-        网络图后续分析ToolStripMenuItem.Size = New Size(80, 21)
-        网络图后续分析ToolStripMenuItem.Text = "网络图分析"
-        网络图后续分析ToolStripMenuItem.Visible = False
+        EnglishToolStripMenuItem.Name = "EnglishToolStripMenuItem"
+        EnglishToolStripMenuItem.Size = New Size(180, 22)
+        EnglishToolStripMenuItem.Text = "English"
         ' 
         ' TabControl1
         ' 
@@ -569,12 +463,6 @@ Partial Class Mainform
         Timer1.Enabled = True
         Timer1.Interval = 1000
         ' 
-        ' EnglishToolStripMenuItem
-        ' 
-        EnglishToolStripMenuItem.Name = "EnglishToolStripMenuItem"
-        EnglishToolStripMenuItem.Size = New Size(180, 22)
-        EnglishToolStripMenuItem.Text = "English"
-        ' 
         ' Mainform
         ' 
         AutoScaleDimensions = New SizeF(7F, 17F)
@@ -618,15 +506,12 @@ Partial Class Mainform
     Friend WithEvents 载入数据ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 保存数据ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 分析ToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents 分型ToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents 本地分析ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 编辑ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 全选ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 清除ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 浏览ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 前进ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 后退ToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
     Friend WithEvents 单倍型网络ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents MSN单倍型网络ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents MJN单倍型网络ToolStripMenuItem As ToolStripMenuItem
@@ -639,22 +524,13 @@ Partial Class Mainform
     Friend WithEvents 获取序列信息ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 清理序列ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator5 As ToolStripSeparator
-    Friend WithEvents 基于参考序列分型ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator6 As ToolStripSeparator
-    Friend WithEvents CSV生成序列ToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents 混合分型分析ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 序列比对高速ToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents 合并序列文件ToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents 导出分型数据集ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 导出序列ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 日期转换数字ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator7 As ToolStripSeparator
     Friend WithEvents ToolStripSeparator8 As ToolStripSeparator
     Friend WithEvents 增加数据ToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator9 As ToolStripSeparator
-    Friend WithEvents 分型引物构建ToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents 分割序列文件ToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator10 As ToolStripSeparator
     Friend WithEvents ToolStripSeparator11 As ToolStripSeparator
     Friend WithEvents AutoToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents FFTNS1VeryFastButVeryRoughToolStripMenuItem As ToolStripMenuItem
@@ -665,10 +541,6 @@ Partial Class Mainform
     Friend WithEvents EnglishToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents PPPAlgorithmToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Super5AlgorithmToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents 网络图后续分析ToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator12 As ToolStripSeparator
-    Friend WithEvents 内置数据ToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents 中国HIV分型ToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator13 As ToolStripSeparator
     Friend WithEvents EnglishToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 网络图可视化ToolStripMenuItem As ToolStripMenuItem
 End Class

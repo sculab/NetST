@@ -1,7 +1,6 @@
 ﻿Imports System.ComponentModel
-Imports System.Threading
 Imports System.IO
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement
+Imports System.Threading
 
 Public Class Config_Info
 

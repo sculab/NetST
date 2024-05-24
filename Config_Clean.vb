@@ -1,6 +1,5 @@
 ﻿Imports System.IO
 Imports System.Threading
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Button
 
 Public Class Config_Clean
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click

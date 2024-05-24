@@ -1,15 +1,6 @@
-﻿Imports Microsoft.Web.WebView2.Core
-Imports System.IO
-Imports Newtonsoft.Json
-Imports System.Threading.Thread
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel
-Imports Newtonsoft.Json.Linq
-Imports System.Reflection.Emit
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Button
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement
-Imports System.Windows.Forms
+﻿Imports System.IO
 Imports System.Text
+Imports Microsoft.Web.WebView2.Core
 Imports Microsoft.Web.WebView2.WinForms
 
 Public Class Mainform
@@ -60,11 +51,11 @@ Public Class Mainform
     Private Sub web_main_seturl(ByVal url As String)
         WebView_main.Source = New Uri(url)
     End Sub
+
     Private Sub Mainform_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        Dim filePath As String = root_path + "main\" + "setting.ini"
-        SaveSettings(filePath, settings)
-        End
+
     End Sub
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         WebView_main.CreationProperties = New CoreWebView2CreationProperties With {
             .BrowserExecutableFolder = Path.Combine(root_path, "webview")
@@ -83,7 +74,7 @@ Public Class Mainform
 
     Private Sub 载入序列ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 载入序列ToolStripMenuItem.Click
         Dim opendialog As New OpenFileDialog
-        opendialog.Filter = "Fasta File(*.fasta)|*.fas;*.fasta;*.fa|GenBank File|*.gb"
+        opendialog.Filter = "Fasta File(*.fasta)|*.fas;*.fasta;*.fa"
         opendialog.FileName = ""
         opendialog.Multiselect = False
         opendialog.DefaultExt = ".fas"
@@ -96,21 +87,7 @@ Public Class Mainform
             DataGridView1.DataSource = Nothing
             TabControl1.SelectedIndex = 1
             data_loaded = False
-            If opendialog.FileName.ToLower.EndsWith(".gb") Then
-                Dim startInfo As New ProcessStartInfo()
-                startInfo.FileName = currentDirectory + "analysis\build_gb.exe" ' 替换为实际的命令行程序路径
-                startInfo.WorkingDirectory = currentDirectory + "history\" ' 替换为实际的运行文件夹路径
-                startInfo.CreateNoWindow = False
-                startInfo.Arguments = "-input " + """" + current_file + """" + " -outdir " + """" + "out_gb" + """"
-                Dim process As Process = Process.Start(startInfo)
-                process.WaitForExit()
-                process.Close()
-                load_csv_data(currentDirectory + "history\out_gb\gb_info.csv")
-                data_type = "gb"
-            Else
-                form_config_stand.Show()
-                data_type = "fas"
-            End If
+            form_config_stand.Show()
         End If
     End Sub
 
@@ -209,7 +186,6 @@ Public Class Mainform
                 PB_value = 0
                 info_text = ""
                 Timer1.Enabled = True
-
             Case Else
 
         End Select
@@ -232,7 +208,6 @@ Public Class Mainform
             data_loaded = False
             Dim th1 As New Threading.Thread(AddressOf load_csv_data)
             th1.Start(opendialog.FileName)
-            data_type = "fas"
         End If
     End Sub
     Public Sub load_csv_data(ByVal file_path As String)
@@ -313,165 +288,7 @@ Public Class Mainform
         End If
     End Sub
 
-    Private Sub 分型ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 分型ToolStripMenuItem.Click
 
-        If dtView.Count >= 1 Then
-            Dim selected_count As Integer = 0
-            For i As Integer = 1 To dtView.Count
-                If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
-                    selected_count += 1
-                End If
-            Next
-            If selected_count >= 1 Then
-                TabControl1.SelectedIndex = 0
-                Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "main/" + language + "/waiting.html"})
-                Dim th1 As New Threading.Thread(AddressOf analysis_type)
-                th1.Start(True)
-            Else
-                MsgBox("Please select at least one sequence!")
-            End If
-
-        End If
-    End Sub
-
-
-    Private Sub 本地分析ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 本地分析ToolStripMenuItem.Click
-        If dtView.Count >= 1 Then
-            Dim selected_count As Integer = 0
-            For i As Integer = 1 To dtView.Count
-                If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
-                    selected_count += 1
-                End If
-            Next
-            If selected_count >= 1 Then
-                TabControl1.SelectedIndex = 0
-                Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "main/" + language + "/waiting.html"})
-                Dim th1 As New Threading.Thread(AddressOf analysis_type)
-                th1.Start(False)
-            Else
-                MsgBox("Please select at least one sequence!")
-            End If
-
-        End If
-    End Sub
-    Public Sub analysis_type(ByVal online As Boolean)
-        Dim currentTime As DateTime = DateTime.Now
-        Dim currentTimeStamp As Long = (currentTime - New DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds
-        Dim formattedTime As String = currentTime.ToString("yyyy-MM-dd HH:mm")
-        Dim in_path As String = root_path + "history\" + currentTimeStamp.ToString + ".fasta"
-        Dim sw As New StreamWriter(in_path)
-        For i As Integer = 1 To dtView.Count
-            If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
-                sw.WriteLine(">" + dtView.Item(i - 1).Item(1))
-                sw.WriteLine(fasta_seq(i))
-            End If
-        Next
-        sw.Close()
-        Dim out_path As String = root_path + "history\" + currentTimeStamp.ToString + ".json"
-        Dim startInfo As New ProcessStartInfo()
-        If online Then
-            startInfo.FileName = currentDirectory + "analysis\sierra.exe" ' 替换为实际的命令行程序路径
-            startInfo.WorkingDirectory = currentDirectory + "analysis\" ' 替换为实际的运行文件夹路径
-            startInfo.Arguments = "fasta " + """" + in_path + """" + " -o " + """" + out_path + """"
-            startInfo.CreateNoWindow = False
-        Else
-            startInfo.FileName = currentDirectory + "analysis\sierralocal.exe" ' 替换为实际的命令行程序路径
-            startInfo.WorkingDirectory = currentDirectory + "analysis\" ' 替换为实际的运行文件夹路径
-            startInfo.CreateNoWindow = False
-            startInfo.Arguments = " " + """" + in_path + """" + " -alignment nuc"
-        End If
-
-        Dim process As Process = Process.Start(startInfo)
-        process.WaitForExit()
-        process.Close()
-        Dim jsonfile As String
-        If online Then
-            jsonfile = root_path + "history\" + currentTimeStamp.ToString + ".0.json"
-        Else
-            jsonfile = root_path + "history\" + currentTimeStamp.ToString + "_results.json"
-        End If
-
-        If File.Exists(jsonfile) Then
-            Dim sr As New StreamReader(jsonfile)
-            Dim json_str As String = sr.ReadToEnd
-            sr.Close()
-            Dim jsonarr As JArray = JsonConvert.DeserializeObject(json_str)
-            Dim sw0 As New StreamWriter(currentDirectory + "history/" + currentTimeStamp.ToString + ".html")
-            Dim sr1 As New StreamReader(currentDirectory + "main/" + language + "/header.txt")
-            sw0.Write(sr1.ReadToEnd)
-            sr1.Close()
-            For Each j As JObject In jsonarr
-                Dim header As String = j.SelectToken("inputSequence.header")
-                Dim subtypeText As String = j.SelectToken("subtypeText")
-                Dim validationResults As JArray = j.SelectToken("validationResults")
-                Dim val_level As String = ""
-                Dim val_message As String = ""
-                For Each k As JObject In validationResults
-                    val_level = k.SelectToken("level")
-                    val_message = k.SelectToken("message")
-                    val_message = val_message.Replace(" positions were not sequenced or aligned:", "个位点没有测序或排序, 包括: ")
-                    val_message = val_message.Replace(" PR ", " 蛋白酶(PR) ").Replace(" RT ", " 逆转录酶(RT) ")
-                    val_message = val_message.Replace(". Of them, ", ". 其中有").Replace(" are at drug-resistance positions", "个位于耐药性区域")
-                Next
-
-                '写入main的html
-                Dim sr2 As New StreamReader(currentDirectory + "main/" + language + "/body.txt")
-                Dim body_str As String = sr2.ReadToEnd
-                sr2.Close()
-                Dim subtypeText_str As String
-                Dim subtypeText_info As String
-                If online Then
-                    subtypeText_str = subtypeText.Split("(")(0)
-                    subtypeText_info = subtypeText.Split("(")(1).Replace(")", "")
-                    subtypeText_info = header + "的分型结果为" + subtypeText_str + ", 与最近缘的参考序列相比, 差异度为" + subtypeText_info
-                    body_str = body_str.Replace("$header$", header)
-                    body_str = body_str.Replace("$title$", "分型结果").Replace("$subtitle$", subtypeText_str).Replace("$body$", subtypeText_info)
-                    body_str = body_str.Replace("$title1$", "附加信息").Replace("$subtitle1$", val_level).Replace("$body1$", val_message)
-                Else
-                    body_str = body_str.Replace("$header$", header)
-                    body_str = body_str.Replace("$title$", "分型结果").Replace("$subtitle$", subtypeText).Replace("$body$", "")
-                    body_str = body_str.Replace("$title1$", "附加信息").Replace("$subtitle1$", "").Replace("$body1$", "无")
-                End If
-                Dim drug_info_str As String = ""
-                Dim drugResistance As JArray = j.SelectToken("drugResistance")
-                For Each k In drugResistance
-                    Dim version_text As String = k.SelectToken("version.text")
-                    Dim version_publishDate As String = k.SelectToken("version.publishDate")
-                    Dim gene_name As String = k.SelectToken("gene.name")
-                    Dim drugScores As JArray = k.SelectToken("drugScores")
-                    For Each m In drugScores
-                        Dim drug_info() As String = {m.SelectToken("drugClass.name"), m.SelectToken("drug.name"), m.SelectToken("drug.displayAbbr"), m.SelectToken("score"), m.SelectToken("text"), m.SelectToken("level")}
-                        Dim drug_text As String = drug_info(4)
-                        drug_info(4) = drug_info(4).Replace("Susceptible", "敏感")
-                        drug_info(4) = drug_info(4).Replace("Potential ", "潜在")
-                        drug_info(4) = drug_info(4).Replace("Low-Level Resistance", "低抵抗")
-                        drug_info(4) = drug_info(4).Replace("Intermediate Resistanc", " 中抵抗")
-                        drug_info(4) = drug_info(4).Replace("High-Level Resistanc", " 高抵抗")
-                        drug_info(4) = drug_info(4) + " (" + drug_text + ")"
-                        drug_info_str += vbCrLf + "<tr>"
-                        For n As Integer = 0 To UBound(drug_info)
-                            drug_info_str += "<td>" + drug_info(n) + "</td>"
-                        Next
-                        drug_info_str += "<td></td></tr>"
-                    Next
-                Next
-                body_str = body_str.Replace("$table$", drug_info_str)
-                sw0.Write(body_str)
-            Next
-            Dim sr3 As New StreamReader(currentDirectory + "main/" + language + "/footer.txt")
-            sw0.Write(sr3.ReadToEnd)
-            sw0.Close()
-            Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "history/" + currentTimeStamp.ToString + ".html"})
-
-            Dim sw4 As New StreamWriter(currentDirectory + "history/history.csv", True)
-            If online Then
-                sw4.WriteLine(formattedTime + "," + currentTimeStamp.ToString + ",Genotyping (online)")
-            Else
-                sw4.WriteLine(formattedTime + "," + currentTimeStamp.ToString + ",Genotyping")
-            End If
-            sw4.Close()
-        End If
-    End Sub
 
     Private Sub 全选ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 全选ToolStripMenuItem.Click
         For i As Integer = 1 To dtView.Count
@@ -543,13 +360,6 @@ Public Class Mainform
         Dim sw As New StreamWriter(in_path)
         Dim isaligened As Boolean = True
         Dim epsilon_str As String = ""
-        If exe_mode = "advanced" Then
-            Select Case network_type
-                Case "msn", "mjn"
-                    epsilon_str = " -e " + InputBox("Enter the epsilon", "Enter the epsilon", "0")
-                Case Else
-            End Select
-        End If
 
         For i As Integer = 1 To dtView.Count
             If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
@@ -755,6 +565,10 @@ Public Class Mainform
                         sw.WriteLine("<a href='./" + line_list(1) + "_hap.phy' target='_new'>Haplotype Sequence</a> ")
                         sw.WriteLine("<a href='./" + line_list(1) + "_hap_trait.csv'  target='_new'>Haplotype Trait Matrix</a>")
                         sw.WriteLine("<a href='./" + line_list(1) + "_seq2hap.csv'  target='_new'>Haplotype Source</a></td></tr>")
+                    ElseIf line_list(2).Contains("Analysis") Then
+                        sw.WriteLine("<td><a href='./" + line_list(1) + "_community_visualization.jpg' target='_new'>Community Visualization</a>")
+                        sw.WriteLine("<a href='./" + line_list(1) + "_haplotype_info.jpg' target='_new'>Haplotype Network Info</a>")
+                        sw.WriteLine("<a href='./" + line_list(1) + "_haplotype_seq_info.jpg'  target='_new'>Haplotype Seq Info</a></td></tr>")
                     ElseIf line_list(2).Contains("Sequence Alignment") Then
                         sw.WriteLine("<td><a href='./" + line_list(1) + ".html'>View Results</a>")
                         sw.WriteLine("<a href='./" + line_list(1) + "_aln.fasta'  target='_new'>Sequence Alignment</a></td></tr>")
@@ -837,60 +651,11 @@ Public Class Mainform
 
     End Sub
 
-    Private Sub 基于参考序列分型ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 基于参考序列分型ToolStripMenuItem.Click
-        If dtView.Count >= 1 Then
-            Dim selected_count As Integer = 0
-            For i As Integer = 1 To dtView.Count
-                If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
-                    selected_count += 1
-                End If
-            Next
-            If selected_count >= 1 Then
-                If form_config_type.Visible Then
-                    form_config_type.Activate()
-                Else
-
-                    form_config_type.Show()
-                End If
-
-            Else
-                MsgBox("Please select at least one sequence!")
-            End If
-
-        Else
-            MsgBox("Please select at least one sequence!")
-        End If
-    End Sub
-
-    Private Sub CSV生成序列ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CSV生成序列ToolStripMenuItem.Click
-        form_config_data.Show()
-    End Sub
 
     Private Sub 序列比对高速ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 序列比对高速ToolStripMenuItem.Click
 
     End Sub
 
-    Private Sub 混合分型分析ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 混合分型分析ToolStripMenuItem.Click
-        If dtView.Count >= 1 Then
-            Dim selected_count As Integer = 0
-            For i As Integer = 1 To dtView.Count
-                If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
-                    selected_count += 1
-                End If
-            Next
-            If selected_count >= 1 Then
-                form_config_mix.Show()
-            Else
-                MsgBox("Please select at least one sequence!")
-            End If
-        Else
-            MsgBox("Please select at least one sequence!")
-        End If
-    End Sub
-
-    Private Sub 合并序列文件ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 合并序列文件ToolStripMenuItem.Click
-        form_config_combine.Show()
-    End Sub
 
     Private Sub 导出序列ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 导出序列ToolStripMenuItem.Click
         Dim opendialog As New SaveFileDialog
@@ -919,35 +684,6 @@ Public Class Mainform
         End If
     End Sub
 
-    Private Sub 导出分型数据集ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 导出分型数据集ToolStripMenuItem.Click
-        Dim opendialog As New FolderBrowserDialog
-        Dim resultdialog As DialogResult = opendialog.ShowDialog()
-        If resultdialog = DialogResult.OK Then
-            Dim split_sig As String = "|"
-            Dim dw As New StreamWriter(opendialog.SelectedPath + "\ref_combine.fasta", False)
-            Dim state_line As String = ""
-            For i As Integer = 1 To dtView.Count
-                state_line = ">" + dtView.Item(i - 1).Item(1).ToString.Replace(split_sig, "_") + split_sig + dtView.Item(i - 1).Item(3).ToString.Replace(split_sig, "_")
-                dw.WriteLine(state_line)
-                dw.WriteLine(fasta_seq(i))
-            Next
-            dw.Close()
-            Dim th1 As New Threading.Thread(AddressOf export_dataset)
-            th1.Start(opendialog.SelectedPath)
-        End If
-    End Sub
-
-    Public Sub export_dataset(ByVal input_folder As String)
-        Dim file_type As String = "fas"
-        Dim startInfo As New ProcessStartInfo()
-        startInfo.FileName = currentDirectory + "analysis\MakeData.exe" ' 替换为实际的命令行程序路径
-        startInfo.WorkingDirectory = currentDirectory + "history\" ' 替换为实际的运行文件夹路径
-        startInfo.Arguments = "-input " + """" + input_folder + "\ref_combine.fasta" + """" + " -file_type " + file_type + " -out_dir " + """" + input_folder + """"
-        Dim process As Process = Process.Start(startInfo)
-        process.WaitForExit()
-        process.Close()
-        MsgBox("Processing completed!")
-    End Sub
 
     Private Sub 日期转换数字ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 日期转换数字ToolStripMenuItem.Click
         Dim splitstr As String = InputBox("", "Enter the delimiter:", "-")
@@ -969,12 +705,7 @@ Public Class Mainform
 
     Private Sub 增加数据ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 增加数据ToolStripMenuItem.Click
         Dim opendialog As New OpenFileDialog
-        Select Case data_type
-            Case "gb"
-                opendialog.Filter = "GenBank File|*.gb"
-            Case Else
-                opendialog.Filter = "fasta File(*.fasta)|*.fas;*.fasta"
-        End Select
+        opendialog.Filter = "fasta File(*.fasta)|*.fas;*.fasta"
         opendialog.FileName = ""
         opendialog.Multiselect = False
         opendialog.DefaultExt = ".fas"
@@ -986,56 +717,12 @@ Public Class Mainform
             add_data = True
             TabControl1.SelectedIndex = 1
             data_loaded = False
-            If opendialog.FileName.ToLower.EndsWith(".gb") Then
-                Dim startInfo As New ProcessStartInfo()
-                startInfo.FileName = currentDirectory + "analysis\build_gb.exe" ' 替换为实际的命令行程序路径
-                startInfo.WorkingDirectory = currentDirectory + "history\" ' 替换为实际的运行文件夹路径
-                startInfo.CreateNoWindow = False
-                startInfo.Arguments = "-input " + """" + current_file + """" + " -outdir " + """" + "out_gb" + """" + " -clean false"
-                Dim process As Process = Process.Start(startInfo)
-                process.WaitForExit()
-                process.Close()
-                load_csv_data(currentDirectory + "history\out_gb\gb_info.csv")
-            Else
-                form_config_stand.Show()
-            End If
+            form_config_stand.Show()
         End If
     End Sub
 
-    Private Sub 分型引物构建ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 分型引物构建ToolStripMenuItem.Click
-        If dtView.Count >= 1 Then
-            Dim selected_count As Integer = 0
-            For i As Integer = 1 To dtView.Count
-                If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
-                    selected_count += 1
-                End If
-            Next
-            If selected_count >= 1 Then
-                form_config_primer.Show()
-            Else
-                MsgBox("Please select at least one sequence!")
-            End If
-        Else
-            MsgBox("Please select at least one sequence!")
-        End If
-    End Sub
 
-    Private Sub 分割序列文件ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 分割序列文件ToolStripMenuItem.Click
-        If dtView.Count >= 1 Then
-            Dim selected_count As Integer = 0
-            For i As Integer = 1 To dtView.Count
-                If DataGridView1.Rows(i - 1).Cells(0).FormattedValue.ToString = "True" Then
-                    selected_count += 1
-                End If
-            Next
-            If selected_count >= 1 Then
-                form_config_split.Show()
-            Else
-                MsgBox("Please select at least one sequence!")
-            End If
 
-        End If
-    End Sub
 
     Private Sub AutoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AutoToolStripMenuItem.Click
         mafft_align("--auto")
@@ -1286,41 +973,63 @@ Public Class Mainform
 
     Private Sub Super5AlgorithmToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles Super5AlgorithmToolStripMenuItem.Click
         muscle_align("-super5")
-
     End Sub
 
-    Private Sub 中国HIV分型ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 中国HIV分型ToolStripMenuItem.Click
-        TabControl1.SelectedIndex = 1
-        DataGridView1.EndEdit()
-        Taxon_Dataset.Tables("Taxon Table").Clear()
-        DataGridView1.DataSource = Nothing
-        data_loaded = False
-        Dim th1 As New Threading.Thread(AddressOf load_csv_data)
-        th1.Start(currentDirectory + "analysis\database\HIV_ch.csv")
-        data_type = "fas"
-    End Sub
 
-    Private Async Sub 网络图后续分析ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 网络图后续分析ToolStripMenuItem.Click
+    Private Sub 网络图可视化ToolStripMenuItem_click(sender As Object, e As EventArgs) Handles 网络图可视化ToolStripMenuItem.Click
+        Dim currentTime As DateTime = DateTime.Now
+        Dim success As Boolean = True
+        Dim currentTimeStamp As Long = (currentTime - New DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds
+        Dim formattedTime As String = currentTime.ToString("yyyy-MM-dd HH:mm")
+
         Dim currentUri As Uri = WebView_main.Source
         Dim timeStamp As String = System.IO.Path.GetFileNameWithoutExtension(currentUri.ToString)
-        Dim seq2hap_file As String = timeStamp + "_seq2hap.csv"
-        Dim graph_json As String = timeStamp + ".json"
-        Dim out_file As String = timeStamp + "_hap_analysis.png"
+        Dim seq2hap_file As String = currentDirectory + "history\" + timeStamp + "_seq2hap.csv"
+        Dim graph_json As String = currentDirectory + "history\" + timeStamp + ".json"
+        Dim hap_fasta As String = currentDirectory + "history\" + timeStamp + "_hap.fasta"
 
-        Dim startInfo As New ProcessStartInfo()
-        startInfo.FileName = currentDirectory + "analysis\haplotype_analysis.exe" ' 替换为实际的命令行程序路径
-        startInfo.WorkingDirectory = currentDirectory + "history\" ' 替换为实际的运行文件夹路径
-        startInfo.Arguments = "-hap_file " + """" + seq2hap_file + """" + " -graph " + graph_json + " -out " + """" + out_file + """"
+        Dim seq2hapExists As Boolean = File.Exists(seq2hap_file)
+        Dim graphJsonExists As Boolean = File.Exists(graph_json)
+        Dim hapFastaExists As Boolean = File.Exists(hap_fasta)
 
-        Dim process As Process = Process.Start(startInfo)
-        process.WaitForExit()
-        process.Close()
+        ' 检测当前webview是否是单倍型网路图
+        If seq2hapExists AndAlso graphJsonExists AndAlso hapFastaExists Then
+            Dim startInfo As New ProcessStartInfo()
+            startInfo.FileName = currentDirectory + "analysis\haplotype_analysis.exe"
+            startInfo.WorkingDirectory = currentDirectory + "history\"
+            startInfo.Arguments = "-seq2hap " + seq2hap_file + " -graph " + graph_json + " -hap_fa " + hap_fasta + " -img_suffix " + currentTimeStamp.ToString()
 
-        If File.Exists(root_path + "history\" + out_file) Then
-            Me.Invoke(set_web_main_url, New Object() {"file:///" + currentDirectory + "history\" + timeStamp + "_hap_analysis.png"})
+            Dim process As Process = Process.Start(startInfo)
+            process.WaitForExit()
+
+            Dim community_visualization As String = currentTimeStamp.ToString() + "_community_visualization.jpg"
+            Dim haplotype_info As String = currentTimeStamp.ToString() + "_haplotype_info.jpg"
+            Dim haplotype_seq_info As String = currentTimeStamp.ToString() + "_haplotype_seq_info.jpg"
+
+            ' 检查生成的文件是否存在
+            Dim communityVisualizationExists As Boolean = File.Exists(currentDirectory + "history\" + community_visualization)
+            Dim haplotypeInfoExists As Boolean = File.Exists(currentDirectory + "history\" + haplotype_info)
+            Dim haplotypeSeqInfoExists As Boolean = File.Exists(currentDirectory + "history\" + haplotype_seq_info)
+
+            If communityVisualizationExists AndAlso haplotypeInfoExists AndAlso haplotypeSeqInfoExists Then
+                ' 如果所有生成的文件都存在，则成功
+                MsgBox("Haplotype network analysis and visualization completed.")
+            Else
+                ' 如果其中某些文件不存在，则失败
+                MsgBox("Haplotype network analysis failed to generate all required visualizations. Please check the data.")
+                success = False
+            End If
+
+            process.Close()
+
+            If success Then
+                Dim sw1 As New StreamWriter(currentDirectory + "history/history.csv", True)
+                sw1.WriteLine(formattedTime + "," + currentTimeStamp.ToString + "," + "Visualization Analysis")
+                sw1.Close()
+            End If
         Else
-            MsgBox("Haplotype network analysis failed. Please check the data.")
-            Me.Invoke(set_web_main_url, New Object() {currentUri.ToString})
+            ' 如果不是同时存在，则输出信息
+            MsgBox("Not all required files for haplotype network visualization exist. Aborting next step.")
         End If
     End Sub
 
