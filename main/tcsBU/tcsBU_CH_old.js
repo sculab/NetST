@@ -28,7 +28,7 @@ $(function () {
     /*
      * variables that hold nodes which should be highlighted or labeled
      */
-    var labelNode = {}, highlightNode = [], seqHapFlag = false, seqHapAdded = false, distanceFlag = false;
+    var labelNode = {}, highlightNode = [], seqHapFlag = false, seqHapAdded = false,distanceFlag=false;
 
 
     /*
@@ -58,9 +58,9 @@ $(function () {
     var maxTime = Number.NEGATIVE_INFINITY;
 
 
-    var link, node, path, subpath, linkText;
+    var link, node, path,linkText;
 
-    var pie, subPie, sector, sectorOuter, sectorNull, sectorSmall;
+    var pie, sector, sectorOuter, sectorNull, sectorSmall;
 
     var drag;
 
@@ -126,13 +126,13 @@ $(function () {
         var newcolor = 'ffffff', newpattern = 'none';
 
         var nc = w2ui.groups.find({recid: newgroup}, true)[0];
-        if (nc !== 'undefined' && w2ui.groups.records[nc]) {
+        if (nc !== 'undefined') {
             newcolor = w2ui.groups.records[nc].color;
             if (w2ui.groups.records[nc].pattern !== 'none') newpattern = "url(#" + newcolor + w2ui.groups.records[nc].pattern + ")";
         }
 
         /*
-         * Grab the haplogroup of this particular haplotype
+         * Grab the haplogroup of this particular haploty++pe
          */
 
         var haplogroup = Number(w2ui.haplotypes.records[index].haplogroup);
@@ -177,8 +177,8 @@ $(function () {
                     nodeList[nd].proportions[ng].value += haplocount;
                     nodeList[nd].proportions[ng].color = '#' + newcolor;
                     nodeList[nd].proportions[ng].pattern = newpattern;
-                    // nodeList[nd].proportions[ng].timecolor = haplotimecolor;
-                    // nodeList[nd].proportions[ng].time = haplotime;
+                    nodeList[nd].proportions[ng].timecolor = haplotimecolor;
+                    nodeList[nd].proportions[ng].time = haplotime;
                     nodeList[nd].proportions[ng].nodestyle = haplostyle;
                     nodeList[nd].proportions[og].value -= haplocount;
                 } else {
@@ -188,25 +188,12 @@ $(function () {
                         radius: nodeList[nd].radius,
                         value: haplocount,
                         pattern: newpattern,
+                        timecolor: haplotimecolor,
                         nodestyle: haplostyle,
+                        time: haplotime
                     });
                     nodeList[nd].proportions[og].value -= haplocount;
                 }
-
-                let timeProportion = nodeList[nd].timeProportions.find(tp => tp.time === haplotime);
-                if (timeProportion) {
-                    timeProportion.value += haplocount;
-                    // timeProportion.timecolor = haplotimecolor;
-                } else {
-                    nodeList[nd].timeProportions.push({
-                        time: haplotime,
-                        value: haplocount,
-                        timecolor: haplotimecolor,
-                        patter: newpattern,
-                        radius: nodeList[nd].radius,
-                    });
-                }
-
 
                 /*
                  * Find the target svg element (node). If it exists, apply changes
@@ -214,14 +201,13 @@ $(function () {
 
                 if (svg) {
                     var n = svg.selectAll('.node')
-                    path = n.selectAll('.outer-path').data(function (d) {
+                    path = n.selectAll('path').data(function (d) {
                         return pie(d.proportions);
                     });
 
 
                     path.enter()
                         .append('path')
-                        .attr('class', 'outer-path')
                         .attr('d', function (d) {
                             if (isINNerNode(d)) {
                                 return sector(d)
@@ -238,13 +224,13 @@ $(function () {
                         path.style('stroke-width', '0').style('stroke', 'none');
                     }
 
-                    subpath = n.selectAll('.subpath').data(function (d) {
-                        return subPie(d.timeProportions);
-                    });
 
-                    subpath.enter()
+                    var colorGradientScale = d3.scale.linear()
+                        .domain([minTime, maxTime])
+                        .range(["#cbc6d8", "#601824"]);
+
+                    path.enter()
                         .append('path')
-                        .attr('class', "subpath")
                         .attr('d', function (d) {
                             if (isINNerNode(d)) {
                                 return sectorNull(d);
@@ -253,11 +239,15 @@ $(function () {
                             }
                         })
                         .style('fill', function (d) {
-                            if (typeid === 0) return '#' + d.data.timecolor + d.data.timecolor + d.data.timecolor;
-                            if (typeid === 1) return '#ff' + d.data.timecolor + d.data.timecolor;
-                            if (typeid === 2) return '#' + d.data.timecolor + 'ff' + d.data.timecolor;
-                            if (typeid === 3) return '#' + d.data.timecolor + d.data.timecolor + 'ff';
-                            if (typeid === 4) return '#ffffff';
+                            if (d.data.pattern === 'none') {
+                                if (typeid === 0) return '#' + d.data.timecolor + d.data.timecolor + d.data.timecolor;
+                                if (typeid === 1) return '#ff' + d.data.timecolor + d.data.timecolor;
+                                if (typeid === 2) return '#' + d.data.timecolor + 'ff' + d.data.timecolor;
+                                if (typeid === 3) return '#' + d.data.timecolor + d.data.timecolor + 'ff';
+                                if (typeid === 4) return '#ffffff';
+                                if (typeid === 5) return colorGradientScale(d.data.time);
+
+                            } else return d.data.pattern;
                         });
 
 
@@ -268,12 +258,11 @@ $(function () {
                      * .style('stroke', 'none');
                      */
                     if (outlinenodes) {
-                        subpath.style('stroke-width', linewidth / 2).style('stroke', '#000000');
+                        path.style('stroke-width', linewidth / 2).style('stroke', '#000000');
                     } else {
-                        subpath.style('stroke-width', '0').style('stroke', 'none');
+                        path.style('stroke-width', '0').style('stroke', 'none');
                     }
                     path.exit().remove();
-                    subpath.exit().remove();
 
                     force.nodes(nodeList).links(linkList).start();
                 }
@@ -282,8 +271,6 @@ $(function () {
                 w2alert('Serious error!', 'ERROR');
             }
         }
-
-
     }
 
     /*
@@ -461,15 +448,13 @@ $(function () {
         node.exit().remove();
 
 
-        // 主路径绘制 外环扇形图
-        path = node.selectAll('.outer-path').remove();
-        path = node.selectAll('.outer-path').data(function (d) {
+        path = node.selectAll('path').remove();
+        path = node.selectAll('path').data(function (d) {
             return pie(d.proportions);
         });
 
         path.enter()
             .append('path')
-            .attr('class', "outer-path")
             .attr('d', function (d) {
                 if (isINNerNode(d)) {
                     return sector(d)
@@ -485,17 +470,13 @@ $(function () {
         } else {
             path.style('stroke-width', '0').style('stroke', 'none');
         }
-        path.exit().remove();
 
-        // 子路径绘制
-        subpath = node.selectAll('.subpath').remove();
-        subpath = node.selectAll('.subpath').data(function (d) {
-            return subPie(d.timeProportions);
-        });
+        var colorGradientScale = d3.scale.linear()
+            .domain([minTime, maxTime])
+            .range(["#cbc6d8", "#601824"]);
 
-        subpath.enter()
+        path.enter()
             .append('path')
-            .attr('class', 'subpath')
             .attr('d', function (d) {
                 if (isINNerNode(d)) {
                     return sectorNull(d);
@@ -504,14 +485,16 @@ $(function () {
                 }
             })
             .style('fill', function (d) {
-                //if (d.data.pattern === 'none') {
-                if (typeid === 0) return '#' + d.data.timecolor + d.data.timecolor + d.data.timecolor;
-                if (typeid === 1) return '#ff' + d.data.timecolor + d.data.timecolor;
-                if (typeid === 2) return '#' + d.data.timecolor + 'ff' + d.data.timecolor;
-                if (typeid === 3) return '#' + d.data.timecolor + d.data.timecolor + 'ff';
-                if (typeid === 4) return '#ffffff';
-                //} else return d.data.pattern;
+                if (d.data.pattern === 'none') {
+                    if (typeid === 0) return '#' + d.data.timecolor + d.data.timecolor + d.data.timecolor;
+                    if (typeid === 1) return '#ff' + d.data.timecolor + d.data.timecolor;
+                    if (typeid === 2) return '#' + d.data.timecolor + 'ff' + d.data.timecolor;
+                    if (typeid === 3) return '#' + d.data.timecolor + d.data.timecolor + 'ff';
+                    if (typeid === 4) return '#ffffff';
+                    if (typeid === 5) return colorGradientScale(d.data.time);
+                } else return d.data.pattern;
             });
+
 
         /*
          * These two commands may be used to implement
@@ -520,15 +503,14 @@ $(function () {
          * .style('stroke', 'none');
          */
         if (outlinenodes) {
-            subpath.style('stroke-width', linewidth / 2).style('stroke', '#000000');
+            path.style('stroke-width', linewidth / 2).style('stroke', '#000000');
         } else {
-            subpath.style('stroke-width', '0').style('stroke', 'none');
+            path.style('stroke-width', '0').style('stroke', 'none');
         }
-
-        subpath.exit().remove();
+        path.exit().remove();
 
         linkText = svg.selectAll(".link-text").remove();
-        if (distanceFlag) {
+        if(distanceFlag){
             linkText = svg.selectAll('.link-text').data(linkList);
             linkText.enter().append('text')
                 .attr('class', 'link-text')
@@ -537,7 +519,7 @@ $(function () {
                     return d.changes;
                 })
                 .style('font-family', 'Times New Roman') // Set the font family
-                .style("stroke-width", '0.2px')
+                .style("stroke-width",'0.2px')
                 .style('font-size', '13px');
             linkText.exit().remove();
         }
@@ -567,7 +549,7 @@ $(function () {
                 .attr('dy', '.35em')
                 .text(value.join(";"))
                 .style('font-family', 'Times New Roman') // Set the font family
-                .style("stroke-width", '0.2px')
+                .style("stroke-width",'0.2px')
                 .style('font-size', '13px');
         });
 
@@ -592,7 +574,7 @@ $(function () {
                         .attr('dy', '.50em')
                         .text(d.seq2hap)
                         .style('font-family', 'Times New Roman') // Set the font family
-                        .style("stroke-width", '0.2px')
+                        .style("stroke-width",'0.2px')
                         .style('font-size', '13px');
                 });
         }
@@ -650,7 +632,7 @@ $(function () {
                 toolbarEdit: false
             }, columns: [{
                 field: 'recid',
-                caption: 'Group',
+                caption: '分组',
                 size: '45%',
                 sortable: true,
                 resizable: false,
@@ -660,7 +642,7 @@ $(function () {
                 }
             }, {
                 field: 'color',
-                caption: 'Color',
+                caption: '颜色',
                 size: '20%',
                 sortable: false,
                 resizable: false,
@@ -670,7 +652,7 @@ $(function () {
                 }
             }, {
                 field: 'pattern',
-                caption: 'Pattern',
+                caption: '样式',
                 size: '35%',
                 sortable: false,
                 resizable: false,
@@ -679,10 +661,10 @@ $(function () {
                     return '<div>' + r.pattern + '</div>';
                 }
             }], records: [{recid: 'Default', color: 'ffffff', pattern: 'none', editable: false}], toolbar: {
-                items: [{type: 'button', id: 'add_group', caption: 'Add', icon: 'w2ui-icon-plus'}, {
-                    type: 'button', id: 'del_group', caption: 'Delete', icon: 'w2ui-icon-cross'
-                }, {type: 'button', id: 'load_group', caption: 'Load', icon: 'icon-folder-open'}, {
-                    type: 'button', id: 'save_group', caption: 'Save', icon: 'icon-file-save'
+                items: [{type: 'button', id: 'add_group', caption: '添加', icon: 'w2ui-icon-plus'}, {
+                    type: 'button', id: 'del_group', caption: '删除', icon: 'w2ui-icon-cross'
+                }, {type: 'button', id: 'load_group', caption: '加载', icon: 'icon-folder-open'}, {
+                    type: 'button', id: 'save_group', caption: '保存', icon: 'icon-file-save'
                 }], onClick: function (e) {
                     switch (e.target) {
                         case 'add_group':
@@ -709,7 +691,7 @@ $(function () {
 
                             if (sel === 0) {
                                 e.preventDefault();
-                                w2alert('Cannot delete "default" group/color...');
+                                w2alert('不能删除 "默认" 分组/颜色！');
                             } else {
 
                                 /*
@@ -756,7 +738,7 @@ $(function () {
 
                         var v = w2ui.groups.find({recid: e.value_new}, true);
                         if (v.length > 0) {
-                            w2alert('A group named "' + e.value_new + '" already exists! <p> Change its name first...');
+                            w2alert('名称为"' + e.value_new + '"的组已经存在! <p>请现更改其名称！');
                         } else {
                             w2ui.groups.records[e.index].recid = e.value_new;
 
@@ -888,7 +870,7 @@ $(function () {
                 sortable: true, resizable: true
             }, {field: 'haplogroup', hidden: true}, {field: 'color', hidden: true}, {
                 field: 'group',
-                caption: 'Group', // size: '24%',
+                caption: '分组', // size: '24%',
                 sortable: true,
                 resizable: true,
                 editable: {type: 'combo', items: ['Default'], filter: false},
@@ -899,31 +881,31 @@ $(function () {
                     return '<div style="background-color: #' + r.color + '; color: ' + textcolor + '">' + r.group + '</div>';
                 }
             }, {
-                field: 'seq2hap', caption: 'SeqHap', sortable: true, resizable: true
+                field: 'seq2hap', caption: '序列单倍型', sortable: true, resizable: true
             }, {
-                field: 'highlight', caption: 'Highlight', resizable: true, editable: false, // 禁止用户编辑
+                field: 'highlight', caption: '高亮', resizable: true, editable: false, // 禁止用户编辑
                 render: function (r) {
                     // 显示为复选框但禁用编辑
                     return '<input type="checkbox" ' + (r.highlight ? 'checked' : '') + ' disabled>';
                 }
             }, {
-                field: 'label', caption: 'Mark', resizable: true, editable: false, // 禁止用户编辑
+                field: 'label', caption: '标签', resizable: true, editable: false, // 禁止用户编辑
                 render: function (r) {
                     // 显示为复选框但禁用编辑
                     return '<input type="checkbox" ' + (r.label ? 'checked' : '') + ' disabled>';
                 }
             }], toolbar: {
                 items: [{
-                    type: 'button', id: 'load_haplotypes', text: 'Load', icon: 'icon-folder-open'
-                }, {type: 'button', id: 'save_haplotypes', text: 'Save', icon: 'icon-file-save'}, /*
+                    type: 'button', id: 'load_haplotypes', text: '加载', icon: 'icon-folder-open'
+                }, {type: 'button', id: 'save_haplotypes', text: '保存', icon: 'icon-file-save'}, /*
                         添加高亮按钮 用于将选择的record在svg图中进行高亮显示
                      */
-                    {type: 'button', id: 'highlight_haplotypes', text: 'Highlight', icon: 'icon-highlight'},
+                    {type: 'button', id: 'highlight_haplotypes', text: '高亮', icon: 'icon-highlight'},
 
                     /*
                         添加text按钮 用于将选择的record的信息显示在svg图中
                      */
-                    {type: 'button', id: 'label_haplotype', text: 'Mark', icon: 'icon-label'}
+                    {type: 'button', id: 'label_haplotype', text: '标签', icon: 'icon-label'}
                     ,], onClick: function (e) {
                     switch (e.target) {
                         case 'load_haplotypes':
@@ -1027,12 +1009,12 @@ $(function () {
                 toolbarDelete: false,
                 toolbarEdit: false
             }, columns: [{
-                field: 'recid', caption: 'Traits', size: '55%', sortable: true, resizable: true
+                field: 'recid', caption: '性状', size: '55%', sortable: true, resizable: true
             }, {
-                field: 'traitNum', caption: 'Trait Number', size: '45%', sortable: true, resizable: true
-            }, {field: 'traitDetail', caption: 'Trait Detail', hidden: true}], toolbar: {
+                field: 'traitNum', caption: '性状数量', size: '45%', sortable: true, resizable: true
+            }, {field: 'traitDetail', caption: '性状信息', hidden: true}], toolbar: {
                 items: [{
-                    type: 'button', id: 'load_characters', text: 'Load', icon: 'icon-folder-open'
+                    type: 'button', id: 'load_characters', text: '加载', icon: 'icon-folder-open'
                 }
                     // , {type: 'button', id: 'save_characters', text: 'Save', icon: 'icon-file-save'}
                 ], onClick: function (e) {
@@ -1049,7 +1031,7 @@ $(function () {
             }, onDblClick: function (event) {
                 event.preventDefault();
                 var traitID = event.recid;
-                if (confirm("Select this trait to display?")) {
+                if (confirm("将选择该性状显示")) {
                     var newHapconffile = generateHapconffile(w2ui.characters.sampleTraitsInfo[traitID]);
                     var newGroupconffile = generateGroupconffile(w2ui.characters.get(traitID));
                     loadGroups(newGroupconffile);
@@ -1093,6 +1075,10 @@ $(function () {
                     colorlist.push('#f8f8f8');
                     colorlist.push('#080808');
                 }
+                if (typeid === 5) {
+                    colorlist.push('#1e9600');
+                    colorlist.push('#ff0000');
+                }
 
             }
             //var sampleOrdinal = d3.scale.category20().domain(grouplist);
@@ -1116,11 +1102,11 @@ $(function () {
     function getLayout(style, groups, haplotypes, characters) {
         $('#layout').w2layout({
             name: 'Layout', padding: 0, panels: [{type: 'top', size: 40, resizable: false, style: style}, {
-                type: 'left', size: 350, maxSize: 350, resizable: true, title: 'Data', style: style, tabs: {
+                type: 'left', size: 350, maxSize: 350, resizable: true, title: '数据', style: style, tabs: {
                     name: 'tabs',
                     active: 'tab1',
-                    tabs: [{id: 'tab3', text: 'Traits'}, {id: 'tab1', text: 'Haplotypes'}, {
-                        id: 'tab2', text: 'Groups'
+                    tabs: [{id: 'tab3', text: '性状'}, {id: 'tab1', text: '单倍型'}, {
+                        id: 'tab2', text: '分组'
                     },],
                     onClick: function (id) {
                         switch (id.target) {
@@ -1137,50 +1123,50 @@ $(function () {
                     }
 
                 }
-            }, {type: 'right', size: 250, resizable: false, title: 'Settings', style: style}, {
+            }, {type: 'right', size: 250, resizable: false, title: '力导向布局设定', style: style}, {
                 type: 'main', size: '100%', overflow: 'hidden', style: style, toolbar: {
                     items: [{
-                        id: 'btn-svgsave', type: 'button', text: 'Save SVG', icon: 'icon-file-svg', disabled: true
+                        id: 'btn-svgsave', type: 'button', text: '保存SVG', icon: 'icon-file-svg', disabled: true
                     }, //{ id: 'btn-pdfsave', type: 'button', text: 'Save PDF', icon: 'icon-file-pdf-o', disabled: true },
                         {type: 'break'}, {
                             id: 'btn-zoomin',
                             class: 'zoom-btn',
                             type: 'button',
-                            text: 'Zoom In',
+                            text: '放大',
                             icon: 'icon-zoom-in',
                             disabled: true
                         }, {
                             id: 'btn-zoomout',
                             class: 'zoom-btn',
                             type: 'button',
-                            text: 'Zoom Out',
+                            text: '缩小',
                             icon: 'icon-zoom-out',
                             disabled: true
                         }, {type: 'break'}, {
                             id: 'btn-delnode',
                             type: 'check',
-                            text: 'Delete Node',
+                            text: '删除节点',
                             icon: 'icon-delete-node',
                             disabled: true,
                             checked: false
                         }, {
                             id: 'btn-dellink',
                             type: 'check',
-                            text: 'Delete Link',
+                            text: '删除链接',
                             icon: 'icon-delete-link',
                             disabled: true,
                             checked: false
                         }, {type: 'break'}, {
                             id: 'btn-outline',
                             type: 'check',
-                            text: 'Outline',
+                            text: '边框线',
                             icon: 'icon-outline',
                             disabled: true,
                             checked: false
                         }, {
                             id: 'btn-lwidth',
                             type: 'menu',
-                            text: 'Line width',
+                            text: '线型',
                             icon: 'icon-line-width',
                             disabled: true,
                             items: [{text: '0.1 px', lwidth: "0.1"}, {text: '0.2 px', lwidth: "0.2"}, {
@@ -1193,25 +1179,25 @@ $(function () {
                         }, {
                             id: 'btn-time',
                             type: 'menu',
-                            text: 'Circle Center',
+                            text: '圆心',
                             icon: 'icon-circles-2',
                             disabled: true,
                             items: [{text: 'Gray', typeid: "0"}, {text: 'Red', typeid: "1"}, {
                                 text: 'Green', typeid: "2"
-                            }, {text: 'Blue', typeid: "3"}, {text: 'Null', typeid: "4"}]
+                            }, {text: 'Blue', typeid: "3"}, {text: 'Null', typeid: "4"}, {text: 'Color', typeid: "5"}]
                         }, {
                             id: 'btn-style',
                             type: 'menu',
-                            text: 'Style',
+                            text: '样式',
                             icon: 'icon-cross-4',
                             disabled: true,
-                            items: [{text: 'All', styleid: "0"}, {text: 'Trait1', styleid: "1"}, {
-                                text: 'Trait2', styleid: "2"
+                            items: [{text: '连续-离散', styleid: "0"}, {text: '仅离散性状', styleid: "1"}, {
+                                text: '仅连续性状', styleid: "2"
                             },]
-                        }, {type: 'break'}, {
+                        },  {type: 'break'},{
                             id: 'btn-legend',
                             type: 'check',
-                            text: 'Legend',
+                            text: '图例',
                             icon: 'icon-legend',
                             disabled: true,
                             checked: false
@@ -1220,14 +1206,14 @@ $(function () {
                         {
                             id: 'btn-haplotype',
                             type: 'check',
-                            text: 'Haplotype',
+                            text: '单倍型',
                             icon: 'icon-legend',
                             disabled: true,
                             checked: false
-                        }, {
+                        },{
                             id: 'btn-distance',
                             type: 'check',
-                            text: 'Distance',
+                            text: '距离',
                             icon: 'icon-legend',
                             disabled: true,
                             checked: false
@@ -1607,7 +1593,7 @@ $(function () {
             var newnode = false;
             var newedge = false;
             var multilabels = false;
-            var frequency, radius, haplogroup, label, changes, source, target;
+            var frequency, radius,  haplogroup,  label, changes, source, target;
             var labels = []
             for (var i = 0; i < lines.length; i++) {
                 if (lines[i].indexOf('node [') === 3) newnode = true;
@@ -1679,7 +1665,7 @@ $(function () {
                                  */
 
                                 // radius = Math.sqrt(frequency * area / Math.PI);
-                                radius = Math.pow(frequency, 1 / 3) * standardRadius;
+                                radius = Math.pow(frequency,1/3) * standardRadius;
                             }
                             var labelname = labels.join("\n");
                             /*
@@ -1687,20 +1673,15 @@ $(function () {
                              * the first label if they include more than one
                              */
 
-                            if (nodestyle === 0) radius = 1;
+                            if (nodestyle===0) radius = 1;
                             nodeList.push({
                                 name: labelname, radius: radius, nodestyle: nodestyle, proportions: [{
                                     group: 'Default',
                                     value: frequency,
                                     radius: radius,
                                     color: '#ffffff',
-                                    pattern: 'none',
-                                }], timeProportions: [{
-                                    time: 'Default',
-                                    value: 0,
-                                    timecolor: 'ff',
-                                }]
-                                , id: haplogroup, //  label holds the info which should be shown
+                                    pattern: 'none'
+                                }], id: haplogroup, //  label holds the info which should be shown
                                 label: []
                             });
 
@@ -2118,7 +2099,12 @@ $(function () {
 
                             group = l[1].trim();
                             seq2hap = l[2].trim();
-                            if (group !== "") h.push({label: name, group: group, seq2hap: seq2hap});
+                            if (group !== ""){
+							h.push({label: name, group: group, seq2hap: seq2hap})}
+							else {
+                                h.push({label: name, group: 'Default', seq2hap: seq2hap});
+                            }
+							;
                         }
                     }
                 }
@@ -2334,9 +2320,9 @@ $(function () {
         updateSVG();
     }
 
-    function insertDistance() {
+    function insertDistance(){
         /***
-         a function to show the distance between each two nodes
+          a function to show the distance between each two nodes
          ***/
         distanceFlag = !distanceFlag;
         updateSVG();
@@ -2568,15 +2554,6 @@ $(function () {
             .value(function (d) {
                 return d.value;
             });
-
-        subPie = d3.layout.pie()
-            .sort(function (a, b) {
-                return a.time - b.time;  // 从小到大排序
-            })
-            .value(function (d) {
-                return d.value;
-            });
-
         /*
          * Define an arc
          */
@@ -2632,14 +2609,10 @@ $(function () {
                     return d.target.y;
                 });
 
-            if (distanceFlag) {
+            if(distanceFlag){
                 linkText
-                    .attr('x', function (d) {
-                        return (d.source.x + d.target.x) / 2;
-                    })
-                    .attr('y', function (d) {
-                        return (d.source.y + d.target.y) / 2;
-                    });
+                    .attr('x', function (d) { return (d.source.x + d.target.x) / 2; })
+                    .attr('y', function (d) { return (d.source.y + d.target.y) / 2; });
             }
 
             node.attr("x", function (d) {
@@ -2827,7 +2800,7 @@ $(function () {
          * Enable editing buttons
          */
 
-        w2ui.Layout_main_toolbar.enable('btn-dellink', 'btn-delnode', 'btn-svgsave', 'btn-outline', 'btn-lwidth', 'btn-zoomin', 'btn-zoomout', 'btn-legend', 'btn-time', 'btn-style', 'btn-haplotype', 'btn-distance');
+        w2ui.Layout_main_toolbar.enable('btn-dellink', 'btn-delnode', 'btn-svgsave', 'btn-outline', 'btn-lwidth', 'btn-zoomin', 'btn-zoomout', 'btn-legend', 'btn-time', 'btn-style','btn-haplotype','btn-distance');
 
 
         /*
@@ -2872,12 +2845,12 @@ $(function () {
 
         const layout = getLayout(style, groups, haplotypes, characters);
 
-        layout.html('top', '<div style="float: left;"><button id="loadData" class="w2ui-btn">Load Data</button></div><div style="float: right;"><button id="help" class="w2ui-btn">Help</button></div>');
+        layout.html('top', '<div style="float: left;"><button id="loadData" class="w2ui-btn">加载数据</button></div><div style="float: right;"><button id="help" class="w2ui-btn">帮助</button></div>');
         layout.html('left', w2ui.haplotypes);
         layout.html('right', '<div style="width=100%; height=100%;">' + '<div style="width=100%; height=100%; align=left">' + '<p></p>' + //'<div class="w2ui-field"><label>Mass:</label><div><input type="text" id="massFactor" /></div></div>'+
-            '<div class="w2ui-field"><label>Link Distance:</label><div><input type="text" id="linkDistance" /></div></div>' + '<div class="w2ui-field"><label>Link Strength:</label><div><input type="text" id="linkStrength"  /></div></div>' + '<div class="w2ui-field"><label>Friction:</label><div><input type="text" id="friction"  /></div></div>' + '<div class="w2ui-field"><label>Charge:</label><div><input type="text" id="charge"  /></div></div>' + // Do not mess with this
+            '<div class="w2ui-field"><label>距离:</label><div><input type="text" id="linkDistance" /></div></div>' + '<div class="w2ui-field"><label>强度:</label><div><input type="text" id="linkStrength"  /></div></div>' + '<div class="w2ui-field"><label>摩擦力:</label><div><input type="text" id="friction"  /></div></div>' + '<div class="w2ui-field"><label>电荷:</label><div><input type="text" id="charge"  /></div></div>' + // Do not mess with this
             //'<div class="w2ui-field"><label>Charge Distance:</label><div><input type="text" id="chargeDistance"  /></div></div>'+
-            '<div class="w2ui-field"><label>Gravity:</label><div><input type="text" id="gravity" /></div></div>' + '<p>' + '<div style="text-align: center;"><button class="w2ui-btn" id="start" name="start" disabled>Start</button></div><p>' + '<div style="text-align: center;"><button class="w2ui-btn" id="stop" name="stop" disabled>Stop</button></div>' + '</div>' + //'<div style="margin: 10px; padding-top: 6px; width: 90%; height: 100%; background-color: #EFF0F1;">' +
+            '<div class="w2ui-field"><label>引力:</label><div><input type="text" id="gravity" /></div></div>' + '<p>' + '<div style="text-align: center;"><button class="w2ui-btn" id="start" name="start" disabled>开始</button></div><p>' + '<div style="text-align: center;"><button class="w2ui-btn" id="stop" name="stop" disabled>暂停</button></div>' + '</div>' + //'<div style="margin: 10px; padding-top: 6px; width: 90%; height: 100%; background-color: #EFF0F1;">' +
             //'<p style="text-align: center;">Examples</p>' +
             //'<div style="text-align: center;"><button class="w2ui-btn" id="tcsdata" name="tcsdata">TCS network</button></div><p>'+
             //'<div style="text-align: center;"><a href="examples/tcs-output.graph" target=_balnk>tcs-output.graph</a></div><p>' +
@@ -2924,7 +2897,7 @@ $(function () {
         w2alert('The File APIs are not fully supported by your browser.');
     }
 
-    // // todo: delete
+    // todo: delete
     loadGraph(gmlfile);
     loadGroups(groupconffile);
     loadHaplotypes(hapconffile);

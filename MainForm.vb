@@ -53,7 +53,7 @@ Public Class Mainform
     End Sub
 
     Private Sub Mainform_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-
+        Application.Exit()
     End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -284,7 +284,7 @@ Public Class Mainform
                 Next
                 dw.Close()
             End If
-            Append_info（"Save Successfully!")
+            Append_info("Save Successfully!")
         End If
     End Sub
 
@@ -324,7 +324,7 @@ Public Class Mainform
 
                 If IsNumeric(DataGridView1.Rows(i - 1).Cells(5).Value) = False Then
                     checked = False
-                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(1).Value.ToString + ", Date:" + DataGridView1.Rows(i - 1).Cells(6).Value + " is not a numerical value.")
+                    MsgBox("ID:" + DataGridView1.Rows(i - 1).Cells(1).Value.ToString + ", Continuous Traits:" + DataGridView1.Rows(i - 1).Cells(6).Value + " is not a numerical value.")
                     Exit For
                 End If
                 If IsNumeric(DataGridView1.Rows(i - 1).Cells(6).Value) = False Then
@@ -412,10 +412,10 @@ Public Class Mainform
                 PB_value = 50
                 If File.Exists(root_path + "history\" + currentTimeStamp.ToString + ".gml") Then
                     Dim startInfo_network As New ProcessStartInfo()
-                    startInfo_network.FileName = currentDirectory + "analysis\GenNetworkConfig.exe" ' 替换为实际的命令行程序路径
+                    startInfo_network.FileName = currentDirectory + "analysis\GenNetworkConfig2.exe" ' 替换为实际的命令行程序路径
                     startInfo_network.WorkingDirectory = currentDirectory + "history\" ' 替换为实际的运行文件夹路径
                     'startInfo_network.CreateNoWindow = True
-                    startInfo_network.Arguments = currentTimeStamp.ToString + ".gml " + currentTimeStamp.ToString + ".json " + currentTimeStamp.ToString + ".meta " + currentTimeStamp.ToString
+                    startInfo_network.Arguments = currentTimeStamp.ToString + ".gml " + currentTimeStamp.ToString + "_seq2hap.csv " + currentTimeStamp.ToString
                     Dim process_network As Process = Process.Start(startInfo_network)
                     process_network.WaitForExit()
                     process_network.Close()
@@ -565,10 +565,72 @@ Public Class Mainform
                         sw.WriteLine("<a href='./" + line_list(1) + "_hap.phy' target='_new'>Haplotype Sequence</a> ")
                         sw.WriteLine("<a href='./" + line_list(1) + "_hap_trait.csv'  target='_new'>Haplotype Trait Matrix</a>")
                         sw.WriteLine("<a href='./" + line_list(1) + "_seq2hap.csv'  target='_new'>Haplotype Source</a></td></tr>")
-                    ElseIf line_list(2).Contains("Analysis") Then
-                        sw.WriteLine("<td><a href='./" + line_list(1) + "_community_visualization.jpg' target='_new'>Community Visualization</a>")
-                        sw.WriteLine("<a href='./" + line_list(1) + "_haplotype_info.jpg' target='_new'>Haplotype Network Info</a>")
-                        sw.WriteLine("<a href='./" + line_list(1) + "_haplotype_seq_info.jpg'  target='_new'>Haplotype Seq Info</a></td></tr>")
+                        ' 处理新的分析类型
+                    ElseIf line_list(2).Contains("Topology Analysis") Then
+                        sw.WriteLine("<td><a href='./" + line_list(1) + "_VisualHapNet.svg' target='_new'>Network Topology</a>")
+                        sw.WriteLine("</td></tr>")
+                    ElseIf line_list(2).Contains("Community Structure Analysis") Then
+                        ' 从记录中提取k值
+                        Dim kValues As New List(Of String)()
+
+                        If line_list(2).Contains("k=") Then
+                            ' 获取 k= 后面的部分
+                            Dim startIndex As Integer = line_list(2).IndexOf("k=") + 2
+                            Dim endIndex As Integer = line_list(2).Length
+
+                            ' 如果有右括号，调整结束位置
+                            If line_list(2).IndexOf(")", startIndex) > -1 Then
+                                endIndex = line_list(2).IndexOf(")", startIndex)
+                            End If
+
+                            ' 提取 k 值部分
+                            Dim kPart As String = line_list(2).Substring(startIndex, endIndex - startIndex)
+
+                            ' 分割并添加所有 k 值
+                            For Each k As String In kPart.Split(" "c)
+                                If Not String.IsNullOrWhiteSpace(k.Trim()) Then
+                                    kValues.Add(k.Trim())
+                                End If
+                            Next
+                        End If
+
+                        ' 如果没有找到有效的 k 值，设置默认值
+                        If kValues.Count = 0 Then
+                            kValues.Add("3")
+                        End If
+
+                        sw.WriteLine("<td>")
+
+                        ' 为每个 k 值生成链接，所有链接放在同一行
+                        For i As Integer = 0 To kValues.Count - 1
+                            Dim k As String = kValues(i)
+
+                            ' 添加社区可视化链接
+                            sw.WriteLine("<a href='./" + line_list(1) + "_community_k" + k + ".svg' target='_new'>Community (k=" + k + ")</a>")
+
+                            ' 检查是否有相应的文本文件，如果有则添加链接
+                            If File.Exists(currentDirectory + "history/" + line_list(1) + "_community_k" + k + ".txt") Then
+                                sw.WriteLine("<a href='./" + line_list(1) + "_community_k" + k + ".txt' target='_new'>[Details]</a>")
+                            End If
+
+                            ' 如果不是最后一个k值，添加分隔符
+                            If i < kValues.Count - 1 Then
+                                sw.WriteLine(" ")
+                            End If
+                        Next
+
+                        sw.WriteLine("</td></tr>")
+                    ElseIf line_list(2).Contains("Modularity Analysis") Then
+                        sw.WriteLine("<td><a href='./" + line_list(1) + "_modularity_vs_communities.svg' target='_new'>Modularity Curve</a> ")
+                        sw.WriteLine("<a href='./" + line_list(1) + "_highest_modularity_community.svg' target='_new'>Best Community Structure</a>")
+                        sw.WriteLine("</td></tr>")
+                    ElseIf line_list(2).Contains("Hap Sequence Analysis") Then
+                        sw.WriteLine("<td><a href='./" + line_list(1) + "_sequence_conservation.svg' target='_new'>conservation site</a> ")
+                        sw.WriteLine("<a href='./" + line_list(1) + "_p-distance_heatmap.svg' target='_new'>p-distance heatmap</a> ")
+                        sw.WriteLine("<a href='./" + line_list(1) + "_p-distance_pca.svg' target='_new'>p-distance pca</a>")
+                        sw.WriteLine("</td></tr>")
+                    ElseIf line_list(2).Contains("Population Analysis") Then
+                        sw.WriteLine("<td><a href='./" + line_list(1) + "_population_stats.txt' target='_new'>Population Statistics</a></td></tr>")
                     ElseIf line_list(2).Contains("Sequence Alignment") Then
                         sw.WriteLine("<td><a href='./" + line_list(1) + ".html'>View Results</a>")
                         sw.WriteLine("<a href='./" + line_list(1) + "_aln.fasta'  target='_new'>Sequence Alignment</a></td></tr>")
@@ -680,7 +742,7 @@ Public Class Mainform
                 Next
                 dw.Close()
             End If
-            Append_info（"Save Successfully!")
+            Append_info("Save Successfully!")
         End If
     End Sub
 
@@ -976,69 +1038,344 @@ Public Class Mainform
     End Sub
 
 
-    Private Sub 网络图可视化ToolStripMenuItem_click(sender As Object, e As EventArgs) Handles 网络图可视化ToolStripMenuItem.Click
-        Dim currentTime As DateTime = DateTime.Now
-        Dim success As Boolean = True
-        Dim currentTimeStamp As Long = (currentTime - New DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds
-        Dim formattedTime As String = currentTime.ToString("yyyy-MM-dd HH:mm")
-
-        Dim currentUri As Uri = WebView_main.Source
-        Dim timeStamp As String = System.IO.Path.GetFileNameWithoutExtension(currentUri.ToString)
-        Dim seq2hap_file As String = currentDirectory + "history\" + timeStamp + "_seq2hap.csv"
-        Dim graph_json As String = currentDirectory + "history\" + timeStamp + ".json"
-        Dim hap_fasta As String = currentDirectory + "history\" + timeStamp + "_hap.fasta"
-
-        Dim seq2hapExists As Boolean = File.Exists(seq2hap_file)
-        Dim graphJsonExists As Boolean = File.Exists(graph_json)
-        Dim hapFastaExists As Boolean = File.Exists(hap_fasta)
-
-        ' 检测当前webview是否是单倍型网路图
-        If seq2hapExists AndAlso graphJsonExists AndAlso hapFastaExists Then
-            Dim startInfo As New ProcessStartInfo()
-            startInfo.FileName = currentDirectory + "analysis\haplotype_analysis.exe"
-            startInfo.WorkingDirectory = currentDirectory + "history\"
-            startInfo.Arguments = "-seq2hap " + seq2hap_file + " -graph " + graph_json + " -hap_fa " + hap_fasta + " -img_suffix " + currentTimeStamp.ToString()
-
-            Dim process As Process = Process.Start(startInfo)
-            process.WaitForExit()
-
-            Dim community_visualization As String = currentTimeStamp.ToString() + "_community_visualization.jpg"
-            Dim haplotype_info As String = currentTimeStamp.ToString() + "_haplotype_info.jpg"
-            Dim haplotype_seq_info As String = currentTimeStamp.ToString() + "_haplotype_seq_info.jpg"
-
-            ' 检查生成的文件是否存在
-            Dim communityVisualizationExists As Boolean = File.Exists(currentDirectory + "history\" + community_visualization)
-            Dim haplotypeInfoExists As Boolean = File.Exists(currentDirectory + "history\" + haplotype_info)
-            Dim haplotypeSeqInfoExists As Boolean = File.Exists(currentDirectory + "history\" + haplotype_seq_info)
-
-            If communityVisualizationExists AndAlso haplotypeInfoExists AndAlso haplotypeSeqInfoExists Then
-                ' 如果所有生成的文件都存在，则成功
-                MsgBox("Haplotype network analysis and visualization completed.")
-            Else
-                ' 如果其中某些文件不存在，则失败
-                MsgBox("Haplotype network analysis failed to generate all required visualizations. Please check the data.")
-                success = False
-            End If
-
-            process.Close()
-
-            If success Then
-                Dim sw1 As New StreamWriter(currentDirectory + "history/history.csv", True)
-                sw1.WriteLine(formattedTime + "," + currentTimeStamp.ToString + "," + "Visualization Analysis")
-                sw1.Close()
-            End If
-        Else
-            ' 如果不是同时存在，则输出信息
-            MsgBox("Not all required files for haplotype network visualization exist. Aborting next step.")
-        End If
-    End Sub
-
     Private Sub EnglishToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EnglishToolStripMenuItem.Click
         If language = "EN" Then
             to_ch()
         Else
             to_en()
         End If
-        settings("language") = language
+    End Sub
+
+
+
+    ' Common helper function to get required file paths and check if they exist
+    Private Function GetHaplotypeFilePaths() As (TimeStamp As String, Seq2HapFile As String, GraphJsonFile As String, AllFilesExist As Boolean)
+        ' Get current timestamp from WebView URI
+        Dim currentUri As Uri = WebView_main.Source
+        Dim timeStamp As String = System.IO.Path.GetFileNameWithoutExtension(currentUri.ToString)
+
+        ' Define file paths
+        Dim seq2hap_file As String = currentDirectory + "history\" + timeStamp + "_seq2hap.csv"
+        Dim graph_json As String = currentDirectory + "history\" + timeStamp + ".json"
+
+        ' Check if all required files exist
+        Dim seq2hapExists As Boolean = File.Exists(seq2hap_file)
+        Dim graphJsonExists As Boolean = File.Exists(graph_json)
+
+        Dim allFilesExist As Boolean = seq2hapExists AndAlso graphJsonExists
+
+        Return (timeStamp, seq2hap_file, graph_json, allFilesExist)
+    End Function
+
+    ' Helper function to log analysis history
+    Private Sub LogAnalysisHistory(timeStamp As String, analysisType As String)
+        Dim currentTime As DateTime = DateTime.Now
+        Dim formattedTime As String = currentTime.ToString("yyyy-MM-dd HH:mm")
+
+        Dim sw As New StreamWriter(currentDirectory + "history/history.csv", True)
+        sw.WriteLine(formattedTime + "," + timeStamp + "," + analysisType)
+        sw.Close()
+    End Sub
+
+    ' Helper function to run executable with parameters
+    Private Function RunExecutable(exePath As String, arguments As String, ByRef outputFiles As List(Of String)) As Boolean
+        Try
+            ' Prepare process startup info
+            Dim startInfo As New ProcessStartInfo()
+            startInfo.FileName = exePath
+            startInfo.WorkingDirectory = currentDirectory + "history\"
+            startInfo.Arguments = arguments
+            startInfo.CreateNoWindow = True
+            startInfo.UseShellExecute = False
+            startInfo.RedirectStandardOutput = True
+            startInfo.RedirectStandardError = True
+
+            ' Start and wait for process
+            Dim process As Process = Process.Start(startInfo)
+
+            ' Read output for diagnostic purposes
+            Dim output As String = process.StandardOutput.ReadToEnd()
+            Dim stderror As String = process.StandardError.ReadToEnd()
+
+            process.WaitForExit()
+
+            ' Check for errors
+            If Not String.IsNullOrEmpty(stderror) Then
+                MsgBox("Error executing analysis: " & stderror)
+                Return False
+            End If
+
+            ' Check exit code
+            If process.ExitCode <> 0 Then
+                MsgBox("Analysis failed with exit code: " & process.ExitCode.ToString())
+                Return False
+            End If
+
+            ' Check if expected output files exist
+            Dim allFilesExist As Boolean = True
+            For Each filePath In outputFiles
+                If Not File.Exists(filePath) Then
+                    allFilesExist = False
+                    MsgBox("Expected output file not found: " & filePath)
+                End If
+            Next
+
+            Return allFilesExist
+        Catch ex As Exception
+            MsgBox("Exception during analysis: " & ex.Message)
+            Return False
+        End Try
+    End Function
+
+
+    ' Topology Analysis implementation
+    Private Sub 拓扑结构分析ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 拓扑结构分析ToolStripMenuItem.Click
+        ' Get file paths and validate
+        Dim filePaths = GetHaplotypeFilePaths()
+
+        If Not filePaths.AllFilesExist Then
+            MsgBox("Not all required files for topology analysis exist. Please load your sequence data and build haplotype network first.")
+            Return
+        End If
+
+        ' Define executable path
+        Dim exePath As String = currentDirectory + "analysis\hapNet_visual.exe"
+
+        ' Verify executable exists
+        If Not File.Exists(exePath) Then
+            MsgBox("Topology analysis executable not found at: " & exePath)
+            Return
+        End If
+
+        ' Define command line arguments
+        Dim arguments As String = "--seq2hap """ & filePaths.Seq2HapFile & """ --graph """ & filePaths.GraphJsonFile &
+                           """ --img_suffix " & filePaths.TimeStamp
+
+        ' Define expected output files
+        Dim expectedOutputFiles As New List(Of String)
+        Dim outputSvgFile As String = currentDirectory + "history\" + filePaths.TimeStamp + "_VisualHapNet.svg"
+        expectedOutputFiles.Add(outputSvgFile)
+
+        ' Run the analysis
+        Dim success As Boolean = RunExecutable(exePath, arguments, expectedOutputFiles)
+
+        If success Then
+            ' Log to history file
+            LogAnalysisHistory(filePaths.TimeStamp, "Topology Analysis")
+
+            ' Show success message and open the visualization
+            MsgBox("Topology analysis completed successfully. The visualization has been saved.")
+        End If
+    End Sub
+
+    ' Modularity Analysis implementation
+    Private Sub 模块度分析ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 模块度分析ToolStripMenuItem.Click
+        ' Get file paths and validate
+        Dim filePaths = GetHaplotypeFilePaths()
+
+        If Not filePaths.AllFilesExist Then
+            MsgBox("Not all required files for modularity analysis exist. Please load your sequence data and build haplotype network first.")
+            Return
+        End If
+
+        ' Define executable path
+        Dim exePath As String = currentDirectory + "analysis\hapNet_community_modularity.exe"
+
+        ' Verify executable exists
+        If Not File.Exists(exePath) Then
+            MsgBox("Modularity analysis executable not found at: " & exePath)
+            Return
+        End If
+
+        ' Define command line arguments
+        Dim arguments As String = "--seq2hap """ & filePaths.Seq2HapFile & """ --graph """ & filePaths.GraphJsonFile &
+                            """ --img_suffix " & filePaths.TimeStamp
+
+        ' Define expected output files
+        Dim expectedOutputFiles As New List(Of String)
+        Dim modularityPlot As String = currentDirectory + "history\" + filePaths.TimeStamp + "_modularity_vs_communities.svg"
+        Dim bestCommunityPlot As String = currentDirectory + "history\" + filePaths.TimeStamp + "_highest_modularity_community.svg"
+        expectedOutputFiles.Add(modularityPlot)
+        expectedOutputFiles.Add(bestCommunityPlot)
+
+        ' Run the analysis
+        Dim success As Boolean = RunExecutable(exePath, arguments, expectedOutputFiles)
+
+        If success Then
+            ' Log to history file
+            LogAnalysisHistory(filePaths.TimeStamp, "Modularity Analysis")
+
+            ' Show success message and open the visualizations
+            MsgBox("Modularity analysis completed successfully. Two visualizations have been saved:" & vbCrLf &
+              "1. Modularity score vs. number of communities" & vbCrLf &
+              "2. Best community structure")
+
+        End If
+    End Sub
+
+    ' Community Visualization implementation
+    Private Sub 社区绘制ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 社区绘制ToolStripMenuItem.Click
+        ' Get file paths and validate
+        Dim filePaths = GetHaplotypeFilePaths()
+
+        If Not filePaths.AllFilesExist Then
+            MsgBox("Not all required files for community visualization exist. Please load your sequence data and build haplotype network first.")
+            Return
+        End If
+
+        ' Ask user for k values (up to 4)
+        Dim kValuesInput As String = InputBox("Enter up to 4 k values separated by spaces (e.g., '3 5 7 9'):" & vbCrLf &
+                                     "Each k value represents a specific number of communities to visualize.",
+                                     "K-specific Community Analysis")
+
+        If String.IsNullOrEmpty(kValuesInput) Then Return
+
+        ' Parse and validate k values
+        Dim kValues As New List(Of Integer)
+        For Each k As String In kValuesInput.Split(" "c)
+            Dim kValue As Integer
+            If Integer.TryParse(k.Trim(), kValue) AndAlso kValue > 1 Then
+                kValues.Add(kValue)
+            End If
+        Next
+
+        ' Check if we have valid k values
+        If kValues.Count = 0 Then
+            MsgBox("No valid k values provided. Please enter at least one positive integer greater than 1.")
+            Return
+        End If
+
+        ' Limit to 4 k values
+        If kValues.Count > 4 Then
+            kValues = kValues.Take(4).ToList()
+            MsgBox("Only the first 4 k values will be used: " & String.Join(", ", kValues))
+        End If
+
+        ' Define executable path
+        Dim exePath As String = currentDirectory + "analysis\hapNet_plot_k_community.exe"
+
+        ' Verify executable exists
+        If Not File.Exists(exePath) Then
+            MsgBox("Community analysis executable not found at: " & exePath)
+            Return
+        End If
+
+        ' Define command line arguments
+        Dim arguments As String = "--seq2hap """ & filePaths.Seq2HapFile & """ --graph """ & filePaths.GraphJsonFile &
+                           """ --img_suffix " & filePaths.TimeStamp &
+                           " --k " & String.Join(" ", kValues)
+
+        ' Define expected output files
+        Dim expectedOutputFiles As New List(Of String)
+        For Each k As Integer In kValues
+            Dim communityFile As String = currentDirectory + "history\" + filePaths.TimeStamp + "_community_k" + k.ToString() + ".svg"
+            expectedOutputFiles.Add(communityFile)
+        Next
+
+        ' Run the analysis
+        Dim success As Boolean = RunExecutable(exePath, arguments, expectedOutputFiles)
+
+        If success Then
+            ' Log to history file
+            LogAnalysisHistory(filePaths.TimeStamp, "Community Structure Analysis (k=" & String.Join(" ", kValues) & ")")
+
+            ' Show success message
+            MsgBox("Community visualization completed successfully. " & kValues.Count & " community structure(s) visualized.")
+        End If
+    End Sub
+
+    Private Sub 序列分析ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 序列分析ToolStripMenuItem.Click
+        Dim currentUri As Uri = WebView_main.Source
+        Dim timeStamp As String = System.IO.Path.GetFileNameWithoutExtension(currentUri.ToString)
+
+        ' Define file paths
+        Dim hap_fasta As String = currentDirectory + "history\" + timeStamp + "_hap.fasta"
+
+        ' Check if all required files exist
+        Dim hapFastaExists As Boolean = File.Exists(hap_fasta)
+
+        If Not hapFastaExists Then
+            MsgBox("Not all required files for haplotype sequence analysis exist. Please load your sequence data and build haplotype network first.")
+            Return
+        End If
+
+        ' Define executable path
+        Dim exePath As String = currentDirectory + "analysis\seq_analysis.exe"
+
+        ' Verify executable exists
+        If Not File.Exists(exePath) Then
+            MsgBox("Haplotype sequence analysis executable not found at: " & exePath)
+            Return
+        End If
+
+        ' Define command line arguments
+        Dim arguments As String = "-i """ & hap_fasta & """ -o " & timeStamp
+
+
+        ' Define expected output files
+        Dim expectedOutputFiles As New List(Of String)
+        Dim heatmapPlot As String = currentDirectory + "history\" + timeStamp + "_p-distance_heatmap.svg"
+        Dim pcaPlot As String = currentDirectory + "history\" + timeStamp + "_p-distance_pca.svg"
+        Dim seqConservationPlot As String = currentDirectory + "history\" + timeStamp + "_sequence_conservation.svg"
+        expectedOutputFiles.Add(heatmapPlot)
+        expectedOutputFiles.Add(pcaPlot)
+        expectedOutputFiles.Add(seqConservationPlot)
+
+        ' Run the analysis
+        Dim success As Boolean = RunExecutable(exePath, arguments, expectedOutputFiles)
+
+        If success Then
+            ' Log to history file
+            LogAnalysisHistory(timeStamp, "Hap Sequence Analysis")
+
+            ' Show success message and open the visualization
+            MsgBox("Haplotype Sequence analysis completed successfully. The visualization has been saved.")
+        End If
+    End Sub
+
+    Private Sub 群体信息统计ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 群体信息统计ToolStripMenuItem.Click
+        Dim currentUri As Uri = WebView_main.Source
+        Dim timeStamp As String = System.IO.Path.GetFileNameWithoutExtension(currentUri.ToString)
+
+        ' Define file paths
+        Dim hap_fasta As String = currentDirectory + "history\" + timeStamp + "_hap.fasta"
+
+        ' Check if all required files exist
+        Dim hapFastaExists As Boolean = File.Exists(hap_fasta)
+
+        If Not hapFastaExists Then
+            MsgBox("Not all required files for population analysis exist. Please load your sequence data and build haplotype network first.")
+            Return
+        End If
+
+        ' Define executable path
+        Dim exePath As String = currentDirectory + "analysis\population_analysis.exe"
+
+        ' Verify executable exists
+        If Not File.Exists(exePath) Then
+            MsgBox("Population analysis executable not found at: " & exePath)
+            Return
+        End If
+
+        ' Define command line arguments
+        Dim arguments As String = "-i """ & hap_fasta & """ -o " & timeStamp & """_population_stats.txt"
+
+
+        ' Define expected output files
+        Dim expectedOutputFiles As New List(Of String)
+        Dim populationStat As String = currentDirectory + "history\" + timeStamp + "_population_stats.txt"
+        expectedOutputFiles.Add(populationStat)
+
+        ' Run the analysis
+        Dim success As Boolean = RunExecutable(exePath, arguments, expectedOutputFiles)
+
+        If success Then
+            ' Log to history file
+            LogAnalysisHistory(timeStamp, "Population Analysis")
+
+            ' Show success message and open the visualization
+            MsgBox("Population analysis completed successfully. The statistics results have been saved.")
+        End If
+
     End Sub
 End Class

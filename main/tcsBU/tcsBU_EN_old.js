@@ -28,7 +28,7 @@ $(function () {
     /*
      * variables that hold nodes which should be highlighted or labeled
      */
-    var labelNode = {}, highlightNode = [], seqHapFlag = false, seqHapAdded = false, distanceFlag = false;
+    var labelNode = {}, highlightNode = [], seqHapFlag = false, seqHapAdded = false,distanceFlag=false;
 
 
     /*
@@ -58,9 +58,9 @@ $(function () {
     var maxTime = Number.NEGATIVE_INFINITY;
 
 
-    var link, node, path, subpath, linkText;
+    var link, node, path,linkText;
 
-    var pie, subPie, sector, sectorOuter, sectorNull, sectorSmall;
+    var pie, sector, sectorOuter, sectorNull, sectorSmall;
 
     var drag;
 
@@ -126,13 +126,13 @@ $(function () {
         var newcolor = 'ffffff', newpattern = 'none';
 
         var nc = w2ui.groups.find({recid: newgroup}, true)[0];
-        if (nc !== 'undefined' && w2ui.groups.records[nc]) {
+        if (nc !== 'undefined') {
             newcolor = w2ui.groups.records[nc].color;
             if (w2ui.groups.records[nc].pattern !== 'none') newpattern = "url(#" + newcolor + w2ui.groups.records[nc].pattern + ")";
         }
 
         /*
-         * Grab the haplogroup of this particular haplotype
+         * Grab the haplogroup of this particular haploty++pe
          */
 
         var haplogroup = Number(w2ui.haplotypes.records[index].haplogroup);
@@ -177,8 +177,8 @@ $(function () {
                     nodeList[nd].proportions[ng].value += haplocount;
                     nodeList[nd].proportions[ng].color = '#' + newcolor;
                     nodeList[nd].proportions[ng].pattern = newpattern;
-                    // nodeList[nd].proportions[ng].timecolor = haplotimecolor;
-                    // nodeList[nd].proportions[ng].time = haplotime;
+                    nodeList[nd].proportions[ng].timecolor = haplotimecolor;
+                    nodeList[nd].proportions[ng].time = haplotime;
                     nodeList[nd].proportions[ng].nodestyle = haplostyle;
                     nodeList[nd].proportions[og].value -= haplocount;
                 } else {
@@ -188,25 +188,12 @@ $(function () {
                         radius: nodeList[nd].radius,
                         value: haplocount,
                         pattern: newpattern,
+                        timecolor: haplotimecolor,
                         nodestyle: haplostyle,
+                        time: haplotime
                     });
                     nodeList[nd].proportions[og].value -= haplocount;
                 }
-
-                let timeProportion = nodeList[nd].timeProportions.find(tp => tp.time === haplotime);
-                if (timeProportion) {
-                    timeProportion.value += haplocount;
-                    // timeProportion.timecolor = haplotimecolor;
-                } else {
-                    nodeList[nd].timeProportions.push({
-                        time: haplotime,
-                        value: haplocount,
-                        timecolor: haplotimecolor,
-                        patter: newpattern,
-                        radius: nodeList[nd].radius,
-                    });
-                }
-
 
                 /*
                  * Find the target svg element (node). If it exists, apply changes
@@ -214,14 +201,13 @@ $(function () {
 
                 if (svg) {
                     var n = svg.selectAll('.node')
-                    path = n.selectAll('.outer-path').data(function (d) {
+                    path = n.selectAll('path').data(function (d) {
                         return pie(d.proportions);
                     });
 
 
                     path.enter()
                         .append('path')
-                        .attr('class', 'outer-path')
                         .attr('d', function (d) {
                             if (isINNerNode(d)) {
                                 return sector(d)
@@ -238,13 +224,13 @@ $(function () {
                         path.style('stroke-width', '0').style('stroke', 'none');
                     }
 
-                    subpath = n.selectAll('.subpath').data(function (d) {
-                        return subPie(d.timeProportions);
-                    });
 
-                    subpath.enter()
+                    var colorGradientScale = d3.scale.linear()
+                        .domain([minTime, maxTime])
+                        .range(["#cbc6d8", "#601824"]);
+
+                    path.enter()
                         .append('path')
-                        .attr('class', "subpath")
                         .attr('d', function (d) {
                             if (isINNerNode(d)) {
                                 return sectorNull(d);
@@ -253,11 +239,15 @@ $(function () {
                             }
                         })
                         .style('fill', function (d) {
-                            if (typeid === 0) return '#' + d.data.timecolor + d.data.timecolor + d.data.timecolor;
-                            if (typeid === 1) return '#ff' + d.data.timecolor + d.data.timecolor;
-                            if (typeid === 2) return '#' + d.data.timecolor + 'ff' + d.data.timecolor;
-                            if (typeid === 3) return '#' + d.data.timecolor + d.data.timecolor + 'ff';
-                            if (typeid === 4) return '#ffffff';
+                            if (d.data.pattern === 'none') {
+                                if (typeid === 0) return '#' + d.data.timecolor + d.data.timecolor + d.data.timecolor;
+                                if (typeid === 1) return '#ff' + d.data.timecolor + d.data.timecolor;
+                                if (typeid === 2) return '#' + d.data.timecolor + 'ff' + d.data.timecolor;
+                                if (typeid === 3) return '#' + d.data.timecolor + d.data.timecolor + 'ff';
+                                if (typeid === 4) return '#ffffff';
+                                if (typeid === 5) return colorGradientScale(d.data.time);
+
+                            } else return d.data.pattern;
                         });
 
 
@@ -268,12 +258,11 @@ $(function () {
                      * .style('stroke', 'none');
                      */
                     if (outlinenodes) {
-                        subpath.style('stroke-width', linewidth / 2).style('stroke', '#000000');
+                        path.style('stroke-width', linewidth / 2).style('stroke', '#000000');
                     } else {
-                        subpath.style('stroke-width', '0').style('stroke', 'none');
+                        path.style('stroke-width', '0').style('stroke', 'none');
                     }
                     path.exit().remove();
-                    subpath.exit().remove();
 
                     force.nodes(nodeList).links(linkList).start();
                 }
@@ -282,8 +271,6 @@ $(function () {
                 w2alert('Serious error!', 'ERROR');
             }
         }
-
-
     }
 
     /*
@@ -461,15 +448,13 @@ $(function () {
         node.exit().remove();
 
 
-        // 主路径绘制 外环扇形图
-        path = node.selectAll('.outer-path').remove();
-        path = node.selectAll('.outer-path').data(function (d) {
+        path = node.selectAll('path').remove();
+        path = node.selectAll('path').data(function (d) {
             return pie(d.proportions);
         });
 
         path.enter()
             .append('path')
-            .attr('class', "outer-path")
             .attr('d', function (d) {
                 if (isINNerNode(d)) {
                     return sector(d)
@@ -485,17 +470,13 @@ $(function () {
         } else {
             path.style('stroke-width', '0').style('stroke', 'none');
         }
-        path.exit().remove();
 
-        // 子路径绘制
-        subpath = node.selectAll('.subpath').remove();
-        subpath = node.selectAll('.subpath').data(function (d) {
-            return subPie(d.timeProportions);
-        });
+        var colorGradientScale = d3.scale.linear()
+            .domain([minTime, maxTime])
+            .range(["#cbc6d8", "#601824"]);
 
-        subpath.enter()
+        path.enter()
             .append('path')
-            .attr('class', 'subpath')
             .attr('d', function (d) {
                 if (isINNerNode(d)) {
                     return sectorNull(d);
@@ -504,14 +485,16 @@ $(function () {
                 }
             })
             .style('fill', function (d) {
-                //if (d.data.pattern === 'none') {
-                if (typeid === 0) return '#' + d.data.timecolor + d.data.timecolor + d.data.timecolor;
-                if (typeid === 1) return '#ff' + d.data.timecolor + d.data.timecolor;
-                if (typeid === 2) return '#' + d.data.timecolor + 'ff' + d.data.timecolor;
-                if (typeid === 3) return '#' + d.data.timecolor + d.data.timecolor + 'ff';
-                if (typeid === 4) return '#ffffff';
-                //} else return d.data.pattern;
+                if (d.data.pattern === 'none') {
+                    if (typeid === 0) return '#' + d.data.timecolor + d.data.timecolor + d.data.timecolor;
+                    if (typeid === 1) return '#ff' + d.data.timecolor + d.data.timecolor;
+                    if (typeid === 2) return '#' + d.data.timecolor + 'ff' + d.data.timecolor;
+                    if (typeid === 3) return '#' + d.data.timecolor + d.data.timecolor + 'ff';
+                    if (typeid === 4) return '#ffffff';
+                    if (typeid === 5) return colorGradientScale(d.data.time);
+                } else return d.data.pattern;
             });
+
 
         /*
          * These two commands may be used to implement
@@ -520,15 +503,14 @@ $(function () {
          * .style('stroke', 'none');
          */
         if (outlinenodes) {
-            subpath.style('stroke-width', linewidth / 2).style('stroke', '#000000');
+            path.style('stroke-width', linewidth / 2).style('stroke', '#000000');
         } else {
-            subpath.style('stroke-width', '0').style('stroke', 'none');
+            path.style('stroke-width', '0').style('stroke', 'none');
         }
-
-        subpath.exit().remove();
+        path.exit().remove();
 
         linkText = svg.selectAll(".link-text").remove();
-        if (distanceFlag) {
+        if(distanceFlag){
             linkText = svg.selectAll('.link-text').data(linkList);
             linkText.enter().append('text')
                 .attr('class', 'link-text')
@@ -537,7 +519,7 @@ $(function () {
                     return d.changes;
                 })
                 .style('font-family', 'Times New Roman') // Set the font family
-                .style("stroke-width", '0.2px')
+                .style("stroke-width",'0.2px')
                 .style('font-size', '13px');
             linkText.exit().remove();
         }
@@ -567,7 +549,7 @@ $(function () {
                 .attr('dy', '.35em')
                 .text(value.join(";"))
                 .style('font-family', 'Times New Roman') // Set the font family
-                .style("stroke-width", '0.2px')
+                .style("stroke-width",'0.2px')
                 .style('font-size', '13px');
         });
 
@@ -592,7 +574,7 @@ $(function () {
                         .attr('dy', '.50em')
                         .text(d.seq2hap)
                         .style('font-family', 'Times New Roman') // Set the font family
-                        .style("stroke-width", '0.2px')
+                        .style("stroke-width",'0.2px')
                         .style('font-size', '13px');
                 });
         }
@@ -1093,6 +1075,10 @@ $(function () {
                     colorlist.push('#f8f8f8');
                     colorlist.push('#080808');
                 }
+                if (typeid === 5) {
+                    colorlist.push('#1e9600');
+                    colorlist.push('#ff0000');
+                }
 
             }
             //var sampleOrdinal = d3.scale.category20().domain(grouplist);
@@ -1198,7 +1184,7 @@ $(function () {
                             disabled: true,
                             items: [{text: 'Gray', typeid: "0"}, {text: 'Red', typeid: "1"}, {
                                 text: 'Green', typeid: "2"
-                            }, {text: 'Blue', typeid: "3"}, {text: 'Null', typeid: "4"}]
+                            }, {text: 'Blue', typeid: "3"}, {text: 'Null', typeid: "4"}, {text: 'Color', typeid: "5"}]
                         }, {
                             id: 'btn-style',
                             type: 'menu',
@@ -1208,7 +1194,7 @@ $(function () {
                             items: [{text: 'All', styleid: "0"}, {text: 'Trait1', styleid: "1"}, {
                                 text: 'Trait2', styleid: "2"
                             },]
-                        }, {type: 'break'}, {
+                        },  {type: 'break'},{
                             id: 'btn-legend',
                             type: 'check',
                             text: 'Legend',
@@ -1224,7 +1210,7 @@ $(function () {
                             icon: 'icon-legend',
                             disabled: true,
                             checked: false
-                        }, {
+                        },{
                             id: 'btn-distance',
                             type: 'check',
                             text: 'Distance',
@@ -1607,7 +1593,7 @@ $(function () {
             var newnode = false;
             var newedge = false;
             var multilabels = false;
-            var frequency, radius, haplogroup, label, changes, source, target;
+            var frequency, radius,  haplogroup,  label, changes, source, target;
             var labels = []
             for (var i = 0; i < lines.length; i++) {
                 if (lines[i].indexOf('node [') === 3) newnode = true;
@@ -1679,7 +1665,7 @@ $(function () {
                                  */
 
                                 // radius = Math.sqrt(frequency * area / Math.PI);
-                                radius = Math.pow(frequency, 1 / 3) * standardRadius;
+                                radius = Math.pow(frequency,1/3) * standardRadius;
                             }
                             var labelname = labels.join("\n");
                             /*
@@ -1687,20 +1673,15 @@ $(function () {
                              * the first label if they include more than one
                              */
 
-                            if (nodestyle === 0) radius = 1;
+                            if (nodestyle===0) radius = 1;
                             nodeList.push({
                                 name: labelname, radius: radius, nodestyle: nodestyle, proportions: [{
                                     group: 'Default',
                                     value: frequency,
                                     radius: radius,
                                     color: '#ffffff',
-                                    pattern: 'none',
-                                }], timeProportions: [{
-                                    time: 'Default',
-                                    value: 0,
-                                    timecolor: 'ff',
-                                }]
-                                , id: haplogroup, //  label holds the info which should be shown
+                                    pattern: 'none'
+                                }], id: haplogroup, //  label holds the info which should be shown
                                 label: []
                             });
 
@@ -2118,7 +2099,12 @@ $(function () {
 
                             group = l[1].trim();
                             seq2hap = l[2].trim();
-                            if (group !== "") h.push({label: name, group: group, seq2hap: seq2hap});
+                            if (group !== ""){
+							h.push({label: name, group: group, seq2hap: seq2hap})}
+							else {
+                                h.push({label: name, group: 'Default', seq2hap: seq2hap});
+                            }
+							;
                         }
                     }
                 }
@@ -2334,9 +2320,9 @@ $(function () {
         updateSVG();
     }
 
-    function insertDistance() {
+    function insertDistance(){
         /***
-         a function to show the distance between each two nodes
+          a function to show the distance between each two nodes
          ***/
         distanceFlag = !distanceFlag;
         updateSVG();
@@ -2568,15 +2554,6 @@ $(function () {
             .value(function (d) {
                 return d.value;
             });
-
-        subPie = d3.layout.pie()
-            .sort(function (a, b) {
-                return a.time - b.time;  // 从小到大排序
-            })
-            .value(function (d) {
-                return d.value;
-            });
-
         /*
          * Define an arc
          */
@@ -2632,14 +2609,10 @@ $(function () {
                     return d.target.y;
                 });
 
-            if (distanceFlag) {
+            if(distanceFlag){
                 linkText
-                    .attr('x', function (d) {
-                        return (d.source.x + d.target.x) / 2;
-                    })
-                    .attr('y', function (d) {
-                        return (d.source.y + d.target.y) / 2;
-                    });
+                    .attr('x', function (d) { return (d.source.x + d.target.x) / 2; })
+                    .attr('y', function (d) { return (d.source.y + d.target.y) / 2; });
             }
 
             node.attr("x", function (d) {
@@ -2827,7 +2800,7 @@ $(function () {
          * Enable editing buttons
          */
 
-        w2ui.Layout_main_toolbar.enable('btn-dellink', 'btn-delnode', 'btn-svgsave', 'btn-outline', 'btn-lwidth', 'btn-zoomin', 'btn-zoomout', 'btn-legend', 'btn-time', 'btn-style', 'btn-haplotype', 'btn-distance');
+        w2ui.Layout_main_toolbar.enable('btn-dellink', 'btn-delnode', 'btn-svgsave', 'btn-outline', 'btn-lwidth', 'btn-zoomin', 'btn-zoomout', 'btn-legend', 'btn-time', 'btn-style','btn-haplotype','btn-distance');
 
 
         /*
@@ -2924,7 +2897,7 @@ $(function () {
         w2alert('The File APIs are not fully supported by your browser.');
     }
 
-    // // todo: delete
+    // todo: delete
     loadGraph(gmlfile);
     loadGroups(groupconffile);
     loadHaplotypes(hapconffile);

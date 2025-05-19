@@ -237,8 +237,9 @@ Module Module_Function
             For i As Integer = 1 To UBound(org_seq_clean)
                 sw_seq_hap.Write(i.ToString + ",")
                 sw_seq_hap.Write("Hap_" + hap_name(i).ToString + ",")
-                sw_seq_hap.Write(name(i).ToUpper.Split(New String() {"$SPLIT$"}, StringSplitOptions.None)(0) + ",")
-                sw_seq_hap.Write(name(i).ToUpper.Split(New String() {"$SPLIT$"}, StringSplitOptions.None)(1))
+                Dim parts As String() = name(i).ToUpper.Split(New String() {"$SPLIT$"}, StringSplitOptions.None)
+                sw_seq_hap.Write(parts(0).Split("="c)(0) + ",")
+                sw_seq_hap.Write(parts(1))
                 sw_seq_hap.Write(new_line_char)
             Next
             sw_seq_hap.Close()

@@ -54,6 +54,11 @@ Partial Class Mainform
         Super5AlgorithmToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator5 = New ToolStripSeparator()
         网络图可视化ToolStripMenuItem = New ToolStripMenuItem()
+        拓扑结构分析ToolStripMenuItem = New ToolStripMenuItem()
+        社区检测ToolStripMenuItem = New ToolStripMenuItem()
+        模块度分析ToolStripMenuItem = New ToolStripMenuItem()
+        社区绘制ToolStripMenuItem = New ToolStripMenuItem()
+        序列分析ToolStripMenuItem = New ToolStripMenuItem()
         浏览ToolStripMenuItem = New ToolStripMenuItem()
         前进ToolStripMenuItem = New ToolStripMenuItem()
         后退ToolStripMenuItem = New ToolStripMenuItem()
@@ -77,6 +82,7 @@ Partial Class Mainform
         TextBox1 = New TextBox()
         ProgressBar1 = New ProgressBar()
         Timer1 = New Timer(components)
+        群体信息统计ToolStripMenuItem = New ToolStripMenuItem()
         CType(WebView_main, ComponentModel.ISupportInitialize).BeginInit()
         MenuStrip1.SuspendLayout()
         TabControl1.SuspendLayout()
@@ -170,7 +176,7 @@ Partial Class Mainform
         ' 
         ' 分析ToolStripMenuItem
         ' 
-        分析ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {MSN单倍型网络ToolStripMenuItem, MJN单倍型网络ToolStripMenuItem, 单倍型网络ToolStripMenuItem, ToolStripSeparator3, 序列比对高速ToolStripMenuItem, 序列比对ToolStripMenuItem, ToolStripSeparator5, 网络图可视化ToolStripMenuItem})
+        分析ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {MSN单倍型网络ToolStripMenuItem, MJN单倍型网络ToolStripMenuItem, 单倍型网络ToolStripMenuItem, ToolStripSeparator3, 序列比对高速ToolStripMenuItem, 序列比对ToolStripMenuItem, ToolStripSeparator5, 网络图可视化ToolStripMenuItem, 序列分析ToolStripMenuItem, 群体信息统计ToolStripMenuItem})
         分析ToolStripMenuItem.Name = "分析ToolStripMenuItem"
         分析ToolStripMenuItem.Size = New Size(44, 21)
         分析ToolStripMenuItem.Text = "分析"
@@ -178,31 +184,31 @@ Partial Class Mainform
         ' MSN单倍型网络ToolStripMenuItem
         ' 
         MSN单倍型网络ToolStripMenuItem.Name = "MSN单倍型网络ToolStripMenuItem"
-        MSN单倍型网络ToolStripMenuItem.Size = New Size(173, 22)
+        MSN单倍型网络ToolStripMenuItem.Size = New Size(180, 22)
         MSN单倍型网络ToolStripMenuItem.Text = "MSN单倍型网络"
         ' 
         ' MJN单倍型网络ToolStripMenuItem
         ' 
         MJN单倍型网络ToolStripMenuItem.Name = "MJN单倍型网络ToolStripMenuItem"
-        MJN单倍型网络ToolStripMenuItem.Size = New Size(173, 22)
+        MJN单倍型网络ToolStripMenuItem.Size = New Size(180, 22)
         MJN单倍型网络ToolStripMenuItem.Text = "MJN单倍型网络"
         ' 
         ' 单倍型网络ToolStripMenuItem
         ' 
         单倍型网络ToolStripMenuItem.Name = "单倍型网络ToolStripMenuItem"
-        单倍型网络ToolStripMenuItem.Size = New Size(173, 22)
+        单倍型网络ToolStripMenuItem.Size = New Size(180, 22)
         单倍型网络ToolStripMenuItem.Text = "TCS单倍型网络"
         ' 
         ' ToolStripSeparator3
         ' 
         ToolStripSeparator3.Name = "ToolStripSeparator3"
-        ToolStripSeparator3.Size = New Size(170, 6)
+        ToolStripSeparator3.Size = New Size(177, 6)
         ' 
         ' 序列比对高速ToolStripMenuItem
         ' 
         序列比对高速ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {AutoToolStripMenuItem, FFTNS1VeryFastButVeryRoughToolStripMenuItem, FFTNS2FastButRoughToolStripMenuItem, GINSiVerySlowToolStripMenuItem, LINSiMostAccurateVerySlowToolStripMenuItem, EINSiForLongUnalignableRegionsVerySlowToolStripMenuItem})
         序列比对高速ToolStripMenuItem.Name = "序列比对高速ToolStripMenuItem"
-        序列比对高速ToolStripMenuItem.Size = New Size(173, 22)
+        序列比对高速ToolStripMenuItem.Size = New Size(180, 22)
         序列比对高速ToolStripMenuItem.Text = "序列比对(Mafft)"
         ' 
         ' AutoToolStripMenuItem
@@ -245,7 +251,7 @@ Partial Class Mainform
         ' 
         序列比对ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {PPPAlgorithmToolStripMenuItem, Super5AlgorithmToolStripMenuItem})
         序列比对ToolStripMenuItem.Name = "序列比对ToolStripMenuItem"
-        序列比对ToolStripMenuItem.Size = New Size(173, 22)
+        序列比对ToolStripMenuItem.Size = New Size(180, 22)
         序列比对ToolStripMenuItem.Text = "序列比对(Muscle)"
         ' 
         ' PPPAlgorithmToolStripMenuItem
@@ -263,13 +269,45 @@ Partial Class Mainform
         ' ToolStripSeparator5
         ' 
         ToolStripSeparator5.Name = "ToolStripSeparator5"
-        ToolStripSeparator5.Size = New Size(170, 6)
+        ToolStripSeparator5.Size = New Size(177, 6)
         ' 
         ' 网络图可视化ToolStripMenuItem
         ' 
+        网络图可视化ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {拓扑结构分析ToolStripMenuItem, 社区检测ToolStripMenuItem})
         网络图可视化ToolStripMenuItem.Name = "网络图可视化ToolStripMenuItem"
-        网络图可视化ToolStripMenuItem.Size = New Size(173, 22)
-        网络图可视化ToolStripMenuItem.Text = "网络图可视化"
+        网络图可视化ToolStripMenuItem.Size = New Size(180, 22)
+        网络图可视化ToolStripMenuItem.Text = "单倍型网络分析"
+        ' 
+        ' 拓扑结构分析ToolStripMenuItem
+        ' 
+        拓扑结构分析ToolStripMenuItem.Name = "拓扑结构分析ToolStripMenuItem"
+        拓扑结构分析ToolStripMenuItem.Size = New Size(148, 22)
+        拓扑结构分析ToolStripMenuItem.Text = "拓扑结构分析"
+        ' 
+        ' 社区检测ToolStripMenuItem
+        ' 
+        社区检测ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {模块度分析ToolStripMenuItem, 社区绘制ToolStripMenuItem})
+        社区检测ToolStripMenuItem.Name = "社区检测ToolStripMenuItem"
+        社区检测ToolStripMenuItem.Size = New Size(148, 22)
+        社区检测ToolStripMenuItem.Text = "社区检测"
+        ' 
+        ' 模块度分析ToolStripMenuItem
+        ' 
+        模块度分析ToolStripMenuItem.Name = "模块度分析ToolStripMenuItem"
+        模块度分析ToolStripMenuItem.Size = New Size(136, 22)
+        模块度分析ToolStripMenuItem.Text = "模块度分析"
+        ' 
+        ' 社区绘制ToolStripMenuItem
+        ' 
+        社区绘制ToolStripMenuItem.Name = "社区绘制ToolStripMenuItem"
+        社区绘制ToolStripMenuItem.Size = New Size(136, 22)
+        社区绘制ToolStripMenuItem.Text = "社区绘制"
+        ' 
+        ' 序列分析ToolStripMenuItem
+        ' 
+        序列分析ToolStripMenuItem.Name = "序列分析ToolStripMenuItem"
+        序列分析ToolStripMenuItem.Size = New Size(180, 22)
+        序列分析ToolStripMenuItem.Text = "序列分析"
         ' 
         ' 浏览ToolStripMenuItem
         ' 
@@ -311,42 +349,42 @@ Partial Class Mainform
         ' 清理序列ToolStripMenuItem
         ' 
         清理序列ToolStripMenuItem.Name = "清理序列ToolStripMenuItem"
-        清理序列ToolStripMenuItem.Size = New Size(180, 22)
+        清理序列ToolStripMenuItem.Size = New Size(148, 22)
         清理序列ToolStripMenuItem.Text = "清理序列数据"
         ' 
         ' ToolStripSeparator6
         ' 
         ToolStripSeparator6.Name = "ToolStripSeparator6"
-        ToolStripSeparator6.Size = New Size(177, 6)
+        ToolStripSeparator6.Size = New Size(145, 6)
         ' 
         ' 获取序列信息ToolStripMenuItem
         ' 
         获取序列信息ToolStripMenuItem.Name = "获取序列信息ToolStripMenuItem"
-        获取序列信息ToolStripMenuItem.Size = New Size(180, 22)
+        获取序列信息ToolStripMenuItem.Size = New Size(148, 22)
         获取序列信息ToolStripMenuItem.Text = "序列生成表格"
         获取序列信息ToolStripMenuItem.Visible = False
         ' 
         ' ToolStripSeparator7
         ' 
         ToolStripSeparator7.Name = "ToolStripSeparator7"
-        ToolStripSeparator7.Size = New Size(177, 6)
+        ToolStripSeparator7.Size = New Size(145, 6)
         ToolStripSeparator7.Visible = False
         ' 
         ' 日期转换数字ToolStripMenuItem
         ' 
         日期转换数字ToolStripMenuItem.Name = "日期转换数字ToolStripMenuItem"
-        日期转换数字ToolStripMenuItem.Size = New Size(180, 22)
+        日期转换数字ToolStripMenuItem.Size = New Size(148, 22)
         日期转换数字ToolStripMenuItem.Text = "日期转换数字"
         ' 
         ' ToolStripSeparator11
         ' 
         ToolStripSeparator11.Name = "ToolStripSeparator11"
-        ToolStripSeparator11.Size = New Size(177, 6)
+        ToolStripSeparator11.Size = New Size(145, 6)
         ' 
         ' EnglishToolStripMenuItem
         ' 
         EnglishToolStripMenuItem.Name = "EnglishToolStripMenuItem"
-        EnglishToolStripMenuItem.Size = New Size(180, 22)
+        EnglishToolStripMenuItem.Size = New Size(148, 22)
         EnglishToolStripMenuItem.Text = "English"
         ' 
         ' TabControl1
@@ -463,6 +501,12 @@ Partial Class Mainform
         Timer1.Enabled = True
         Timer1.Interval = 1000
         ' 
+        ' 群体信息统计ToolStripMenuItem
+        ' 
+        群体信息统计ToolStripMenuItem.Name = "群体信息统计ToolStripMenuItem"
+        群体信息统计ToolStripMenuItem.Size = New Size(180, 22)
+        群体信息统计ToolStripMenuItem.Text = "群体信息统计"
+        ' 
         ' Mainform
         ' 
         AutoScaleDimensions = New SizeF(7F, 17F)
@@ -543,4 +587,10 @@ Partial Class Mainform
     Friend WithEvents Super5AlgorithmToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents EnglishToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 网络图可视化ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 拓扑结构分析ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 社区检测ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 模块度分析ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 社区绘制ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 序列分析ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents 群体信息统计ToolStripMenuItem As ToolStripMenuItem
 End Class
