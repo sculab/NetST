@@ -1,60 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title></title>
-<meta name="description" content="">
-<meta name="keywords" content="">
-<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="format-detection" content="telephone=no">
-<link rel="stylesheet" href="./css/main-1.css">
-<link rel="stylesheet" href="./css/main-2.css">
-<style>
-.lead { font-size: 1.25rem; font-weight: 300; font-family:"Microsoft YaHei";}
-.container { font-family:"Microsoft YaHei";font-size: xx-large; font-weight: 300; width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-content: center; justify-content: center; }
-.container h1 { font-family:"Microsoft YaHei"}
-.bubble{
-	width:100%;
-	height:100vh;
-}
-</style>
+    <meta charset="utf-8">
+    <title></title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta content="width=device-width,minimum-scale=1,initial-scale=1" name="viewport">
+    <meta content="telephone=no" name="format-detection">
+    <link href="./css/main-1.css" rel="stylesheet">
+    <link href="./css/main-2.css" rel="stylesheet">
+    <style>
+        .lead {
+            font-size: 1.25rem;
+            font-weight: 300;
+            font-family: "Microsoft YaHei";
+        }
+
+        .container {
+            font-family: "Microsoft YaHei";
+            font-size: xx-large;
+            font-weight: 300;
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+        }
+
+        .container h1 {
+            font-family: "Microsoft YaHei"
+        }
+
+        .bubble {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
 </head>
 <body>
 <div class="bubble"></div>
-<div class="container"><strong>NetST (Network for Sequences and Traits)</strong><br><br><h1>Based on fastHaN, tcsBU, Mafft</h1><br><h1></h1></div>
+<div class="container"><strong>NetST (Network for Sequences and Traits)</strong><br><br>
+    <h1>Based on fastHaN, tcsBU, Mafft</h1><br>
+    <h1></h1></div>
 
-	<!-- lib/jquery -->
-	<script src="./js/jquery.min.js"></script>
-	
-	<!-- plugin/global -->
-	<script src="./js/jquery.bubble.js"></script>
-	
-	<script>
-(function($){
-	$(document).ready(function(){
-		const 
-		eleBody = $('body'), 
-		config = {
-			img:[
-				'./img/pink.png', 
-				'./img/yellow.png', 
-				'./img/green.png' 
-			], 
-			shadowColor:[
-				'#8bcecb', 
-				'#f2a2b9', 
-				'#f4b6d1', 
-				'#ca98c3', 
-				'#fff231', 
-				'#4ab7d0' 
-			], 
-			bubbleFunc:() => {
-				return 'hsla(0, 0%, 100%, 0.5)';
-			} 
-		};
-		eleBody.bubble(config);
-	});
-})(jQuery);
-	</script>
+<!-- lib/jquery -->
+<script src="./js/jquery.min.js"></script>
+
+<!-- plugin/global -->
+<script src="./js/jquery.bubble.js"></script>
+
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            const
+                eleBody = $('body'),
+                config = {
+                    img: [
+                        './img/pink.png',
+                        './img/yellow.png',
+                        './img/green.png'
+                    ],
+                    shadowColor: [
+                        '#8bcecb',
+                        '#f2a2b9',
+                        '#f4b6d1',
+                        '#ca98c3',
+                        '#fff231',
+                        '#4ab7d0'
+                    ],
+                    bubbleFunc: () => {
+                        return 'hsla(0, 0%, 100%, 0.5)';
+                    }
+                };
+            eleBody.bubble(config);
+        });
+    })(jQuery);
+</script>
 </body>
 </html>

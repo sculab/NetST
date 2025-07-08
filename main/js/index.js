@@ -13,7 +13,7 @@ let drawImageNSeq;
 let asyncTimeout = 2; // ms
 let msaImageTimeout = 1; //original at 10
 let colorSliderDflt = 0;
-let imageSliderDflt = { w: 4, h: 4 };
+let imageSliderDflt = {w: 4, h: 4};
 let filterGaps = 100; // default filtering values (=no filtering)
 let filterIdent = 0;
 let filterRSgaps = false;
@@ -259,7 +259,7 @@ $(document).ready(function () {
         $.get(originURL, function (data) {
             loadNewMSA(data);
         });
-    };
+    }
 
 });
 
@@ -309,7 +309,7 @@ function zoomEventWatchdog() {
         const alignmentData = msa.getNormalizedColumnProportions();
         msa.redrawConservationPlot('#plot_canvas', msaTextblockWidth);
         const logoDiagram = new SequenceLogoDiagramD3(
-            { elementId: 'seqlogo', elementWidth: msaTextblockWidth, elementHeight: 48 },
+            {elementId: 'seqlogo', elementWidth: msaTextblockWidth, elementHeight: 48},
             alignmentData,
         );
         logoDiagram.initDiagram();
@@ -445,7 +445,7 @@ let msaCallback = {
         const alignmentData = msa.getNormalizedColumnProportions();
         msa.redrawConservationPlot('#plot_canvas', msaTextblockWidth);
         const logoDiagram = new SequenceLogoDiagramD3(
-            { elementId: 'seqlogo', elementWidth: msaTextblockWidth, elementHeight: 48 },
+            {elementId: 'seqlogo', elementWidth: msaTextblockWidth, elementHeight: 48},
             alignmentData,
         );
         logoDiagram.initDiagram();
@@ -848,7 +848,7 @@ function handleCustomFileSelectCouplings(evt) {
             console.log(aux.B);
             const len = msa.getNormalizedColumnProportions().length;
             const couplingsLogoDiagram = new CouplingsLogoDiagramD3(
-                { elementId: 'couplingslogo', elementWidth: msaTextblockWidth, elementHeight: 30 },
+                {elementId: 'couplingslogo', elementWidth: msaTextblockWidth, elementHeight: 30},
                 aux,
                 len,
             );
@@ -899,23 +899,23 @@ function UpdateSpeciesDiagram() {
     const testobj = {
         name: 'flare',
         children: [
-            { name: 'sdsdfsdf', size: 2, children: [{ name: 'a', size: 23 }, { name: 'b', size: 12 }] },
+            {name: 'sdsdfsdf', size: 2, children: [{name: 'a', size: 23}, {name: 'b', size: 12}]},
             {
                 name: 'qweqwecv',
                 size: 3,
-                children: [{ name: 'c', size: 35 }, { name: 'd', size: 53 }, { name: 'e', size: 2 }],
+                children: [{name: 'c', size: 35}, {name: 'd', size: 53}, {name: 'e', size: 2}],
             },
         ],
     };
 
-    const obj = { name: 'species', children: new Array() }; // have to convert object (hash-table) to array
+    const obj = {name: 'species', children: new Array()}; // have to convert object (hash-table) to array
     console.log(msa.specdist.children);
     for (const e of Object.keys(msa.specdist.children)) {
         const o = msa.specdist.children[e];
-        const v = { name: o.name, size: o.size, children: new Array() };
+        const v = {name: o.name, size: o.size, children: new Array()};
         for (const c of Object.keys(o.children)) {
             const o2 = o.children[c];
-            const v2 = { name: o2.name, size: o2.size };
+            const v2 = {name: o2.name, size: o2.size};
             v.children.push(v2);
         }
         obj.children.push(v);
@@ -953,7 +953,7 @@ function UpdateSpeciesDiagram() {
     } // Stash the old values for transition
     function arcTween(a) {
         // Interpolate the arcs in data space
-        const i = d3.interpolate({ x: a.x0, dx: a.dx0 }, a);
+        const i = d3.interpolate({x: a.x0, dx: a.dx0}, a);
         return function (t) {
             const b = i(t);
             a.x0 = b.x;
@@ -961,6 +961,7 @@ function UpdateSpeciesDiagram() {
             return arc(b);
         };
     }
+
     d3.select(self.frameElement).style('height', height + 'px');
 }
 
@@ -968,7 +969,7 @@ function LoadUMAP() {
     // Casting for TypeScript compiler autocomplete goodness.
     /** @type {HTMLIFrameElement | null} */
     const iframe = (document.getElementById('bb-viz-iframe'));
-    const { customweightsA, names, seqs } = msa;
+    const {customweightsA, names, seqs} = msa;
 
     if (msa !== prevMsa) {
         if (iframe && iframe.contentWindow) {

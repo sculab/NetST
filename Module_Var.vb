@@ -1,4 +1,6 @@
-﻿Module Module_Var
+﻿Imports System.Globalization
+
+Module Module_Var
 #Const TargetOS = "win32"
 #If TargetOS = "linux" Then
     Public TargetOS As String = "linux"
@@ -7,11 +9,11 @@
 #ElseIf TargetOS = "win32" Then
     Public TargetOS As String = "win32"
 #End If
-    Public version As String = "20240524"
+    Public version As String = "20250524"
     Public settings As Dictionary(Of String, String)
     Public currentDirectory As String
     Public dtView As New DataView
-    Public ci As Globalization.CultureInfo = New Globalization.CultureInfo("en-us")
+    Public ci As CultureInfo = New CultureInfo("en-us")
     Public path_char As String
     Public root_path As String
     Public lib_path As String
@@ -25,7 +27,7 @@
     Public form_main As New Mainform
     Public PB_value As Integer = 0
     Public info_text As String = ""
-    Public language As String = "CH"
+    Public language As String = "EN"
     Public fasta_seq() As String
     Public add_data As Boolean = False
     Public data_loaded As Boolean = False

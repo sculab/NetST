@@ -23,8 +23,8 @@ Partial Class Mainform
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As DataGridViewCellStyle = New DataGridViewCellStyle()
         WebView_main = New Microsoft.Web.WebView2.WinForms.WebView2()
         MenuStrip1 = New MenuStrip()
         文件FToolStripMenuItem = New ToolStripMenuItem()
@@ -59,6 +59,7 @@ Partial Class Mainform
         模块度分析ToolStripMenuItem = New ToolStripMenuItem()
         社区绘制ToolStripMenuItem = New ToolStripMenuItem()
         序列分析ToolStripMenuItem = New ToolStripMenuItem()
+        群体信息统计ToolStripMenuItem = New ToolStripMenuItem()
         浏览ToolStripMenuItem = New ToolStripMenuItem()
         前进ToolStripMenuItem = New ToolStripMenuItem()
         后退ToolStripMenuItem = New ToolStripMenuItem()
@@ -76,19 +77,23 @@ Partial Class Mainform
         TabPage1 = New TabPage()
         TabPage2 = New TabPage()
         DataGridView1 = New DataGridView()
+        TabPage4 = New TabPage()
+        WebView21 = New Microsoft.Web.WebView2.WinForms.WebView2()
         TabPage3 = New TabPage()
         TextBox5 = New TextBox()
         RichTextBox1 = New RichTextBox()
         TextBox1 = New TextBox()
         ProgressBar1 = New ProgressBar()
         Timer1 = New Timer(components)
-        群体信息统计ToolStripMenuItem = New ToolStripMenuItem()
+        性状关联分析ToolStripMenuItem = New ToolStripMenuItem()
         CType(WebView_main, ComponentModel.ISupportInitialize).BeginInit()
         MenuStrip1.SuspendLayout()
         TabControl1.SuspendLayout()
         TabPage1.SuspendLayout()
         TabPage2.SuspendLayout()
         CType(DataGridView1, ComponentModel.ISupportInitialize).BeginInit()
+        TabPage4.SuspendLayout()
+        CType(WebView21, ComponentModel.ISupportInitialize).BeginInit()
         TabPage3.SuspendLayout()
         SuspendLayout()
         ' 
@@ -176,7 +181,7 @@ Partial Class Mainform
         ' 
         ' 分析ToolStripMenuItem
         ' 
-        分析ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {MSN单倍型网络ToolStripMenuItem, MJN单倍型网络ToolStripMenuItem, 单倍型网络ToolStripMenuItem, ToolStripSeparator3, 序列比对高速ToolStripMenuItem, 序列比对ToolStripMenuItem, ToolStripSeparator5, 网络图可视化ToolStripMenuItem, 序列分析ToolStripMenuItem, 群体信息统计ToolStripMenuItem})
+        分析ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {MSN单倍型网络ToolStripMenuItem, MJN单倍型网络ToolStripMenuItem, 单倍型网络ToolStripMenuItem, ToolStripSeparator3, 序列比对高速ToolStripMenuItem, 序列比对ToolStripMenuItem, ToolStripSeparator5, 网络图可视化ToolStripMenuItem, 序列分析ToolStripMenuItem, 群体信息统计ToolStripMenuItem, 性状关联分析ToolStripMenuItem})
         分析ToolStripMenuItem.Name = "分析ToolStripMenuItem"
         分析ToolStripMenuItem.Size = New Size(44, 21)
         分析ToolStripMenuItem.Text = "分析"
@@ -309,6 +314,12 @@ Partial Class Mainform
         序列分析ToolStripMenuItem.Size = New Size(180, 22)
         序列分析ToolStripMenuItem.Text = "序列分析"
         ' 
+        ' 群体信息统计ToolStripMenuItem
+        ' 
+        群体信息统计ToolStripMenuItem.Name = "群体信息统计ToolStripMenuItem"
+        群体信息统计ToolStripMenuItem.Size = New Size(180, 22)
+        群体信息统计ToolStripMenuItem.Text = "群体信息统计"
+        ' 
         ' 浏览ToolStripMenuItem
         ' 
         浏览ToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {前进ToolStripMenuItem, 后退ToolStripMenuItem, ToolStripSeparator1, 分析记录ToolStripMenuItem})
@@ -392,6 +403,7 @@ Partial Class Mainform
         TabControl1.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         TabControl1.Controls.Add(TabPage1)
         TabControl1.Controls.Add(TabPage2)
+        TabControl1.Controls.Add(TabPage4)
         TabControl1.Controls.Add(TabPage3)
         TabControl1.Location = New Point(0, 25)
         TabControl1.Name = "TabControl1"
@@ -423,29 +435,52 @@ Partial Class Mainform
         ' 
         ' DataGridView1
         ' 
-        DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = SystemColors.Control
-        DataGridViewCellStyle1.Font = New Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point)
-        DataGridViewCellStyle1.ForeColor = SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = DataGridViewTriState.True
-        DataGridView1.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = SystemColors.Control
+        DataGridViewCellStyle3.Font = New Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point)
+        DataGridViewCellStyle3.ForeColor = SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = DataGridViewTriState.True
+        DataGridView1.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
         DataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = SystemColors.Window
-        DataGridViewCellStyle2.Font = New Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point)
-        DataGridViewCellStyle2.ForeColor = SystemColors.ControlText
-        DataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = DataGridViewTriState.False
-        DataGridView1.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = SystemColors.Window
+        DataGridViewCellStyle4.Font = New Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point)
+        DataGridViewCellStyle4.ForeColor = SystemColors.ControlText
+        DataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = DataGridViewTriState.False
+        DataGridView1.DefaultCellStyle = DataGridViewCellStyle4
         DataGridView1.Dock = DockStyle.Fill
         DataGridView1.Location = New Point(3, 3)
         DataGridView1.Name = "DataGridView1"
         DataGridView1.RowTemplate.Height = 25
         DataGridView1.Size = New Size(786, 432)
         DataGridView1.TabIndex = 0
+        ' 
+        ' TabPage4
+        ' 
+        TabPage4.Controls.Add(WebView21)
+        TabPage4.Location = New Point(4, 26)
+        TabPage4.Name = "TabPage4"
+        TabPage4.Padding = New Padding(3)
+        TabPage4.Size = New Size(792, 438)
+        TabPage4.TabIndex = 3
+        TabPage4.Text = "分析结果"
+        TabPage4.UseVisualStyleBackColor = True
+        ' 
+        ' WebView21
+        ' 
+        WebView21.AllowExternalDrop = True
+        WebView21.CreationProperties = Nothing
+        WebView21.DefaultBackgroundColor = Color.White
+        WebView21.Dock = DockStyle.Fill
+        WebView21.Location = New Point(3, 3)
+        WebView21.Name = "WebView21"
+        WebView21.Size = New Size(786, 432)
+        WebView21.TabIndex = 0
+        WebView21.ZoomFactor = 1R
         ' 
         ' TabPage3
         ' 
@@ -455,7 +490,7 @@ Partial Class Mainform
         TabPage3.Name = "TabPage3"
         TabPage3.Size = New Size(792, 438)
         TabPage3.TabIndex = 2
-        TabPage3.Text = "工具信息"
+        TabPage3.Text = "信息"
         TabPage3.UseVisualStyleBackColor = True
         ' 
         ' TextBox5
@@ -501,11 +536,11 @@ Partial Class Mainform
         Timer1.Enabled = True
         Timer1.Interval = 1000
         ' 
-        ' 群体信息统计ToolStripMenuItem
+        ' 性状关联分析ToolStripMenuItem
         ' 
-        群体信息统计ToolStripMenuItem.Name = "群体信息统计ToolStripMenuItem"
-        群体信息统计ToolStripMenuItem.Size = New Size(180, 22)
-        群体信息统计ToolStripMenuItem.Text = "群体信息统计"
+        性状关联分析ToolStripMenuItem.Name = "性状关联分析ToolStripMenuItem"
+        性状关联分析ToolStripMenuItem.Size = New Size(180, 22)
+        性状关联分析ToolStripMenuItem.Text = "性状关联分析"
         ' 
         ' Mainform
         ' 
@@ -527,6 +562,8 @@ Partial Class Mainform
         TabPage1.ResumeLayout(False)
         TabPage2.ResumeLayout(False)
         CType(DataGridView1, ComponentModel.ISupportInitialize).EndInit()
+        TabPage4.ResumeLayout(False)
+        CType(WebView21, ComponentModel.ISupportInitialize).EndInit()
         TabPage3.ResumeLayout(False)
         TabPage3.PerformLayout()
         ResumeLayout(False)
@@ -593,4 +630,7 @@ Partial Class Mainform
     Friend WithEvents 社区绘制ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 序列分析ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents 群体信息统计ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents TabPage4 As TabPage
+    Friend WithEvents WebView21 As Microsoft.Web.WebView2.WinForms.WebView2
+    Friend WithEvents 性状关联分析ToolStripMenuItem As ToolStripMenuItem
 End Class

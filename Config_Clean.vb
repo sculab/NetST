@@ -8,6 +8,7 @@ Public Class Config_Clean
         th1.Start()
         Me.Hide()
     End Sub
+
     Public Sub butt1()
 
         If clean_fasta(TextBox4.Text, root_path + "temp\temp_file.tmp", new_line(CheckBox1.Checked)) Then
@@ -15,8 +16,8 @@ Public Class Config_Clean
         Else
             timer_id = 0
         End If
-
     End Sub
+
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Me.Hide()
     End Sub
@@ -36,7 +37,6 @@ Public Class Config_Clean
     End Sub
 
     Private Sub Config_Clean_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
@@ -52,7 +52,7 @@ Public Class Config_Clean
             TextBox4.Text = opendialog.FileName
             Dim sr As New StreamReader(TextBox4.Text)
             Dim line As String = sr.ReadLine()
-            Dim limit As Integer = 100
+            Dim limit = 100
             TextPreview.Text = ""
             Do
 
@@ -66,6 +66,4 @@ Public Class Config_Clean
             sr.Close()
         End If
     End Sub
-
-
 End Class

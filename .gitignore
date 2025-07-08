@@ -361,3 +361,11 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# visual code setting files
+.idea
+
+# remove demos dir
+DEMOS
+
+

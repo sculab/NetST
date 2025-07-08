@@ -3,12 +3,12 @@ Imports System.IO
 Imports System.Threading
 
 Public Class Config_Info
-
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim th1 As New Thread(AddressOf butt1)
         th1.Start()
         Me.Hide()
     End Sub
+
     Public Sub butt1()
         If get_info(TextBox4.Text, root_path + "temp\temp_file.tmp", new_line(CheckBox1.Checked)) Then
             timer_id = 4
@@ -16,12 +16,12 @@ Public Class Config_Info
             timer_id = 0
         End If
     End Sub
+
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Me.Hide()
     End Sub
 
     Private Sub Config_Info_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
     End Sub
 
     Private Sub Config_Info_Closing(sender As Object, e As CancelEventArgs) Handles MyBase.Closing

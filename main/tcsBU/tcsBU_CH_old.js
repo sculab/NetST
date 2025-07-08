@@ -28,7 +28,7 @@ $(function () {
     /*
      * variables that hold nodes which should be highlighted or labeled
      */
-    var labelNode = {}, highlightNode = [], seqHapFlag = false, seqHapAdded = false,distanceFlag=false;
+    var labelNode = {}, highlightNode = [], seqHapFlag = false, seqHapAdded = false, distanceFlag = false;
 
 
     /*
@@ -58,7 +58,7 @@ $(function () {
     var maxTime = Number.NEGATIVE_INFINITY;
 
 
-    var link, node, path,linkText;
+    var link, node, path, linkText;
 
     var pie, sector, sectorOuter, sectorNull, sectorSmall;
 
@@ -510,7 +510,7 @@ $(function () {
         path.exit().remove();
 
         linkText = svg.selectAll(".link-text").remove();
-        if(distanceFlag){
+        if (distanceFlag) {
             linkText = svg.selectAll('.link-text').data(linkList);
             linkText.enter().append('text')
                 .attr('class', 'link-text')
@@ -519,7 +519,7 @@ $(function () {
                     return d.changes;
                 })
                 .style('font-family', 'Times New Roman') // Set the font family
-                .style("stroke-width",'0.2px')
+                .style("stroke-width", '0.2px')
                 .style('font-size', '13px');
             linkText.exit().remove();
         }
@@ -549,7 +549,7 @@ $(function () {
                 .attr('dy', '.35em')
                 .text(value.join(";"))
                 .style('font-family', 'Times New Roman') // Set the font family
-                .style("stroke-width",'0.2px')
+                .style("stroke-width", '0.2px')
                 .style('font-size', '13px');
         });
 
@@ -574,7 +574,7 @@ $(function () {
                         .attr('dy', '.50em')
                         .text(d.seq2hap)
                         .style('font-family', 'Times New Roman') // Set the font family
-                        .style("stroke-width",'0.2px')
+                        .style("stroke-width", '0.2px')
                         .style('font-size', '13px');
                 });
         }
@@ -1194,7 +1194,7 @@ $(function () {
                             items: [{text: '连续-离散', styleid: "0"}, {text: '仅离散性状', styleid: "1"}, {
                                 text: '仅连续性状', styleid: "2"
                             },]
-                        },  {type: 'break'},{
+                        }, {type: 'break'}, {
                             id: 'btn-legend',
                             type: 'check',
                             text: '图例',
@@ -1210,7 +1210,7 @@ $(function () {
                             icon: 'icon-legend',
                             disabled: true,
                             checked: false
-                        },{
+                        }, {
                             id: 'btn-distance',
                             type: 'check',
                             text: '距离',
@@ -1593,7 +1593,7 @@ $(function () {
             var newnode = false;
             var newedge = false;
             var multilabels = false;
-            var frequency, radius,  haplogroup,  label, changes, source, target;
+            var frequency, radius, haplogroup, label, changes, source, target;
             var labels = []
             for (var i = 0; i < lines.length; i++) {
                 if (lines[i].indexOf('node [') === 3) newnode = true;
@@ -1665,7 +1665,7 @@ $(function () {
                                  */
 
                                 // radius = Math.sqrt(frequency * area / Math.PI);
-                                radius = Math.pow(frequency,1/3) * standardRadius;
+                                radius = Math.pow(frequency, 1 / 3) * standardRadius;
                             }
                             var labelname = labels.join("\n");
                             /*
@@ -1673,7 +1673,7 @@ $(function () {
                              * the first label if they include more than one
                              */
 
-                            if (nodestyle===0) radius = 1;
+                            if (nodestyle === 0) radius = 1;
                             nodeList.push({
                                 name: labelname, radius: radius, nodestyle: nodestyle, proportions: [{
                                     group: 'Default',
@@ -2099,12 +2099,12 @@ $(function () {
 
                             group = l[1].trim();
                             seq2hap = l[2].trim();
-                            if (group !== ""){
-							h.push({label: name, group: group, seq2hap: seq2hap})}
-							else {
+                            if (group !== "") {
+                                h.push({label: name, group: group, seq2hap: seq2hap})
+                            } else {
                                 h.push({label: name, group: 'Default', seq2hap: seq2hap});
                             }
-							;
+
                         }
                     }
                 }
@@ -2320,9 +2320,9 @@ $(function () {
         updateSVG();
     }
 
-    function insertDistance(){
+    function insertDistance() {
         /***
-          a function to show the distance between each two nodes
+         a function to show the distance between each two nodes
          ***/
         distanceFlag = !distanceFlag;
         updateSVG();
@@ -2609,10 +2609,14 @@ $(function () {
                     return d.target.y;
                 });
 
-            if(distanceFlag){
+            if (distanceFlag) {
                 linkText
-                    .attr('x', function (d) { return (d.source.x + d.target.x) / 2; })
-                    .attr('y', function (d) { return (d.source.y + d.target.y) / 2; });
+                    .attr('x', function (d) {
+                        return (d.source.x + d.target.x) / 2;
+                    })
+                    .attr('y', function (d) {
+                        return (d.source.y + d.target.y) / 2;
+                    });
             }
 
             node.attr("x", function (d) {
@@ -2800,7 +2804,7 @@ $(function () {
          * Enable editing buttons
          */
 
-        w2ui.Layout_main_toolbar.enable('btn-dellink', 'btn-delnode', 'btn-svgsave', 'btn-outline', 'btn-lwidth', 'btn-zoomin', 'btn-zoomout', 'btn-legend', 'btn-time', 'btn-style','btn-haplotype','btn-distance');
+        w2ui.Layout_main_toolbar.enable('btn-dellink', 'btn-delnode', 'btn-svgsave', 'btn-outline', 'btn-lwidth', 'btn-zoomin', 'btn-zoomout', 'btn-legend', 'btn-time', 'btn-style', 'btn-haplotype', 'btn-distance');
 
 
         /*

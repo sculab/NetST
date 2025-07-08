@@ -1,25 +1,27 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
 Imports System.Threading
-Public Class Config_Stand
 
+Public Class Config_Stand
     Private Sub Config_Stand_Closing(sender As Object, e As CancelEventArgs) Handles MyBase.Closing
         e.Cancel = True
         Me.Hide()
     End Sub
+
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim th1 As New Thread(AddressOf butt1)
         th1.Start()
         Me.Hide()
     End Sub
+
     Public Sub butt1()
         format_fasta(current_file, root_path + "temp\temp_file.tmp", new_line(CheckBox1.Checked))
         timer_id = 2
     End Sub
+
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Me.Hide()
     End Sub
-
 
 
     Private Sub CheckBox2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox2.CheckedChanged
@@ -55,7 +57,7 @@ Public Class Config_Stand
     Private Sub Config_Stand_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim sr As New StreamReader(current_file)
         Dim line As String = sr.ReadLine()
-        Dim limit As Integer = 100
+        Dim limit = 100
         TextPreview.Text = ""
         Do
 
@@ -95,7 +97,6 @@ Public Class Config_Stand
                 End Try
             Next
         End If
-
     End Sub
 
     Private Sub TextBox3_TextChanged(sender As Object, e As EventArgs) Handles TextBox3.TextChanged
@@ -208,7 +209,7 @@ Public Class Config_Stand
         If Me.Visible Then
             Dim sr As New StreamReader(current_file)
             Dim line As String = sr.ReadLine()
-            Dim limit As Integer = 100
+            Dim limit = 100
             TextPreview.Text = ""
             Do
 

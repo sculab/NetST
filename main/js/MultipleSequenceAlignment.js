@@ -8,10 +8,10 @@ class MultipleSequenceAlignment {
         this.asyncTimeout = 2;
         this.cb = {
             done: (...args) => {
-                return;
+
             },
             progress: (...args) => {
-                return;
+
             },
         }; // callback obj
         this.raH = 160; // msa plot height
@@ -19,12 +19,12 @@ class MultipleSequenceAlignment {
         // current selection of sequences based on applied filters -- work in progress
 
         // filtering/sorting alignment sequences, default order is 0,1,2,3,...
-        this.seqorder = { orig: new Array(), ident1: new Array(), ident2: new Array() };
+        this.seqorder = {orig: new Array(), ident1: new Array(), ident2: new Array()};
 
         // pairwise identity stuff
         this.cbpw = {
             start: () => {
-                return;
+
             },
         }; // pairwise callback obj
         this.pwhash = {}; // hash: "i,j" --> count
@@ -39,7 +39,7 @@ class MultipleSequenceAlignment {
         this.pwdoneQ = false;
         // paging: current page of visible sequences
         // from = idx * len;
-        this.page = { from: 0, idx: 0, len: 1000 };
+        this.page = {from: 0, idx: 0, len: 1000};
         // starts reading/parsing 'text' asynchronously
         // cb -- callback object, must have 3 functions: { progress(), done(), fail() }
         // cbpw -- callback for pairwise computing, see comments on startPairwiseIdentity() for details
@@ -66,10 +66,10 @@ class MultipleSequenceAlignment {
         this.identS2 = new Array(); // identity sorted
         this.gapsS = new Array(); // gaps sorted
         this.gapsMax = '';
-        this.identR = { min: '', max: '' };
-        this.pwmaxR = { min: '', max: '' };
-        this.pwminR = { min: '', max: '' };
-        this.pwavgR = { min: '', max: '' };
+        this.identR = {min: '', max: ''};
+        this.pwmaxR = {min: '', max: ''};
+        this.pwminR = {min: '', max: ''};
+        this.pwavgR = {min: '', max: ''};
         this.entropyRange = getRangeUpdate();
         this.entropyPerCol = new Array();
         this.gapsPerCol = new Array();
@@ -77,7 +77,7 @@ class MultipleSequenceAlignment {
         this.fileLines = new Array();
         this.columns = new Array();
         this.seqname2idx = {}; // map: seq.name --> seq.index
-        this.specdist = { name: 'species', children: {} }; // species distribution object for species diagram
+        this.specdist = {name: 'species', children: {}}; // species distribution object for species diagram
         // rendered html for each div
         this.hruler = '';
         this.hseqs = '';
@@ -162,7 +162,7 @@ class MultipleSequenceAlignment {
             last: h - 1,
             rangestr: new Array(),
             validQ: true,
-            set: function(n) {
+            set: function (n) {
                 // set current page, n is 0-based!
                 const currentPage = this.last + 1;
                 if (this.len >= currentPage) {
@@ -181,7 +181,7 @@ class MultipleSequenceAlignment {
                 }
                 return n; // current page
             },
-            getstr: function(n) {
+            getstr: function (n) {
                 return this.rangestr[n];
             },
         };
@@ -460,12 +460,12 @@ class MultipleSequenceAlignment {
                     s += code + ' ' + speclist[namelink.org].e;
                     if (!this.rerenderQ) {
                         if (!this.specdist.children.hasOwnProperty(code)) {
-                            this.specdist.children[code] = { name: code, size: 1, children: {} };
-                            this.specdist.children[code].children[namelink.org] = { name: namelink.org, size: 1 };
+                            this.specdist.children[code] = {name: code, size: 1, children: {}};
+                            this.specdist.children[code].children[namelink.org] = {name: namelink.org, size: 1};
                         } else {
                             this.specdist.children[code].size++;
                             if (!this.specdist.children[code].children.hasOwnProperty(namelink.org)) {
-                                this.specdist.children[code].children[namelink.org] = { name: namelink.org, size: 1 };
+                                this.specdist.children[code].children[namelink.org] = {name: namelink.org, size: 1};
                             } else {
                                 this.specdist.children[code].children[namelink.org].size++;
                             }
@@ -514,9 +514,9 @@ class MultipleSequenceAlignment {
                 ga = 100 * rga;
                 fi1 = 100 * rfi1;
                 fi2 = 100 * rfi2;
-                this.ident1.push({ i: i, v: rfi1 });
-                this.ident2.push({ i: i, v: rfi2 });
-                this.gaps.push({ i: i, v: rga });
+                this.ident1.push({i: i, v: rfi1});
+                this.ident2.push({i: i, v: rfi2});
+                this.gaps.push({i: i, v: rga});
             }
             if (pageQ) {
                 if (i === this.refseqIdx) {
@@ -554,24 +554,24 @@ class MultipleSequenceAlignment {
             // sorted descending gaps,identity; keep refseq first
             this.identS1 = [].concat(
                 this.ident1[0],
-                ...this.ident1.slice(1).sort(function(a, b) {
+                ...this.ident1.slice(1).sort(function (a, b) {
                     return b.v - a.v;
                 }),
             );
             this.identS2 = [].concat(
                 this.ident2[0],
-                ...this.ident2.slice(1).sort(function(a, b) {
+                ...this.ident2.slice(1).sort(function (a, b) {
                     return b.v - a.v;
                 }),
             );
             this.gapsS = [].concat(
                 this.gaps[0],
-                ...this.gaps.slice(1).sort(function(a, b) {
+                ...this.gaps.slice(1).sort(function (a, b) {
                     return b.v - a.v;
                 }),
             );
             this.gapsMax = this.gapsS[1].v;
-            this.identR = { min: this.identS1[this.identS1.length - 1].v, max: this.identS1[1].v };
+            this.identR = {min: this.identS1[this.identS1.length - 1].v, max: this.identS1[1].v};
             this.seqorder.ident1 = new Array();
             this.seqorder.ident2 = new Array();
             for (let k = 0; k < this.identS1.length; k++) {
@@ -640,23 +640,23 @@ class MultipleSequenceAlignment {
         let n_customweightsB = 0; // I have not decided a function for non 100% matching sequences between A and B
         for (let k = 0; k < this.h; k++) {
             if (!isset(this.customweightsA[k])) {
-                this.customweightsA[k] = { i: k, v: '' };
+                this.customweightsA[k] = {i: k, v: ''};
             } else {
                 this.customweightsN++;
-                this.customweightsA[k] = { i: k, v: this.customweightsA[k] };
+                this.customweightsA[k] = {i: k, v: this.customweightsA[k]};
             }
             if (!isset(this.customweightsB[k])) {
-                this.customweightsB[k] = { i: k, v: '' };
+                this.customweightsB[k] = {i: k, v: ''};
             } else {
                 n_customweightsB++;
-                this.customweightsB[k] = { i: k, v: this.customweightsB[k] };
+                this.customweightsB[k] = {i: k, v: this.customweightsB[k]};
             }
         }
 
         // custom weights sorted A
         this.cweightsS = [].concat(
             this.customweightsA[0],
-            ...this.customweightsA.slice(1).sort(function(a, b) {
+            ...this.customweightsA.slice(1).sort(function (a, b) {
                 if (isNaN(b.v) || isNaN(a.v)) {
                     return b.v < a.v ? 1 : -1;
                 }
@@ -678,7 +678,7 @@ class MultipleSequenceAlignment {
         // custom weights sorted B
         this.cweightsS = [].concat(
             this.customweightsB[0],
-            ...this.customweightsB.slice(1).sort(function(a, b) {
+            ...this.customweightsB.slice(1).sort(function (a, b) {
                 if (isNaN(b.v) || isNaN(a.v)) {
                     return b.v < a.v ? 1 : -1;
                 }
@@ -727,14 +727,14 @@ class MultipleSequenceAlignment {
         rows.slice(1).forEach(row => {
             const columns = row.split(/,/g);
 
-            if(columns.length < 9){
-              return;
+            if (columns.length < 9) {
+                return;
             }
 
             this.A.push(columns[0]);
             this.B.push(columns[2]);
 
-            return;
+
         })
 
         UIcallback();
@@ -937,7 +937,7 @@ class MultipleSequenceAlignment {
         }
         const f = ((100 * this.pairn) / this.pairt).toFixed(0);
         if (this.cbpw) {
-            this.cbpw.progress(' ... pass1 : ' + msa.pairn/msa.pairt*50 + ' %');
+            this.cbpw.progress(' ... pass1 : ' + msa.pairn / msa.pairt * 50 + ' %');
         }
         if (!doneQ) {
             setTimeout($.proxy(this.anyncPairwiseIdentity, this), this.asyncTimeout);
@@ -977,7 +977,7 @@ class MultipleSequenceAlignment {
         this.pwseqmax[this.pairi] = r.max;
         this.pwseqavg[this.pairi] = avg;
         if (this.cbpw) {
-            this.cbpw.progress(' ... pass2 : ' + msa.pairi/msa.h*50 + '%');
+            this.cbpw.progress(' ... pass2 : ' + msa.pairi / msa.h * 50 + '%');
         }
         this.pairi++;
         if (this.pairi < msa.h) {
@@ -985,18 +985,18 @@ class MultipleSequenceAlignment {
             return;
         }
         console.log('sorting pairwise plots... ' + this.pwseqmin.length + ',' + this.pwseqmax.length + ',' + this.pwseqavg.length);
-        this.pwseqminS = this.pwseqmin.slice().sort(function(a, b) {
+        this.pwseqminS = this.pwseqmin.slice().sort(function (a, b) {
             return b - a;
         });
-        this.pwseqmaxS = this.pwseqmax.slice().sort(function(a, b) {
+        this.pwseqmaxS = this.pwseqmax.slice().sort(function (a, b) {
             return b - a;
         });
-        this.pwseqavgS = this.pwseqavg.slice().sort(function(a, b) {
+        this.pwseqavgS = this.pwseqavg.slice().sort(function (a, b) {
             return b - a;
         });
-        this.pwminR = { min: this.pwseqminS[this.pwseqminS.length - 1], max: this.pwseqminS[0] };
-        this.pwmaxR = { min: this.pwseqmaxS[this.pwseqmaxS.length - 1], max: this.pwseqmaxS[0] };
-        this.pwavgR = { min: this.pwseqavgS[this.pwseqavgS.length - 1], max: this.pwseqavgS[0] };
+        this.pwminR = {min: this.pwseqminS[this.pwseqminS.length - 1], max: this.pwseqminS[0]};
+        this.pwmaxR = {min: this.pwseqmaxS[this.pwseqmaxS.length - 1], max: this.pwseqmaxS[0]};
+        this.pwavgR = {min: this.pwseqavgS[this.pwseqavgS.length - 1], max: this.pwseqavgS[0]};
         this.pwQ = false;
         this.pwdoneQ = true;
         if (this.cbpw) {
@@ -1010,7 +1010,7 @@ class MultipleSequenceAlignment {
         if (!this.pwseqmin.length) {
             return false;
         }
-        const gra = { nodes: new Array(), links: new Array() };
+        const gra = {nodes: new Array(), links: new Array()};
         const map = {}; // skipping unconnected nodes, sequence index --> node index
         let mapIdx = 0;
         for (const id in this.pwhash) {
@@ -1036,7 +1036,7 @@ class MultipleSequenceAlignment {
             } else {
                 i2 = map[s2];
             }
-            gra.links.push({ source: i1, target: i2, value: this.pwhash[id] });
+            gra.links.push({source: i1, target: i2, value: this.pwhash[id]});
         }
         return gra;
     }

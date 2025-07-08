@@ -1,6 +1,6 @@
 ﻿Module Module_Language
     Public Sub to_en()
-        form_main.Text = "NetST (Network for Sequences and Traits)" + " ver. " + version
+        form_main.Text = "NetST" + " ver. " + version
         form_main.文件FToolStripMenuItem.Text = "File"
         form_main.载入序列ToolStripMenuItem.Text = "Load Sequences"
         form_main.载入数据ToolStripMenuItem.Text = "Load Table"
@@ -23,6 +23,7 @@
         form_main.社区绘制ToolStripMenuItem.Text = "Visual Community"
         form_main.序列分析ToolStripMenuItem.Text = "Sequence Analysis"
         form_main.群体信息统计ToolStripMenuItem.Text = "Population Statistics"
+        form_main.性状关联分析ToolStripMenuItem.Text = "Dual-Trait Correlation Analysis"
 
         form_main.工具ToolStripMenuItem.Text = "Tools"
         form_main.清理序列ToolStripMenuItem.Text = "Clean Sequence Data"
@@ -33,9 +34,11 @@
         form_main.后退ToolStripMenuItem.Text = "Backward"
         form_main.分析记录ToolStripMenuItem.Text = "View Records"
         form_main.EnglishToolStripMenuItem.Text = "中文"
-        form_main.TabControl1.TabPages(0).Text = "Results"
+        form_main.TabControl1.TabPages(0).Text = "Main"
         form_main.TabControl1.TabPages(1).Text = "Sequences"
-        form_main.TabControl1.TabPages(2).Text = "Information"
+        form_main.TabControl1.TabPages(2).Text = "Report"
+        form_main.TabControl1.TabPages(3).Text = "Information"
+
 
         form_config_stand.Text = "Standardization"
         form_config_stand.CheckBox1.Text = "Use Unix line endings"
@@ -76,7 +79,6 @@
         form_config_clean.Button3.Text = "Browse"
 
 
-
         form_config_clean.CheckBox1.Text = "Use Unix Line Endings"
         form_config_clean.CheckBox2.Text = "Remove Seqs Containing Ambiguous Bases"
         form_config_clean.CheckBox3.Text = "Remove Seqs Shorter than:"
@@ -93,7 +95,6 @@
         form_config_clean.Text = "Sequence Cleanup"
 
         language = "EN"
-
     End Sub
 
     Public Sub to_ch()
@@ -120,6 +121,7 @@
         form_main.社区绘制ToolStripMenuItem.Text = "社区绘制"
         form_main.序列分析ToolStripMenuItem.Text = "序列分析"
         form_main.群体信息统计ToolStripMenuItem.Text = "群体信息统计"
+        form_main.性状关联分析ToolStripMenuItem.Text = "性状关联分析"
 
         form_main.工具ToolStripMenuItem.Text = "工具"
         form_main.清理序列ToolStripMenuItem.Text = "清理序列数据"
@@ -130,9 +132,10 @@
         form_main.后退ToolStripMenuItem.Text = "后退"
         form_main.分析记录ToolStripMenuItem.Text = "查看记录"
         form_main.EnglishToolStripMenuItem.Text = "English"
-        form_main.TabControl1.TabPages(0).Text = "结果"
+        form_main.TabControl1.TabPages(0).Text = "主界面"
         form_main.TabControl1.TabPages(1).Text = "序列"
-        form_main.TabControl1.TabPages(2).Text = "信息"
+        form_main.TabControl1.TabPages(2).Text = "结果报告"
+        form_main.TabControl1.TabPages(3).Text = "信息"
 
 
         form_config_stand.Text = "序列标准化"
@@ -188,7 +191,5 @@
         form_config_clean.Text = "序列清理"
 
         language = "CH"
-
-
     End Sub
 End Module

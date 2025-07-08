@@ -22,6 +22,5 @@
     ' End Sub
 
     Partial Friend Class MyApplication
-
     End Class
 End Namespace

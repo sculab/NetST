@@ -10,19 +10,23 @@
     @include cf;
     font-size: 1rem;
     line-height: 1.8rem;
+
     i {
       float: left;
     }
+
     span {
       float: right;
       margin-left: 1rem;
     }
+
     strong {
       display: block;
       margin-left: 4rem;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+
       &::after {
         color: $text-color;
         font-family: 'FontAwesome';
@@ -45,6 +49,7 @@
   &.active {
     @include raise-2;
     margin: 1rem -1rem;
+
     &:hover {
       .title {
         strong::after {

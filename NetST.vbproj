@@ -1,51 +1,52 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <StartupObject>NetST.Welcome</StartupObject>
-    <UseWindowsForms>True</UseWindowsForms>
-    <MyType>WindowsForms</MyType>
-    <ApplicationIcon>netst.ico</ApplicationIcon>
-    <Platforms>AnyCPU;x64</Platforms>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <StartupObject>NetST.Welcome</StartupObject>
+        <UseWindowsForms>True</UseWindowsForms>
+        <MyType>WindowsForms</MyType>
+        <ApplicationIcon>netst.ico</ApplicationIcon>
+        <Platforms>AnyCPU;x64</Platforms>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="script\**" />
-    <EmbeddedResource Remove="script\**" />
-    <None Remove="script\**" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="script\**"/>
+        <EmbeddedResource Remove="script\**"/>
+        <None Remove="script\**"/>
+    </ItemGroup>
 
 
-  <ItemGroup>
-    <Content Include="netst.ico" />
-  </ItemGroup>
+    <ItemGroup>
+        <Content Include="netst.ico"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Import Include="System.Data" />
-    <Import Include="System.Drawing" />
-    <Import Include="System.Windows.Forms" />
-  </ItemGroup>
+    <ItemGroup>
+        <Import Include="System.Data"/>
+        <Import Include="System.Drawing"/>
+        <Import Include="System.Windows.Forms"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="8.0.3" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2210.55" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="8.0.3"/>
+        <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2210.55"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="Svg" Version="3.4.7"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="My Project\Application.Designer.vb">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Application.myapp</DependentUpon>
-    </Compile>
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Update="My Project\Application.Designer.vb">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Application.myapp</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Update="My Project\Application.myapp">
-      <Generator>MyApplicationCodeGenerator</Generator>
-      <LastGenOutput>Application.Designer.vb</LastGenOutput>
-    </None>
-  </ItemGroup>
+    <ItemGroup>
+        <None Update="My Project\Application.myapp">
+            <Generator>MyApplicationCodeGenerator</Generator>
+            <LastGenOutput>Application.Designer.vb</LastGenOutput>
+        </None>
+    </ItemGroup>
 
 </Project>
