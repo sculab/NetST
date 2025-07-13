@@ -363,9 +363,9 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # visual code setting files
-.idea
+.idea/
 
 # remove demos dir
-DEMOS
+DEMOS/
 
 
