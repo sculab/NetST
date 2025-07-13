@@ -185,6 +185,7 @@ Module Report
         categories("community") = New List(Of String())
         categories("sequence") = New List(Of String())
         categories("population") = New List(Of String())
+        categories("trait") = New List(Of String())  ' 新增性状关联分析类别
         categories("other") = New List(Of String())
 
         ' 从CSV解析文件信息并分类
@@ -208,13 +209,13 @@ Module Report
                 ElseIf fileType.StartsWith("Aligned_seqs") Or fileType.StartsWith("Encoding_conversion") Then
                     categories("alignment").Add(fileInfo)
                 ElseIf fileType.StartsWith("Hap_seq") Or fileType.StartsWith("Seq_with_traits") Or
-                       fileType.StartsWith("Seq_metadata") Or fileType.StartsWith("Hap_trait") Or
-                       fileType.StartsWith("Seq_trait") Or fileType.StartsWith("Seq2Hap") Then
+                   fileType.StartsWith("Seq_metadata") Or fileType.StartsWith("Hap_trait") Or
+                   fileType.StartsWith("Seq_trait") Or fileType.StartsWith("Seq2Hap") Then
                     categories("haplotype").Add(fileInfo)
                 ElseIf fileType.StartsWith("HapNet_gml") Or fileType.StartsWith("HapNet_json") Then
                     categories("network").Add(fileInfo)
                 ElseIf fileType.StartsWith("HapNet_hapconf") Or fileType.StartsWith("HapNet_groupconf") Or
-                       fileType.StartsWith("HapNet_js") Or fileType.StartsWith("HapNet_html") Then
+                   fileType.StartsWith("HapNet_js") Or fileType.StartsWith("HapNet_html") Then
                     categories("visualization").Add(fileInfo)
                 ElseIf fileType.StartsWith("TopologyAnalysis") Then
                     categories("topology").Add(fileInfo)
@@ -226,6 +227,8 @@ Module Report
                     categories("sequence").Add(fileInfo)
                 ElseIf fileType.StartsWith("PopulationStatistics") Then
                     categories("population").Add(fileInfo)
+                ElseIf fileType.StartsWith("TraitAssociation") Then  ' 新增性状关联分析识别
+                    categories("trait").Add(fileInfo)
                 Else
                     categories("other").Add(fileInfo)
                 End If
@@ -250,23 +253,27 @@ Module Report
 
         If categories("topology").Count > 0 Then
             buttons.AppendLine(
-                "            <div class='tab-button' onclick='openTab(event, ""topologyAnalysis"")'>Topology Analysis</div>")
+            "            <div class='tab-button' onclick='openTab(event, ""topologyAnalysis"")'>Topology Analysis</div>")
         End If
         If categories("modularity").Count > 0 Then
             buttons.AppendLine(
-                "            <div class='tab-button' onclick='openTab(event, ""modularityAnalysis"")'>Modularity Analysis</div>")
+            "            <div class='tab-button' onclick='openTab(event, ""modularityAnalysis"")'>Modularity Analysis</div>")
         End If
         If categories("community").Count > 0 Then
             buttons.AppendLine(
-                "            <div class='tab-button' onclick='openTab(event, ""communityAnalysis"")'>Community Analysis</div>")
+            "            <div class='tab-button' onclick='openTab(event, ""communityAnalysis"")'>Community Analysis</div>")
         End If
         If categories("sequence").Count > 0 Then
             buttons.AppendLine(
-                "            <div class='tab-button' onclick='openTab(event, ""sequenceAnalysis"")'>Sequence Analysis</div>")
+            "            <div class='tab-button' onclick='openTab(event, ""sequenceAnalysis"")'>Sequence Analysis</div>")
         End If
         If categories("population").Count > 0 Then
             buttons.AppendLine(
-                "            <div class='tab-button' onclick='openTab(event, ""populationStats"")'>Population Statistics</div>")
+            "            <div class='tab-button' onclick='openTab(event, ""populationStats"")'>Population Statistics</div>")
+        End If
+        If categories("trait").Count > 0 Then  ' 新增性状关联分析按钮
+            buttons.AppendLine(
+            "            <div class='tab-button' onclick='openTab(event, ""traitAssociation"")'>Trait Association</div>")
         End If
 
         Return buttons.ToString()
@@ -313,6 +320,7 @@ Module Report
 
         Return table.ToString()
     End Function
+
 
     Private Function GenerateAnalysisTabs(categories As Dictionary(Of String, List(Of String()))) As String
         Dim tabs As New StringBuilder()
@@ -402,7 +410,79 @@ Module Report
             tabs.AppendLine("        </div>")
         End If
 
+        ' 性状关联分析选项卡（新增）
+        If categories("trait").Count > 0 Then
+            tabs.AppendLine("        <div id='traitAssociation' class='tab-content'>")
+            tabs.AppendLine("            <h2>Trait Association Analysis Results</h2>")
+            tabs.AppendLine("            <div class='info-box'>")
+            tabs.AppendLine(
+            "                <p>Trait association analysis examines the relationship between haplotypes and phenotypic traits, identifying significant associations and enrichment patterns.</p>")
+            tabs.AppendLine("            </div>")
+            tabs.AppendLine("            <table>")
+            tabs.AppendLine(
+            "                <tr><th>File Type</th><th>File Path</th><th>Status</th><th>Description</th></tr>")
+            tabs.Append(RenderFileTableRows(categories("trait")))
+            tabs.AppendLine("            </table>")
+            tabs.Append(GenerateTraitAssociationPreview(categories("trait")))
+            tabs.AppendLine("        </div>")
+        End If
+
         Return tabs.ToString()
+    End Function
+
+
+
+    Private Function GenerateTraitAssociationPreview(files As List(Of String())) As String
+        Dim preview As New StringBuilder()
+
+        ' 寻找摘要报告文件并嵌入关键内容
+        For Each fileInfo In files
+            If fileInfo(2) = "Success" AndAlso fileInfo(1).Contains("_summary_report.txt") Then
+                Try
+                    If File.Exists(fileInfo(1)) Then
+                        Dim reportContent As String = File.ReadAllText(fileInfo(1))
+                        preview.AppendLine("            <h3>Analysis Summary</h3>")
+                        preview.AppendLine(
+                        "            <pre style='background-color: #f5f5f5; padding: 15px; border-radius: 5px; overflow-x: auto; max-height: 400px;'>")
+                        preview.AppendLine(HttpUtility.HtmlEncode(reportContent))
+                        preview.AppendLine("            </pre>")
+                    End If
+                Catch ex As Exception
+                    ' 如果读取失败，忽略嵌入
+                End Try
+                Exit For
+            End If
+        Next
+
+        ' 添加结果文件下载链接
+        preview.AppendLine("            <h3>Detailed Results</h3>")
+        preview.AppendLine("            <div style='margin: 15px 0;'>")
+        preview.AppendLine("                <p>Download detailed analysis results:</p>")
+        preview.AppendLine("                <ul>")
+
+        For Each fileInfo In files
+            If fileInfo(2) = "Success" Then
+                Dim fileName As String = Path.GetFileName(fileInfo(1))
+                If fileName.Contains("descriptive_statistics") Then
+                    preview.AppendLine(
+                    "                    <li><a href='file:///" + fileInfo(1) + "' class='file-link'>Descriptive Statistics (CSV)</a></li>")
+                ElseIf fileName.Contains("group_statistics") Then
+                    preview.AppendLine(
+                    "                    <li><a href='file:///" + fileInfo(1) + "' class='file-link'>Group Statistics (CSV)</a></li>")
+                ElseIf fileName.Contains("haplotype_enrichment") Then
+                    preview.AppendLine(
+                    "                    <li><a href='file:///" + fileInfo(1) + "' class='file-link'>Haplotype Enrichment Analysis (CSV)</a></li>")
+                ElseIf fileName.Contains("significant_haplotypes") Then
+                    preview.AppendLine(
+                    "                    <li><a href='file:///" + fileInfo(1) + "' class='file-link'>Significant Haplotypes (CSV)</a></li>")
+                End If
+            End If
+        Next
+
+        preview.AppendLine("                </ul>")
+        preview.AppendLine("            </div>")
+
+        Return preview.ToString()
     End Function
 
     Private Function RenderFileTableRows(files As List(Of String())) As String
@@ -500,7 +580,7 @@ Module Report
     End Function
 
     Private Function GenerateSummaryContent(success As Boolean, categories As Dictionary(Of String, List(Of String()))) _
-        As String
+    As String
         Dim summary As New StringBuilder()
 
         If success Then
@@ -515,14 +595,7 @@ Module Report
                 End If
             Next
 
-            If visualizationHtml <> "" Then
-                summary.AppendLine(
-                    "        <p>The haplotype network analysis has been completed. You can <a href='file:///" +
-                    visualizationHtml +
-                    "' class='file-link network-link'>click here</a> to view the network visualization.</p>")
-            Else
-                summary.AppendLine("        <p>The haplotype network analysis has been completed.</p>")
-            End If
+
 
             ' 添加其他分析摘要
             Dim analysisCompleted As New List(Of String)
@@ -531,16 +604,17 @@ Module Report
             If categories("community").Count > 0 Then analysisCompleted.Add("Community Analysis")
             If categories("sequence").Count > 0 Then analysisCompleted.Add("Sequence Analysis")
             If categories("population").Count > 0 Then analysisCompleted.Add("Population Statistics")
+            If categories("trait").Count > 0 Then analysisCompleted.Add("Trait Association Analysis")  ' 新增
 
             If analysisCompleted.Count > 0 Then
                 summary.AppendLine(
-                    "        <p><strong>Additional analyses completed:</strong> " + String.Join(", ", analysisCompleted) +
-                    "</p>")
+                "        <p><strong>Additional analyses completed:</strong> " + String.Join(", ", analysisCompleted) +
+                "</p>")
             End If
         Else
             summary.AppendLine("        <p class='failed'><strong>Status:</strong> Analysis failed</p>")
             summary.AppendLine(
-                "        <p>There was an error during the haplotype network analysis. Please check the file status in the table above for details.</p>")
+            "        <p>There was an error during the haplotype network analysis. Please check the file status in the table above for details.</p>")
         End If
 
         Return summary.ToString()

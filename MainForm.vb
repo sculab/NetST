@@ -95,7 +95,7 @@ Public Class Mainform
     End Sub
 
     Private Sub WebView21_CoreWebView2InitializationCompleted(sender As Object,
-                                                              e As CoreWebView2InitializationCompletedEventArgs)
+                                                          e As CoreWebView2InitializationCompletedEventArgs)
         ' 启用WebMessage接收
         WebView21.CoreWebView2.Settings.IsWebMessageEnabled = True
 
@@ -1475,7 +1475,7 @@ Public Class Mainform
         End If
     End Sub
 
-    ' 修改模块度分析函数
+    ' 模块度分析函数
     Private Sub 模块度分析ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 模块度分析ToolStripMenuItem.Click
         ' Get file paths and validate
         Dim filePaths = GetHaplotypeFilePaths()
@@ -1584,7 +1584,7 @@ Public Class Mainform
         End If
     End Sub
 
-    ' 修改社区绘制函数
+    ' 社区绘制函数
     Private Sub 社区绘制ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 社区绘制ToolStripMenuItem.Click
         ' Get file paths and validate
         Dim filePaths = GetHaplotypeFilePaths()
@@ -1738,7 +1738,7 @@ Public Class Mainform
         End If
     End Sub
 
-    ' 修改序列分析函数
+    ' 序列分析函数
     Private Sub 序列分析ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 序列分析ToolStripMenuItem.Click
         Dim currentUri As Uri = WebView_main.Source
         Dim timeStamp As String = Path.GetFileNameWithoutExtension(currentUri.ToString)
@@ -1971,6 +1971,131 @@ Public Class Mainform
     End Sub
 
     Private Sub 性状关联分析ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 性状关联分析ToolStripMenuItem.Click
+        ' Get file paths and validate
+        Dim filePaths = GetHaplotypeFilePaths()
 
+        If Not filePaths.AllFilesExist Then
+            MsgBox("Trait Association Analysis - File Validation Failed" & vbCrLf & vbCrLf &
+               "Required analysis files not found. Please ensure the following steps are completed:" & vbCrLf &
+               "1. Load sequence data" & vbCrLf &
+               "2. Build haplotype network" & vbCrLf & vbCrLf &
+               "Note: Please complete the basic analysis steps before performing trait association analysis.",
+               MsgBoxStyle.Exclamation, "Trait Association Analysis")
+            Return
+        End If
+
+        ' Check if meta file exists
+        Dim metaFile As String = currentDirectory + "history\" + filePaths.TimeStamp + ".meta"
+        If Not File.Exists(metaFile) Then
+            MsgBox("Trait Association Analysis - Meta File Missing" & vbCrLf & vbCrLf &
+               "Trait data file not found at:" & vbCrLf &
+               metaFile & vbCrLf & vbCrLf &
+               "Please ensure the trait data file is properly prepared.",
+               MsgBoxStyle.Exclamation, "Trait Association Analysis")
+            Return
+        End If
+
+        ' Define executable path
+        Dim exePath As String = currentDirectory + "analysis\trait_analysis.exe"
+
+        ' Verify executable exists
+        If Not File.Exists(exePath) Then
+            MsgBox("Trait Association Analysis - Executable Missing" & vbCrLf & vbCrLf &
+               "Analysis executable not found at:" & vbCrLf &
+               exePath & vbCrLf & vbCrLf &
+               "Please check if the program installation is complete or contact technical support.",
+               MsgBoxStyle.Critical, "Trait Association Analysis")
+            Return
+        End If
+
+        ' Define command line arguments
+        Dim arguments As String = "--meta """ & metaFile & """ --seq2hap """ & filePaths.Seq2HapFile &
+                              """ --output """ & currentDirectory + "history\" + filePaths.TimeStamp + "_trait_analysis"""
+
+        ' Define expected output files
+        Dim expectedOutputFiles As New List(Of String)
+        expectedOutputFiles.Add(currentDirectory + "history\" + filePaths.TimeStamp + "_trait_analysis_descriptive_statistics.csv")
+        expectedOutputFiles.Add(currentDirectory + "history\" + filePaths.TimeStamp + "_trait_analysis_group_statistics.csv")
+        expectedOutputFiles.Add(currentDirectory + "history\" + filePaths.TimeStamp + "_trait_analysis_haplotype_enrichment.csv")
+        expectedOutputFiles.Add(currentDirectory + "history\" + filePaths.TimeStamp + "_trait_analysis_summary_report.txt")
+
+        ' Show processing message
+        MsgBox("Trait Association Analysis - Processing Started" & vbCrLf & vbCrLf &
+           "NetST haplotype-trait association analysis is in progress..." & vbCrLf &
+           "Analysis includes:" & vbCrLf &
+           "• Descriptive statistical analysis" & vbCrLf &
+           "• Trait association analysis (ANOVA/Kruskal-Wallis)" & vbCrLf &
+           "• Haplotype enrichment analysis" & vbCrLf &
+           "• Effect size assessment" & vbCrLf & vbCrLf &
+           "Results will be displayed automatically upon completion.",
+           MsgBoxStyle.Information, "Trait Association Analysis")
+
+        ' Run the analysis
+        Dim success As Boolean = RunExecutable(exePath, arguments, expectedOutputFiles)
+
+        ' 准备结果文件列表
+        Dim resultFiles As New List(Of (FilePath As String, Description As String))
+        resultFiles.Add((currentDirectory + "history\" + filePaths.TimeStamp + "_trait_analysis_descriptive_statistics.csv", "Descriptive statistics results"))
+        resultFiles.Add((currentDirectory + "history\" + filePaths.TimeStamp + "_trait_analysis_group_statistics.csv", "Group statistics results"))
+        resultFiles.Add((currentDirectory + "history\" + filePaths.TimeStamp + "_trait_analysis_haplotype_enrichment.csv", "Haplotype enrichment analysis results"))
+        resultFiles.Add((currentDirectory + "history\" + filePaths.TimeStamp + "_trait_analysis_significant_haplotypes.csv", "Significant haplotypes results"))
+        resultFiles.Add((currentDirectory + "history\" + filePaths.TimeStamp + "_trait_analysis_summary_report.txt", "Comprehensive analysis report"))
+
+        ' 将结果添加到CSV文件
+        Dim csvFilePath As String = root_path + "history\" + filePaths.TimeStamp + "_rst.csv"
+        AddAnalysisResultsToCSV(csvFilePath, "TraitAssociation", resultFiles, success)
+
+        If success Then
+            ' Log to history file
+            LogAnalysisHistory(filePaths.TimeStamp, "Haplotype-Trait Association Analysis (NetST)")
+
+            ' Show success message with detailed instructions
+            MsgBox("Trait Association Analysis - Analysis Completed" & vbCrLf & vbCrLf &
+               "NetST haplotype-trait association analysis completed successfully!" & vbCrLf & vbCrLf &
+               "Generated analysis results:" & vbCrLf &
+               "• Descriptive statistics report" & vbCrLf &
+               "• Group statistical analysis" & vbCrLf &
+               "• Haplotype enrichment analysis" & vbCrLf &
+               "• Significant haplotype identification" & vbCrLf &
+               "• Comprehensive analysis report" & vbCrLf & vbCrLf &
+               "View Analysis Results:" & vbCrLf &
+               "• All analysis results have been integrated into the comprehensive report" & vbCrLf &
+               "• The result report page will refresh automatically",
+               MsgBoxStyle.Information, "Trait Association Analysis")
+
+            ' 生成更新的HTML报告
+            Dim htmlReportPath As String = root_path + "history\" + filePaths.TimeStamp + "_report.html"
+            If File.Exists(csvFilePath) Then
+                GenerateHtmlReport(csvFilePath, htmlReportPath, filePaths.TimeStamp,
+                               DateTime.Now.ToString("yyyy-MM-dd HH:mm"), True)
+                ' 重新加载WebView21中的HTML报告
+                Me.Invoke(Sub()
+                              ' 检查当前显示的是否为报告页面
+                              If WebView21.Source.ToString().Contains("_report.html") Then
+                                  ' 如果当前已经显示报告页面，则刷新
+                                  WebView21.Reload()
+                              Else
+                                  ' 如果当前不是显示报告页面，则导航到报告页面
+                                  Me.Invoke(set_web_analysis_url, New Object() {"file:///" + htmlReportPath})
+                              End If
+                          End Sub)
+            End If
+        Else
+            ' Show failure message with troubleshooting guidance
+            MsgBox("Trait Association Analysis - Analysis Failed" & vbCrLf & vbCrLf &
+               "An error occurred during trait association analysis" & vbCrLf & vbCrLf &
+               "Possible causes:" & vbCrLf &
+               "• Incorrect meta file format" & vbCrLf &
+               "• Mismatched trait data types" & vbCrLf &
+               "• Insufficient sample size" & vbCrLf &
+               "• Data integrity issues" & vbCrLf & vbCrLf &
+               "Suggested solutions:" & vbCrLf &
+               "1. Check meta file format (key=value[tab]description)" & vbCrLf &
+               "2. Ensure trait2 contains numeric data" & vbCrLf &
+               "3. Verify sample name matching" & vbCrLf &
+               "4. Check system logs for detailed error information" & vbCrLf &
+               "5. Contact technical support if the problem persists",
+               MsgBoxStyle.Critical, "Trait Association Analysis")
+        End If
     End Sub
 End Class
