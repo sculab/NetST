@@ -513,6 +513,7 @@ $(function () {
                 //} else return d.data.pattern;
             });
 
+
         /*
          * These two commands may be used to implement
          * a stroke between arcs in the pie
@@ -650,7 +651,7 @@ $(function () {
                 toolbarEdit: false
             }, columns: [{
                 field: 'recid',
-                caption: 'Group',
+                caption: '分组',
                 size: '45%',
                 sortable: true,
                 resizable: false,
@@ -660,7 +661,7 @@ $(function () {
                 }
             }, {
                 field: 'color',
-                caption: 'Color',
+                caption: '颜色',
                 size: '20%',
                 sortable: false,
                 resizable: false,
@@ -670,7 +671,7 @@ $(function () {
                 }
             }, {
                 field: 'pattern',
-                caption: 'Pattern',
+                caption: '样式',
                 size: '35%',
                 sortable: false,
                 resizable: false,
@@ -679,10 +680,10 @@ $(function () {
                     return '<div>' + r.pattern + '</div>';
                 }
             }], records: [{recid: 'Default', color: 'ffffff', pattern: 'none', editable: false}], toolbar: {
-                items: [{type: 'button', id: 'add_group', caption: 'Add', icon: 'w2ui-icon-plus'}, {
-                    type: 'button', id: 'del_group', caption: 'Delete', icon: 'w2ui-icon-cross'
-                }, {type: 'button', id: 'load_group', caption: 'Load', icon: 'icon-folder-open'}, {
-                    type: 'button', id: 'save_group', caption: 'Save', icon: 'icon-file-save'
+                items: [{type: 'button', id: 'add_group', caption: '添加', icon: 'w2ui-icon-plus'}, {
+                    type: 'button', id: 'del_group', caption: '删除', icon: 'w2ui-icon-cross'
+                }, {type: 'button', id: 'load_group', caption: '加载', icon: 'icon-folder-open'}, {
+                    type: 'button', id: 'save_group', caption: '保存', icon: 'icon-file-save'
                 }], onClick: function (e) {
                     switch (e.target) {
                         case 'add_group':
@@ -709,7 +710,7 @@ $(function () {
 
                             if (sel === 0) {
                                 e.preventDefault();
-                                w2alert('Cannot delete "default" group/color...');
+                                w2alert('不能删除 "默认" 分组/颜色！');
                             } else {
 
                                 /*
@@ -756,7 +757,7 @@ $(function () {
 
                         var v = w2ui.groups.find({recid: e.value_new}, true);
                         if (v.length > 0) {
-                            w2alert('A group named "' + e.value_new + '" already exists! <p> Change its name first...');
+                            w2alert('名称为"' + e.value_new + '"的组已经存在! <p>请现更改其名称！');
                         } else {
                             w2ui.groups.records[e.index].recid = e.value_new;
 
@@ -888,7 +889,7 @@ $(function () {
                 sortable: true, resizable: true
             }, {field: 'haplogroup', hidden: true}, {field: 'color', hidden: true}, {
                 field: 'group',
-                caption: 'Group', // size: '24%',
+                caption: '分组', // size: '24%',
                 sortable: true,
                 resizable: true,
                 editable: {type: 'combo', items: ['Default'], filter: false},
@@ -899,31 +900,31 @@ $(function () {
                     return '<div style="background-color: #' + r.color + '; color: ' + textcolor + '">' + r.group + '</div>';
                 }
             }, {
-                field: 'seq2hap', caption: 'SeqHap', sortable: true, resizable: true
+                field: 'seq2hap', caption: '序列单倍型', sortable: true, resizable: true
             }, {
-                field: 'highlight', caption: 'Highlight', resizable: true, editable: false, // 禁止用户编辑
+                field: 'highlight', caption: '高亮', resizable: true, editable: false, // 禁止用户编辑
                 render: function (r) {
                     // 显示为复选框但禁用编辑
                     return '<input type="checkbox" ' + (r.highlight ? 'checked' : '') + ' disabled>';
                 }
             }, {
-                field: 'label', caption: 'Mark', resizable: true, editable: false, // 禁止用户编辑
+                field: 'label', caption: '标签', resizable: true, editable: false, // 禁止用户编辑
                 render: function (r) {
                     // 显示为复选框但禁用编辑
                     return '<input type="checkbox" ' + (r.label ? 'checked' : '') + ' disabled>';
                 }
             }], toolbar: {
                 items: [{
-                    type: 'button', id: 'load_haplotypes', text: 'Load', icon: 'icon-folder-open'
-                }, {type: 'button', id: 'save_haplotypes', text: 'Save', icon: 'icon-file-save'}, /*
+                    type: 'button', id: 'load_haplotypes', text: '加载', icon: 'icon-folder-open'
+                }, {type: 'button', id: 'save_haplotypes', text: '保存', icon: 'icon-file-save'}, /*
                         添加高亮按钮 用于将选择的record在svg图中进行高亮显示
                      */
-                    {type: 'button', id: 'highlight_haplotypes', text: 'Highlight', icon: 'icon-highlight'},
+                    {type: 'button', id: 'highlight_haplotypes', text: '高亮', icon: 'icon-highlight'},
 
                     /*
                         添加text按钮 用于将选择的record的信息显示在svg图中
                      */
-                    {type: 'button', id: 'label_haplotype', text: 'Mark', icon: 'icon-label'}
+                    {type: 'button', id: 'label_haplotype', text: '标签', icon: 'icon-label'}
                     ,], onClick: function (e) {
                     switch (e.target) {
                         case 'load_haplotypes':
@@ -1027,12 +1028,12 @@ $(function () {
                 toolbarDelete: false,
                 toolbarEdit: false
             }, columns: [{
-                field: 'recid', caption: 'Traits', size: '55%', sortable: true, resizable: true
+                field: 'recid', caption: '性状', size: '55%', sortable: true, resizable: true
             }, {
-                field: 'traitNum', caption: 'Trait Number', size: '45%', sortable: true, resizable: true
-            }, {field: 'traitDetail', caption: 'Trait Detail', hidden: true}], toolbar: {
+                field: 'traitNum', caption: '性状数量', size: '45%', sortable: true, resizable: true
+            }, {field: 'traitDetail', caption: '性状信息', hidden: true}], toolbar: {
                 items: [{
-                    type: 'button', id: 'load_characters', text: 'Load', icon: 'icon-folder-open'
+                    type: 'button', id: 'load_characters', text: '加载', icon: 'icon-folder-open'
                 }
                     // , {type: 'button', id: 'save_characters', text: 'Save', icon: 'icon-file-save'}
                 ], onClick: function (e) {
@@ -1049,7 +1050,7 @@ $(function () {
             }, onDblClick: function (event) {
                 event.preventDefault();
                 var traitID = event.recid;
-                if (confirm("Select this trait to display?")) {
+                if (confirm("将选择该性状显示")) {
                     var newHapconffile = generateHapconffile(w2ui.characters.sampleTraitsInfo[traitID]);
                     var newGroupconffile = generateGroupconffile(w2ui.characters.get(traitID));
                     loadGroups(newGroupconffile);
@@ -1117,11 +1118,11 @@ $(function () {
         $('#layout').w2layout({
             name: 'Layout', padding: 0, panels: [
                 // {type: 'top', size: 40, resizable: false, style: style},
-                {type: 'left', size: 350, maxSize: 350, resizable: true, title: 'Data', style: style, tabs: {
+                {type: 'left', size: 350, maxSize: 350, resizable: true, title: '数据', style: style, tabs: {
                     name: 'tabs',
                     active: 'tab1',
-                    tabs: [{id: 'tab3', text: 'Traits'}, {id: 'tab1', text: 'Haplotypes'}, {
-                        id: 'tab2', text: 'Groups'
+                    tabs: [{id: 'tab3', text: '性状'}, {id: 'tab1', text: '单倍型'}, {
+                        id: 'tab2', text: '分组'
                     },],
                     onClick: function (id) {
                         switch (id.target) {
@@ -1138,50 +1139,50 @@ $(function () {
                     }
 
                 }
-            }, {type: 'right', size: 250, resizable: false, title: 'Settings', style: style}, {
+            }, {type: 'right', size: 250, resizable: false, title: '力导向布局设定', style: style}, {
                 type: 'main', size: '100%', overflow: 'hidden', style: style, toolbar: {
                     items: [{
-                        id: 'btn-svgsave', type: 'button', text: 'Save SVG', icon: 'icon-file-svg', disabled: true
+                        id: 'btn-svgsave', type: 'button', text: '保存SVG', icon: 'icon-file-svg', disabled: true
                     }, //{ id: 'btn-pdfsave', type: 'button', text: 'Save PDF', icon: 'icon-file-pdf-o', disabled: true },
                         {type: 'break'}, {
                             id: 'btn-zoomin',
                             class: 'zoom-btn',
                             type: 'button',
-                            text: 'Zoom In',
+                            text: '放大',
                             icon: 'icon-zoom-in',
                             disabled: true
                         }, {
                             id: 'btn-zoomout',
                             class: 'zoom-btn',
                             type: 'button',
-                            text: 'Zoom Out',
+                            text: '缩小',
                             icon: 'icon-zoom-out',
                             disabled: true
                         }, {type: 'break'}, {
                             id: 'btn-delnode',
                             type: 'check',
-                            text: 'Delete Node',
+                            text: '删除节点',
                             icon: 'icon-delete-node',
                             disabled: true,
                             checked: false
                         }, {
                             id: 'btn-dellink',
                             type: 'check',
-                            text: 'Delete Link',
+                            text: '删除链接',
                             icon: 'icon-delete-link',
                             disabled: true,
                             checked: false
                         }, {type: 'break'}, {
                             id: 'btn-outline',
                             type: 'check',
-                            text: 'Outline',
+                            text: '边框线',
                             icon: 'icon-outline',
                             disabled: true,
                             checked: false
                         }, {
                             id: 'btn-lwidth',
                             type: 'menu',
-                            text: 'Line width',
+                            text: '线型',
                             icon: 'icon-line-width',
                             disabled: true,
                             items: [{text: '0.1 px', lwidth: "0.1"}, {text: '0.2 px', lwidth: "0.2"}, {
@@ -1194,7 +1195,7 @@ $(function () {
                         }, {
                             id: 'btn-time',
                             type: 'menu',
-                            text: 'Circle Center',
+                            text: '圆心',
                             icon: 'icon-circles-2',
                             disabled: true,
                             items: [{text: 'Gray', typeid: "0"}, {text: 'Red', typeid: "1"}, {
@@ -1203,16 +1204,16 @@ $(function () {
                         }, {
                             id: 'btn-style',
                             type: 'menu',
-                            text: 'Style',
+                            text: '样式',
                             icon: 'icon-cross-4',
                             disabled: true,
-                            items: [{text: 'Dual-Trait', styleid: "0"}, {text: 'Category,', styleid: "1"}, {
-                                text: 'Continuous', styleid: "2"
+                            items: [{text: '双性状', styleid: "0"}, {text: '分类性状', styleid: "1"}, {
+                                text: '连续性状', styleid: "2"
                             },]
-                        }, {type: 'break'}, {
+                        },  {type: 'break'},{
                             id: 'btn-legend',
                             type: 'check',
-                            text: 'Legend',
+                            text: '图例',
                             icon: 'icon-legend',
                             disabled: true,
                             checked: false
@@ -1221,14 +1222,14 @@ $(function () {
                         {
                             id: 'btn-haplotype',
                             type: 'check',
-                            text: 'Haplotype',
+                            text: '单倍型',
                             icon: 'icon-legend',
                             disabled: true,
                             checked: false
-                        }, {
+                        },{
                             id: 'btn-distance',
                             type: 'check',
-                            text: 'Distance',
+                            text: '距离',
                             icon: 'icon-legend',
                             disabled: true,
                             checked: false
@@ -1608,7 +1609,7 @@ $(function () {
             var newnode = false;
             var newedge = false;
             var multilabels = false;
-            var frequency, radius, haplogroup, label, changes, source, target;
+            var frequency, radius,  haplogroup,  label, changes, source, target;
             var labels = []
             for (var i = 0; i < lines.length; i++) {
                 if (lines[i].indexOf('node [') === 3) newnode = true;
@@ -2877,9 +2878,9 @@ $(function () {
         layout.html('top', '');
         layout.html('left', w2ui.haplotypes);
         layout.html('right', '<div style="width=100%; height=100%;">' + '<div style="width=100%; height=100%; align=left">' + '<p></p>' + //'<div class="w2ui-field"><label>Mass:</label><div><input type="text" id="massFactor" /></div></div>'+
-            '<div class="w2ui-field"><label>Link Distance:</label><div><input type="text" id="linkDistance" /></div></div>' + '<div class="w2ui-field"><label>Link Strength:</label><div><input type="text" id="linkStrength"  /></div></div>' + '<div class="w2ui-field"><label>Friction:</label><div><input type="text" id="friction"  /></div></div>' + '<div class="w2ui-field"><label>Charge:</label><div><input type="text" id="charge"  /></div></div>' + // Do not mess with this
+            '<div class="w2ui-field"><label>距离:</label><div><input type="text" id="linkDistance" /></div></div>' + '<div class="w2ui-field"><label>强度:</label><div><input type="text" id="linkStrength"  /></div></div>' + '<div class="w2ui-field"><label>摩擦力:</label><div><input type="text" id="friction"  /></div></div>' + '<div class="w2ui-field"><label>电荷:</label><div><input type="text" id="charge"  /></div></div>' + // Do not mess with this
             //'<div class="w2ui-field"><label>Charge Distance:</label><div><input type="text" id="chargeDistance"  /></div></div>'+
-            '<div class="w2ui-field"><label>Gravity:</label><div><input type="text" id="gravity" /></div></div>' + '<p>' + '<div style="text-align: center;"><button class="w2ui-btn" id="start" name="start" disabled>Start</button></div><p>' + '<div style="text-align: center;"><button class="w2ui-btn" id="stop" name="stop" disabled>Stop</button></div>' + '</div>' + //'<div style="margin: 10px; padding-top: 6px; width: 90%; height: 100%; background-color: #EFF0F1;">' +
+            '<div class="w2ui-field"><label>引力:</label><div><input type="text" id="gravity" /></div></div>' + '<p>' + '<div style="text-align: center;"><button class="w2ui-btn" id="start" name="start" disabled>开始</button></div><p>' + '<div style="text-align: center;"><button class="w2ui-btn" id="stop" name="stop" disabled>暂停</button></div>' + '</div>' + //'<div style="margin: 10px; padding-top: 6px; width: 90%; height: 100%; background-color: #EFF0F1;">' +
             //'<p style="text-align: center;">Examples</p>' +
             //'<div style="text-align: center;"><button class="w2ui-btn" id="tcsdata" name="tcsdata">TCS network</button></div><p>'+
             //'<div style="text-align: center;"><a href="examples/tcs-output.graph" target=_balnk>tcs-output.graph</a></div><p>' +
