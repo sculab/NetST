@@ -1,84 +1,440 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title></title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-    <meta content="width=device-width,minimum-scale=1,initial-scale=1" name="viewport">
-    <meta content="telephone=no" name="format-detection">
-    <link href="./css/main-1.css" rel="stylesheet">
-    <link href="./css/main-2.css" rel="stylesheet">
-    <style>
-        .lead {
-            font-size: 1.25rem;
-            font-weight: 300;
-            font-family: "Microsoft YaHei";
-        }
+<meta charset="utf-8">
+<title>NetST - Network for Sequences and Traits</title>
+<meta name="description" content="NetST - Network analysis software for sequences and traits">
+<meta name="keywords" content="network, sequences, traits, bioinformatics">
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta name="format-detection" content="telephone=no">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        .container {
-            font-family: "Microsoft YaHei";
-            font-size: xx-large;
-            font-weight: 300;
-            width: 100vw;
-            height: 100vh;
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: flex;
-            flex-direction: column;
-            align-content: center;
-            justify-content: center;
-        }
+body {
+    font-family: "Microsoft YaHei", Arial, sans-serif;
+    overflow: hidden;
+    background: #ffffff;
+}
 
-        .container h1 {
-            font-family: "Microsoft YaHei"
-        }
+.haplotype-network {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.2;
+}
 
-        .bubble {
-            width: 100%;
-            height: 100vh;
-        }
-    </style>
+.container {
+    font-family: "Microsoft YaHei", Arial, sans-serif;
+    font-size: xx-large;
+    font-weight: 300;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #2c3e50;
+    text-shadow: none;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.container strong {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: none;
+}
+
+.container h1 {
+    font-family: "Microsoft YaHei", Arial, sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-top: 1rem;
+    opacity: 0.8;
+    color: #34495e;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    opacity: 0.7;
+    font-style: italic;
+    color: #7f8c8d;
+}
+
+/* 单倍型网络节点样式 */
+.haplotype {
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+
+/* 不同大小的单倍型节点表示频率，不同颜色表示聚类群体 */
+
+/* 核心祖先群 - 红色系 */
+.haplotype.cluster-ancestral.large {
+    width: 80px;
+    height: 80px;
+    font-size: 14px;
+    background: radial-gradient(circle, #e74c3c, #c0392b);
+    box-shadow: 0 0 20px rgba(231, 76, 60, 0.4);
+}
+
+.haplotype.cluster-ancestral.medium {
+    width: 60px;
+    height: 60px;
+    font-size: 12px;
+    background: radial-gradient(circle, #e55a4e, #c0392b);
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
+}
+
+/* 左上分支群 - 蓝色系 */
+.haplotype.cluster-northwest.medium {
+    width: 60px;
+    height: 60px;
+    font-size: 12px;
+    background: radial-gradient(circle, #3498db, #2980b9);
+    box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+}
+
+.haplotype.cluster-northwest.small {
+    width: 40px;
+    height: 40px;
+    font-size: 10px;
+    background: radial-gradient(circle, #5dade2, #3498db);
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.4);
+}
+
+.haplotype.cluster-northwest.tiny {
+    width: 25px;
+    height: 25px;
+    font-size: 8px;
+    background: radial-gradient(circle, #85c1e9, #5dade2);
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.4);
+}
+
+/* 右侧分支群 - 绿色系 */
+.haplotype.cluster-east.medium {
+    width: 60px;
+    height: 60px;
+    font-size: 12px;
+    background: radial-gradient(circle, #2ecc71, #27ae60);
+    box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
+}
+
+.haplotype.cluster-east.small {
+    width: 40px;
+    height: 40px;
+    font-size: 10px;
+    background: radial-gradient(circle, #58d68d, #2ecc71);
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
+}
+
+.haplotype.cluster-east.tiny {
+    width: 25px;
+    height: 25px;
+    font-size: 8px;
+    background: radial-gradient(circle, #82e0aa, #58d68d);
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.4);
+}
+
+/* 下方分支群 - 紫色系 */
+.haplotype.cluster-south.small {
+    width: 40px;
+    height: 40px;
+    font-size: 10px;
+    background: radial-gradient(circle, #9b59b6, #8e44ad);
+    box-shadow: 0 0 10px rgba(155, 89, 182, 0.4);
+}
+
+.haplotype.cluster-south.tiny {
+    width: 25px;
+    height: 25px;
+    font-size: 8px;
+    background: radial-gradient(circle, #bb8fce, #9b59b6);
+    box-shadow: 0 0 8px rgba(155, 89, 182, 0.4);
+}
+
+/* 右下分支群 - 橙色系 */
+.haplotype.cluster-southeast.small {
+    width: 40px;
+    height: 40px;
+    font-size: 10px;
+    background: radial-gradient(circle, #f39c12, #e67e22);
+    box-shadow: 0 0 10px rgba(243, 156, 18, 0.4);
+}
+
+.haplotype.cluster-southeast.tiny {
+    width: 25px;
+    height: 25px;
+    font-size: 8px;
+    background: radial-gradient(circle, #f7ca18, #f39c12);
+    box-shadow: 0 0 8px rgba(243, 156, 18, 0.4);
+}
+
+/* 孤立稀有单倍型 - 青色系 */
+.haplotype.cluster-isolated.tiny {
+    width: 25px;
+    height: 25px;
+    font-size: 8px;
+    background: radial-gradient(circle, #1abc9c, #16a085);
+    box-shadow: 0 0 8px rgba(26, 188, 156, 0.4);
+}
+
+/* 连接线样式 */
+.connection-line {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(52,73,94,0.2), rgba(52,73,94,0.8), rgba(52,73,94,0.2));
+    transform-origin: 0 50%;
+    z-index: 1;
+}
+
+.connection-line.thick {
+    height: 3px;
+    background: linear-gradient(90deg, rgba(52,73,94,0.3), rgba(52,73,94,0.9), rgba(52,73,94,0.3));
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container strong {
+        font-size: 2.5rem;
+    }
+    
+    .container h1 {
+        font-size: 1.2rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+    }
+    
+    .haplotype.cluster-ancestral.large { width: 60px; height: 60px; font-size: 12px; }
+    .haplotype.cluster-ancestral.medium,
+    .haplotype.cluster-northwest.medium,
+    .haplotype.cluster-east.medium { width: 45px; height: 45px; font-size: 10px; }
+    .haplotype.cluster-northwest.small,
+    .haplotype.cluster-east.small,
+    .haplotype.cluster-south.small,
+    .haplotype.cluster-southeast.small { width: 30px; height: 30px; font-size: 8px; }
+    .haplotype.cluster-northwest.tiny,
+    .haplotype.cluster-east.tiny,
+    .haplotype.cluster-south.tiny,
+    .haplotype.cluster-southeast.tiny,
+    .haplotype.cluster-isolated.tiny { width: 20px; height: 20px; font-size: 6px; }
+}
+</style>
 </head>
 <body>
-<div class="bubble"></div>
-<div class="container"><strong>NetST (Network for Sequences and Traits)</strong><br><br>
-    <h1>Based on fastHaN, tcsBU, Mafft</h1><br>
-    <h1></h1></div>
+    <div class="haplotype-network" id="networkSvg"></div>
+    
+    <div class="container">
+        <strong>NetST</strong>
+        <!-- <div style="font-size: 1.8rem">(<strong>Net</strong>work for <strong>S</strong>equences and <strong>T</strong>raits)</div> -->
+        <div class="subtitle">An integrated graphic tool for haplotype network construction, visualization, and automated analysis</div>
+    </div>
 
-<!-- lib/jquery -->
-<script src="./js/jquery.min.js"></script>
-
-<!-- plugin/global -->
-<script src="./js/jquery.bubble.js"></script>
-
-<script>
-    (function ($) {
-        $(document).ready(function () {
-            const
-                eleBody = $('body'),
-                config = {
-                    img: [
-                        './img/pink.png',
-                        './img/yellow.png',
-                        './img/green.png'
-                    ],
-                    shadowColor: [
-                        '#8bcecb',
-                        '#f2a2b9',
-                        '#f4b6d1',
-                        '#ca98c3',
-                        '#fff231',
-                        '#4ab7d0'
-                    ],
-                    bubbleFunc: () => {
-                        return 'hsla(0, 0%, 100%, 0.5)';
-                    }
-                };
-            eleBody.bubble(config);
+    <script>
+        // 全局变量存储网络数据
+        let networkData = null;
+        
+        // 创建单倍型网络图
+        function createHaplotypeNetwork() {
+            const networkDiv = document.getElementById('networkSvg');
+            
+            // 定义单倍型节点数据 (更自然的分布模式，按聚类着色)
+            const haplotypes = [
+                // 主要祖先单倍型群 - 红色系（核心祖先）
+                {id: 'H1', x: 45, y: 35, size: 'large', cluster: 'ancestral', label: 'H1'},
+                {id: 'H2', x: 38, y: 42, size: 'medium', cluster: 'ancestral', label: 'H2'},
+                
+                // 第一分支群 - 蓝色系（左上区域聚类）
+                {id: 'H3', x: 28, y: 22, size: 'medium', cluster: 'northwest', label: 'H3'},
+                {id: 'H4', x: 22, y: 18, size: 'small', cluster: 'northwest', label: 'H4'},
+                {id: 'H5', x: 35, y: 15, size: 'small', cluster: 'northwest', label: 'H5'},
+                {id: 'H6', x: 18, y: 28, size: 'tiny', cluster: 'northwest', label: 'H6'},
+                {id: 'H21', x: 52, y: 12, size: 'tiny', cluster: 'northwest', label: 'H21'},
+                
+                // 第二分支群 - 绿色系（右侧区域聚类）
+                {id: 'H7', x: 62, y: 28, size: 'medium', cluster: 'east', label: 'H7'},
+                {id: 'H8', x: 75, y: 32, size: 'small', cluster: 'east', label: 'H8'},
+                {id: 'H9', x: 68, y: 18, size: 'small', cluster: 'east', label: 'H9'},
+                {id: 'H10', x: 82, y: 25, size: 'tiny', cluster: 'east', label: 'H10'},
+                {id: 'H11', x: 73, y: 42, size: 'tiny', cluster: 'east', label: 'H11'},
+                {id: 'H24', x: 80, y: 15, size: 'tiny', cluster: 'east', label: 'H24'},
+                
+                // 第三分支群 - 紫色系（下方区域聚类）
+                {id: 'H12', x: 35, y: 58, size: 'small', cluster: 'south', label: 'H12'},
+                {id: 'H13', x: 28, y: 68, size: 'small', cluster: 'south', label: 'H13'},
+                {id: 'H14', x: 42, y: 72, size: 'tiny', cluster: 'south', label: 'H14'},
+                {id: 'H15', x: 25, y: 75, size: 'tiny', cluster: 'south', label: 'H15'},
+                {id: 'H22', x: 48, y: 82, size: 'tiny', cluster: 'south', label: 'H22'},
+                {id: 'H23', x: 15, y: 65, size: 'tiny', cluster: 'south', label: 'H23'},
+                
+                // 第四分支群 - 橙色系（右下区域聚类）  
+                {id: 'H16', x: 58, y: 52, size: 'small', cluster: 'southeast', label: 'H16'},
+                {id: 'H17', x: 65, y: 65, size: 'tiny', cluster: 'southeast', label: 'H17'},
+                {id: 'H18', x: 72, y: 58, size: 'tiny', cluster: 'southeast', label: 'H18'},
+                
+                // 孤立的稀有单倍型 - 青色系（独立进化分支）
+                {id: 'H19', x: 12, y: 45, size: 'tiny', cluster: 'isolated', label: 'H19'},
+                {id: 'H20', x: 85, y: 45, size: 'tiny', cluster: 'isolated', label: 'H20'},
+            ];
+            
+            // 定义连接关系 (更自然的网络结构)
+            const connections = [
+                // 主干连接 - 不完全对称
+                {from: 'H1', to: 'H2', weight: 'thick'},
+                {from: 'H1', to: 'H3', weight: 'thick'},
+                {from: 'H2', to: 'H7', weight: 'thick'},
+                {from: 'H2', to: 'H12', weight: 'normal'},
+                {from: 'H1', to: 'H16', weight: 'normal'},
+                
+                // 左上分支的不规则连接
+                {from: 'H3', to: 'H4', weight: 'normal'},
+                {from: 'H3', to: 'H5', weight: 'normal'},
+                {from: 'H4', to: 'H6', weight: 'normal'},
+                {from: 'H5', to: 'H21', weight: 'normal'},
+                
+                // 右侧分支的复杂连接
+                {from: 'H7', to: 'H8', weight: 'normal'},
+                {from: 'H7', to: 'H9', weight: 'normal'},
+                {from: 'H8', to: 'H10', weight: 'normal'},
+                {from: 'H8', to: 'H11', weight: 'normal'},
+                {from: 'H9', to: 'H24', weight: 'normal'},
+                
+                // 下方分支群
+                {from: 'H12', to: 'H13', weight: 'normal'},
+                {from: 'H13', to: 'H14', weight: 'normal'},
+                {from: 'H13', to: 'H15', weight: 'normal'},
+                {from: 'H15', to: 'H23', weight: 'normal'},
+                
+                // 右下分支
+                {from: 'H16', to: 'H17', weight: 'normal'},
+                {from: 'H16', to: 'H18', weight: 'normal'},
+                {from: 'H11', to: 'H18', weight: 'normal'},
+                
+                // 一些不规则的网状连接
+                {from: 'H4', to: 'H5', weight: 'normal'},
+                {from: 'H9', to: 'H21', weight: 'normal'},
+                {from: 'H14', to: 'H22', weight: 'normal'},
+                {from: 'H17', to: 'H22', weight: 'normal'},
+                
+                // 孤立单倍型的长距离连接
+                {from: 'H3', to: 'H19', weight: 'normal'},
+                {from: 'H8', to: 'H20', weight: 'normal'},
+                
+                // 跨分支的少量连接（基因重组/平行进化）
+                {from: 'H5', to: 'H9', weight: 'normal'},
+                {from: 'H12', to: 'H16', weight: 'normal'},
+                {from: 'H6', to: 'H19', weight: 'normal'},
+            ];
+            
+            // 存储网络数据供重绘使用
+            networkData = { haplotypes, connections };
+            
+            // 渲染网络
+            renderNetwork();
+        }
+        
+        // 渲染网络函数
+        function renderNetwork() {
+            if (!networkData) return;
+            
+            const networkDiv = document.getElementById('networkSvg');
+            // 清空现有内容
+            networkDiv.innerHTML = '';
+            
+            const { haplotypes, connections } = networkData;
+            
+            // 获取当前窗口尺寸
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            // 先创建连接线
+            connections.forEach(conn => {
+                const fromNode = haplotypes.find(h => h.id === conn.from);
+                const toNode = haplotypes.find(h => h.id === conn.to);
+                
+                if (fromNode && toNode) {
+                    const line = document.createElement('div');
+                    line.className = `connection-line ${conn.weight === 'thick' ? 'thick' : ''}`;
+                    
+                    // 计算实际像素位置
+                    const fromX = (fromNode.x / 100) * windowWidth;
+                    const fromY = (fromNode.y / 100) * windowHeight;
+                    const toX = (toNode.x / 100) * windowWidth;
+                    const toY = (toNode.y / 100) * windowHeight;
+                    
+                    // 计算距离和角度
+                    const dx = toX - fromX;
+                    const dy = toY - fromY;
+                    const length = Math.sqrt(dx * dx + dy * dy);
+                    const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                    
+                    // 设置连接线样式
+                    line.style.left = fromNode.x + '%';
+                    line.style.top = fromNode.y + '%';
+                    line.style.width = length + 'px';
+                    line.style.transform = `rotate(${angle}deg)`;
+                    
+                    networkDiv.appendChild(line);
+                }
+            });
+            
+            // 然后创建单倍型节点（确保节点在连接线之上）
+            haplotypes.forEach(haplotype => {
+                const node = document.createElement('div');
+                node.className = `haplotype cluster-${haplotype.cluster} ${haplotype.size}`;
+                node.style.left = haplotype.x + '%';
+                node.style.top = haplotype.y + '%';
+                node.style.transform = 'translate(-50%, -50%)';
+                node.style.zIndex = '2';
+                node.textContent = haplotype.label;
+                
+                networkDiv.appendChild(node);
+            });
+        }
+        
+        // 页面加载完成后创建网络图
+        document.addEventListener('DOMContentLoaded', function() {
+            createHaplotypeNetwork();
         });
-    })(jQuery);
-</script>
+        
+        // 监听窗口大小变化，重新渲染网络
+        window.addEventListener('resize', function() {
+            // 使用防抖处理，避免频繁重绘
+            clearTimeout(window.resizeTimeout);
+            window.resizeTimeout = setTimeout(renderNetwork, 100);
+        });
+        
+        // 监听页面缩放事件
+        window.addEventListener('zoom', renderNetwork);
+        
+        // 对于某些浏览器，监听orientationchange事件
+        window.addEventListener('orientationchange', function() {
+            setTimeout(renderNetwork, 100);
+        });
+    </script>
 </body>
 </html>

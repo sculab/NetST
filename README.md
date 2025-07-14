@@ -39,7 +39,7 @@ The latest compiled version and all source code are available on GitHub. You can
 
 ## Documentation
 
-[Haplotype-Network-Analysis-with-NetST](../manual/Haplotype-Network-Analysis-with-NetST.md)
+[Haplotype-Network-Analysis-with-NetST](https://github.com/sculab/NetST/blob/master/manual/Haplotype-Network-Analysis-with-NetST.md)
 
 ## Contact
 
