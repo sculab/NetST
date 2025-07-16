@@ -10,6 +10,8 @@ Additionally, NetST provides **dual-trait mapping and correlation analysis** cap
 
 ![The-Interface-of-NetST](https://cdn.jsdelivr.net/gh/plant720/TyporaPic/img/202506292123757.png)
 
+![The-workflow-of-netst](https://cdn.jsdelivr.net/gh/plant720/TyporaPic/img/202507162222573.png)
+
 ## Citations
 
 Please cite the following manuscript if you use NetST:
