@@ -41,7 +41,9 @@ The latest compiled version and all source code are available on GitHub. You can
 
 ## Documentation
 
-[Haplotype-Network-Analysis-with-NetST](https://github.com/sculab/NetST/blob/master/manual/Haplotype-Network-Analysis-with-NetST.md)
+**Quick Start**: For a hands-on example of how to perform haplotype network analysis using NetST, refer to the quick start tutorial: [Haplotype-Network-Analysis-with-NetST](https://github.com/sculab/NetST/blob/master/manual/Haplotype-Network-Analysis-with-NetST.md)
+
+**User Manual**: For detailed instructions on installation, input formats, analysis modules, and output interpretation, please consult the complete manual: [NetST-User-Manual](https://github.com/sculab/NetST/blob/master/manual/NetST-User-Manual.md)
 
 ## Contact
 
